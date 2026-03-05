@@ -10,13 +10,12 @@
 <body>
     <header id="header">
         <nav class="navbar">
-            <div class="logo-wrap" onclick="scrollToSection('home')">
+            <div class="logo-wrap" onclick="showPage('home')">
                 <svg width="45" height="40" viewBox="0 0 52 44" fill="none">
                     <path d="M2 26L10 18L18 26V36H2V26Z" fill="#2B2D42" opacity=".4"/>
                     <path d="M16 23L24 15L32 23V33H16V23Z" fill="#2B2D42" opacity=".6"/>
                     <path d="M7 28L15 20L23 28V38H7V28Z" fill="#2B2D42" opacity=".8"/>
                     <path d="M22 25L30 17L38 25V38H22V25Z" fill="#2B2D42"/>
-                    <path d="M0 41Q26 37 52 41" stroke="#2B2D42" stroke-width="2" fill="none"/>
                 </svg>
                 <div class="logo-text">
                     <span class="logo-transac">TRANSAC</span>
@@ -24,121 +23,97 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="javascript:void(0)" onclick="scrollToSection('home')">Accueil</a></li>
-                <li><a href="javascript:void(0)" onclick="scrollToSection('pauillac')">Investir à Pauillac</a></li>
-                <li><a href="javascript:void(0)" onclick="scrollToSection('catalogue')">Biens à vendre</a></li>
-                <li><a href="javascript:void(0)" onclick="scrollToSection('simulateur')">Simulateur fiscal</a></li>
-                <li><a href="javascript:void(0)" onclick="scrollToSection('simulateur')" class="btn-red-nav">Simuler</a></li>
+                <li><a href="#" onclick="showPage('home')">Accueil</a></li>
+                <li><a href="#" onclick="showPage('pauillac')">Investir à Pauillac</a></li>
+                <li><a href="#" onclick="showPage('catalogue')">Biens à vendre</a></li>
+                <li><a href="#" onclick="showPage('simulateur')">Simulateur fiscal</a></li>
+                <li><a href="#" onclick="showPage('simulateur')" class="btn-red-nav">Simuler</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="main-scroller">
-        <section id="home" class="slide">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span class="dot"></span> Marchand de biens — Pauillac, Médoc
+    <main id="content">
+        <section id="page-home" class="page active">
+            <div class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="hero-container">
+                    <div class="hero-badge"><span class="dot"></span> Marchand de biens — Pauillac, Médoc</div>
+                    <h1 class="hero-title">L'expertise du marchand de biens au service de votre <span class="highlight">défiscalisation</span></h1>
+                    <p class="hero-subtitle">Investissez dans la pierre médocaine et bénéficiez du dispositif Denormandie pour réduire vos impôts jusqu'à 63 000 €.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="showPage('simulateur')">Simuler ma défiscalisation →</button>
+                        <button class="btn-secondary" onclick="showPage('catalogue')">Voir nos biens</button>
+                    </div>
                 </div>
-                <h1 class="hero-title">
-                    L'expertise du marchand de biens au service de votre <span class="highlight">défiscalisation</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Investissez dans la pierre médocaine et bénéficiez du dispositif Denormandie pour réduire vos impôts jusqu'à 63 000 €.
-                </p>
-                <div class="hero-actions">
-                    <button class="btn-primary" onclick="scrollToSection('simulateur')">Simuler ma défiscalisation <span>→</span></button>
-                    <button class="btn-secondary" onclick="scrollToSection('catalogue')">Voir nos biens</button>
-                </div>
-            </div>
-            <div class="glass-nav">
-                <div class="glass-item active"><span>01</span> Accueil</div>
-                <div class="glass-item"><span>02</span> Investir</div>
-                <div class="glass-item"><span>03</span> Catalogue</div>
             </div>
         </section>
 
-        <section id="pauillac" class="slide bg-white">
+        <section id="page-pauillac" class="page">
             <div class="container">
                 <h2 class="section-title">Investir à Pauillac</h2>
-                <div class="seo-grid">
-                    <div class="seo-text">
-                        <p>Située au cœur du Médoc, Pauillac est le terrain idéal pour le dispositif <strong>Denormandie</strong>.</p>
-                        <p>Les bâtisses en pierre de taille offrent une rentabilité et une défiscalisation optimale.</p>
-                    </div>
-                    <div class="seo-image">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800" alt="Pierre bordelaise">
-                    </div>
+                <div class="seo-content">
+                    <p>Située au cœur du Médoc, Pauillac offre un patrimoine en pierre de taille unique. Éligible au dispositif <strong>Denormandie (Zone B2)</strong>, c'est l'emplacement stratégique pour valoriser votre patrimoine.</p>
+                </div>
+                <div class="color-slides">
+                    <div class="slide-card red"><h3>Expertise</h3><p>Rénovation complète aux normes énergétiques.</p></div>
+                    <div class="slide-card dark"><h3>Sécurité</h3><p>Accompagnement juridique et fiscal total.</p></div>
+                    <div class="slide-card gray"><h3>Rendement</h3><p>Plafonds de loyer Zone B2 optimisés.</p></div>
                 </div>
             </div>
         </section>
 
-        <section id="catalogue" class="slide bg-light">
+        <section id="page-catalogue" class="page">
             <div class="container">
-                <h2 class="section-title">Catalogue de biens</h2>
+                <h2 class="section-title">Biens à vendre</h2>
                 <div id="catalogue-grid" class="grid"></div>
             </div>
         </section>
 
-        <section id="simulateur" class="slide">
+        <section id="page-simulateur" class="page">
             <div class="container">
-                <div class="sim-card">
-                    <h2>Simulateur Denormandie</h2>
-                    <div class="sim-grid">
-                        <div class="sim-inputs">
-                            <div class="field">
-                                <label>Prix d'achat (€)</label>
-                                <input type="number" id="sim-prix" value="180000" oninput="updateSim()">
-                            </div>
-                            <div class="field">
-                                <label>Budget Travaux (€)</label>
-                                <input type="number" id="sim-travaux" value="65000" oninput="updateSim()">
-                            </div>
-                            <div class="field">
-                                <label>Surface (m²)</label>
-                                <input type="number" id="sim-surface" value="75" oninput="updateSim()">
-                            </div>
-                        </div>
-                        <div id="sim-results" class="sim-results"></div>
+                <div class="sim-wrapper">
+                    <div class="sim-inputs">
+                        <h2>Votre Simulation</h2>
+                        <div class="field"><label>Prix d'achat (€)</label><input type="number" id="sim-prix" value="180000" oninput="updateSim()"></div>
+                        <div class="field"><label>Montant Travaux (€)</label><input type="number" id="sim-travaux" value="65000" oninput="updateSim()"></div>
+                        <div class="field"><label>Surface (m²)</label><input type="number" id="sim-surface" value="75" oninput="updateSim()"></div>
                     </div>
+                    <div id="sim-results" class="sim-results-box"></div>
                 </div>
             </div>
         </section>
+    </main>
 
-        <footer id="footer" class="slide-footer">
-            <div class="footer-container">
-                <div class="footer-brand">
-                    <div class="logo-wrap-footer">
-                        <svg width="35" height="30" viewBox="0 0 52 44" fill="none">
-                            <path d="M2 26L10 18L18 26V36H2V26Z" fill="#8D99AE" opacity=".4"/>
-                            <path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/>
-                        </svg>
-                        <span class="footer-title">TRANSAC <span>EXPRESS</span></span>
-                    </div>
-                    <p>L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
+    <footer id="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo-wrap-f">
+                    <svg width="35" height="30" viewBox="0 0 52 44" fill="none"><path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/></svg>
+                    <span class="f-transac">TRANSAC <span>EXPRESS</span></span>
                 </div>
-                <div class="footer-nav">
-                    <h4>NAVIGATION</h4>
-                    <ul>
-                        <li><a onclick="scrollToSection('home')">Accueil</a></li>
-                        <li><a onclick="scrollToSection('pauillac')">Investir à Pauillac</a></li>
-                        <li><a onclick="scrollToSection('catalogue')">Biens à vendre</a></li>
-                        <li><a onclick="scrollToSection('simulateur')">Simulateur fiscal</a></li>
-                        <li><a href="#">Mentions légales</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h4>CONTACT</h4>
-                    <p>📍 Pauillac, Gironde (33)</p>
-                    <p>📞 05 56 XX XX XX</p>
-                    <p>✉️ contact@transac-express.fr</p>
-                </div>
+                <p>L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
             </div>
-            <div class="footer-bottom">
-                <p>© 2026 MEDOC INVESTISSEMENT — SARL au capital de 1 440 000 € — RCS Bordeaux 477 710 222</p>
-                <a href="#">Mentions légales</a>
+            <div class="footer-nav">
+                <h4>NAVIGATION</h4>
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">Accueil</a></li>
+                    <li><a href="#" onclick="showPage('pauillac')">Investir à Pauillac</a></li>
+                    <li><a href="#" onclick="showPage('catalogue')">Biens à vendre</a></li>
+                    <li><a href="#" onclick="showPage('simulateur')">Simulateur fiscal</a></li>
+                </ul>
             </div>
-        </footer>
-    </div>
+            <div class="footer-contact">
+                <h4>CONTACT</h4>
+                <p>📍 Pauillac, Gironde (33)</p>
+                <p>📞 05 56 XX XX XX</p>
+                <p>✉️ contact@transac-express.fr</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 MEDOC INVESTISSEMENT — SARL 1 440 000 € — RCS Bordeaux 477 710 222</p>
+            <a href="#" onclick="showPage('mentions')">Mentions légales</a>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
