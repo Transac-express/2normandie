@@ -3,6 +3,10 @@
     --red-hover: #c80511;
     --navy: #2B2D42;
     --navy-dark: #1F202F;
+    --blue: #38bdf8;
+    --green: #10B981;
+    --green-light: #d1fae5;
+    --orange: #F59E0B;
     --gray-text: #6B7280;
     --gray-light: #F9FAFB;
     --border: #E5E7EB;
@@ -15,6 +19,7 @@ ul { list-style: none; }
 
 /* UTILITIES */
 .text-red { color: var(--red); }
+.text-blue { color: var(--blue); }
 .text-gray { color: var(--gray-text); }
 .text-center { text-align: center; }
 .mt-10 { margin-top: 10px; } .mt-20 { margin-top: 20px; } .mt-50 { margin-top: 50px; } .mt-80 { margin-top: 80px; }
@@ -65,22 +70,21 @@ ul { list-style: none; }
 .btn-primary:hover { background: var(--red-hover); }
 .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 16px 32px; border-radius: 50px; font-weight: 700; font-size: 1.05rem; cursor: pointer; backdrop-filter: blur(8px); }
 
-/* POURQUOI NOUS CHOISIR (CARTES & ICÔNES ROUGES) */
+/* POURQUOI NOUS CHOISIR (CARTES & ICÔNES) */
 .section-surtitle { font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px; }
 .section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; }
 .section-desc { font-size: 1.1rem; color: var(--gray-text); max-width: 600px; line-height: 1.6; }
-.feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; }
-.feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+.feature-card { background: #FAFAFA; border-radius: 20px; padding: 40px; text-align: left; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
 
-/* L'icône Rouge épaisse parfaitement proportionnée */
-.icon-box-pro { width: 60px; height: 60px; margin-bottom: 25px; }
+.icon-box-pro { width: 48px; height: 48px; background: transparent; border: 1.5px solid var(--red); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 10px; transition: 0.3s ease; }
 .icon-box-pro svg { width: 100%; height: 100%; }
 
 .feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
 .feature-card p { color: var(--gray-text); font-size: 0.95rem; line-height: 1.6; }
 .btn-text-red { background: none; border: none; color: var(--red); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
 
-/* INVESTIR PAUILLAC & NOUVELLE SECTION DENORMANDIE */
+/* INVESTIR PAUILLAC & DENORMANDIE */
 .hero-pauillac { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600') center/cover; }
 .hero-overlay-dark { position: absolute; inset: 0; background: rgba(31,32,47,0.85); }
 .badge-outline { border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; display: inline-block; margin-bottom: 20px; }
@@ -95,7 +99,6 @@ ul { list-style: none; }
 .stat-num { font-size: 2rem; font-weight: 900; margin-bottom: 5px; }
 .stat-text { font-size: 0.85rem; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* NOUVEAU : CARTES DE REDUCTION DENORMANDIE */
 .denormandie-text { max-width: 800px; color: var(--gray-text); font-size: 1.05rem; line-height: 1.7; text-align: left; }
 .denormandie-text strong { color: var(--navy); }
 .tax-card { background: #FAFAFA; border: 1px solid var(--border); border-radius: 16px; padding: 40px 20px; text-align: center; transition: 0.2s ease; }
@@ -120,18 +123,27 @@ ul { list-style: none; }
 .property-address { font-size: 0.85rem; color: var(--gray-text); margin-bottom: 20px; }
 .property-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 15px; font-size: 0.85rem; color: var(--gray-text); }
 
-/* SIMULATEUR */
+/* SIMULATEUR AVANCÉ */
 .page-title { font-size: 2.5rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
 .page-subtitle { font-size: 1.1rem; color: var(--gray-text); }
-.sim-layout { display: grid; grid-template-columns: 1fr 400px; gap: 30px; align-items: start; }
+.sim-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: start; }
 .sim-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid var(--border); }
 .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+
+/* Inputs standard */
+.input-box { display: flex; flex-direction: column; }
+.input-box label { font-size: 0.85rem; font-weight: 600; color: var(--gray-text); margin-bottom: 5px; }
+.input-box input { padding: 10px 15px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-weight: 600; outline: none; transition: 0.2s; }
+.input-box input:focus { border-color: var(--blue); }
+
+/* Sliders */
 .slider-group { margin-bottom: 30px; }
 .slider-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 0.95rem; }
 .slider-value { font-weight: 800; }
 input[type=range] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 5px; outline: none; margin-bottom: 10px; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; border: 2px solid var(--border); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-top: -7px; }
 .slider-bounds { display: flex; justify-content: space-between; font-size: 0.75rem; color: #9CA3AF; font-weight: 600; }
+
 .duree-card { border: 2px solid var(--border); border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
 .duree-card.active { border-color: var(--red); background: #FFF5F5; }
 .duree-years { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
@@ -139,20 +151,47 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: 
 .duree-sub { font-size: 0.75rem; color: var(--gray-text); margin-top: 5px; }
 .alert { border-radius: 12px; padding: 20px; font-size: 0.9rem; line-height: 1.5; }
 .alert-red { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
-.alert-blue { background: #F0F9FF; border: 1px solid #BAE6FD; color: #075985; }
-.alert-small { border-radius: 8px; padding: 12px; font-size: 0.85rem; font-weight: 600; }
-.alert-red-light { background: #FFF1F2; color: #BE123C; }
 
-/* Right Panel Simulator */
-.result-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); position: sticky; top: 100px; }
-.result-header { background: var(--navy-dark); color: white; padding: 40px 30px; text-align: center; }
-.result-header p { font-size: 0.8rem; letter-spacing: 1px; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 10px; }
-.result-header h2 { font-size: 3rem; font-weight: 900; margin-bottom: 5px; }
-.result-sub { font-size: 0.85rem !important; color: rgba(255,255,255,0.5) !important; font-weight: 400 !important; }
-.result-body { padding: 30px; }
+/* PANNEAU DE DROITE (RÉSULTATS) */
+.result-card { border-radius: 16px; padding: 30px; }
+.result-dark { background: var(--navy-dark); color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.border-card { background: white; border: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+
+.subtitle { font-size: 0.8rem; letter-spacing: 1px; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 10px; text-transform: uppercase; }
+.montant-mensuel { font-size: 3.5rem; font-weight: 900; margin-bottom: 5px; }
+.details-mensualite { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+.libere-tag { display: inline-block; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 50px; font-size: 0.85rem; }
+
+.montant-impot { font-size: 2.8rem; font-weight: 900; margin-bottom: 5px; }
+.details-impot { font-size: 0.85rem; font-weight: 500; }
+.divider { height: 1px; background: var(--border); width: 100%; }
+
 .res-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
 .res-row span { color: var(--gray-text); }
 .res-row strong { font-weight: 700; color: var(--navy); }
+
+/* POIDS SUR LE BUDGET */
+.budget-card { background: var(--green-light); border: 1px solid #A7F3D0; border-radius: 12px; padding: 20px; }
+.budget-header { font-size: 0.9rem; color: #065F46; margin-bottom: 10px; }
+.budget-bar-bg { width: 100%; height: 8px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+.budget-bar-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.5s ease; }
+.budget-status { font-size: 0.85rem; color: #065F46; font-weight: 600; }
+
+/* CAMEMBERT (PIE CHART) */
+.pie-chart-container { display: flex; justify-content: center; }
+.pie-chart { width: 180px; height: 180px; border-radius: 50%; transition: background 0.5s ease; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.pie-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 0.8rem; font-weight: 600; }
+.legend-item { display: flex; align-items: center; gap: 5px; color: var(--gray-text); }
+.dot-color { width: 12px; height: 12px; border-radius: 3px; }
+
+/* TABLEAU AMORTISSEMENT */
+.table-header { background: #E5E7EB; padding: 10px; text-align: center; border-radius: 8px 8px 0 0; font-weight: 700; font-size: 0.85rem; }
+.amortissement-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.amortissement-table th { padding: 12px 10px; text-align: right; color: var(--gray-text); border-bottom: 1px solid var(--border); }
+.amortissement-table th:first-child { text-align: left; }
+.amortissement-table td { padding: 12px 10px; text-align: right; border-bottom: 1px solid var(--gray-light); }
+.amortissement-table td:first-child { text-align: left; font-weight: 600; }
+.amortissement-table tr:last-child td { border-bottom: none; }
 
 /* FOOTER */
 .footer { background: var(--navy-dark); color: white; padding: 80px 0 30px; margin-top: auto; }
