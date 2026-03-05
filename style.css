@@ -20,7 +20,7 @@ ul { list-style: none; }
 .text-gray { color: var(--gray-text); }
 .text-center { text-align: center; }
 .text-left { text-align: left; }
-.mt-10 { margin-top: 10px; } .mt-20 { margin-top: 20px; } .mt-50 { margin-top: 50px; } .mt-80 { margin-top: 80px; }
+.mt-10 { margin-top: 10px; } .mt-20 { margin-top: 20px; } .mt-30 { margin-top: 30px; } .mt-50 { margin-top: 50px; } .mt-80 { margin-top: 80px; }
 .mb-10 { margin-bottom: 10px; } .mb-20 { margin-bottom: 20px; }
 .pt-10 { padding-top: 10px; } .pt-20 { padding-top: 20px; }
 .mx-auto { margin-left: auto; margin-right: auto; }
@@ -68,14 +68,17 @@ ul { list-style: none; }
 .btn-primary:hover { background: var(--red-hover); }
 .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 16px 32px; border-radius: 50px; font-weight: 700; font-size: 1.05rem; cursor: pointer; backdrop-filter: blur(8px); }
 
-/* POURQUOI NOUS CHOISIR */
+/* POURQUOI NOUS CHOISIR (ICÔNES CORRIGÉES) */
 .section-surtitle { font-weight: 800; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; }
 .section-desc { font-size: 1.1rem; color: var(--gray-text); max-width: 600px; line-height: 1.6; }
 .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
-.icon-box-pro { width: 48px; height: 48px; background: transparent; border: 1.5px solid var(--red); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 10px; }
+
+/* Icônes encadrées de taille correcte */
+.icon-box-pro { width: 48px; height: 48px; background-color: #FFF0F0; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 10px; transition: 0.3s ease; }
 .icon-box-pro svg { width: 100%; height: 100%; }
+
 .feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
 .feature-card p { color: var(--gray-text); font-size: 0.95rem; line-height: 1.6; }
 
@@ -95,6 +98,15 @@ ul { list-style: none; }
 .stat-num { font-size: 2rem; font-weight: 900; margin-bottom: 5px; }
 .stat-text { font-size: 0.85rem; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; }
 
+.denormandie-text { max-width: 800px; color: var(--gray-text); font-size: 1.05rem; line-height: 1.7; text-align: left; }
+.denormandie-text strong { color: var(--navy); }
+.tax-card { background: #FAFAFA; border: 1px solid var(--border); border-radius: 16px; padding: 40px 20px; text-align: center; transition: 0.2s ease; }
+.tax-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+.tax-label { font-size: 0.9rem; color: var(--gray-text); margin-bottom: 5px; }
+.tax-years { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+.tax-pct { font-size: 3rem; font-weight: 900; margin: 10px 0; line-height: 1; }
+.tax-max { font-size: 0.85rem; color: var(--gray-text); }
+
 /* CATALOGUE */
 .property-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.03); }
 .property-img-wrap { position: relative; height: 240px; }
@@ -104,17 +116,20 @@ ul { list-style: none; }
 .badge-green { background: #10B981; color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
 .badge-yellow { background: #F59E0B; color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
 .property-body { padding: 25px; }
-.property-header h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 10px; }
-.property-price { font-size: 1.25rem; font-weight: 900; color: var(--red); display: block; margin-bottom: 10px; }
+.property-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.property-header h3 { font-size: 1.15rem; font-weight: 800; max-width: 65%; }
+.property-price { font-size: 1.25rem; font-weight: 900; color: var(--red); }
+.property-address { font-size: 0.85rem; color: var(--gray-text); margin-bottom: 20px; }
 .property-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 15px; font-size: 0.85rem; color: var(--gray-text); }
 
 /* --- SIMULATEUR --- */
 .page-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; }
+.page-subtitle { font-size: 1.1rem; color: var(--gray-text); }
 .sim-layout { display: grid; grid-template-columns: 1fr 450px; gap: 30px; align-items: start; }
 .sim-card { background: white; border-radius: 16px; padding: 30px; border: 1px solid var(--border); }
 .card-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; }
 
-/* Nouveaux Inputs rectangulaires (comme ton frère) */
+/* Inputs Textuels Propres */
 .input-box { display: flex; flex-direction: column; gap: 6px; }
 .input-box label { font-size: 0.85rem; font-weight: 600; color: #374151; }
 .input-box input { padding: 12px; border: 1px solid #D1D5DB; border-radius: 8px; font-size: 1rem; color: #1F2937; outline: none; transition: 0.2s; }
@@ -124,20 +139,24 @@ ul { list-style: none; }
 .duree-card.active { border-color: var(--red); background: #FFF5F5; }
 .duree-years { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
 .duree-pct { font-size: 1.8rem; font-weight: 900; color: var(--gray-text); }
+.alert { border-radius: 12px; padding: 20px; font-size: 0.9rem; line-height: 1.5; }
+.alert-red { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
 
-/* PANNEAU DE DROITE */
+/* PANNEAU DE DROITE (MIX DES DEUX) */
 .result-card { padding: 30px; }
 .result-dark { background: var(--navy-dark); color: white; }
-.border-card { background: white; border: 1px solid var(--border); }
+.border-card { background: white; border: 1px solid var(--border); box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
 
-/* Partie Fiscale (La Jess) */
 .subtitle { font-size: 0.85rem; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; }
+.montant-impot { font-weight: 900; line-height: 1; }
+.details-impot { font-size: 0.9rem; }
 .res-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
 .res-row span { color: var(--gray-text); }
 .res-row strong { font-weight: 700; color: var(--navy); }
 
-/* Partie Crédit & Budget */
-.montant-mensuel { font-size: 3rem; font-weight: 900; }
+/* Crédit & Budget */
+.montant-mensuel { font-size: 3rem; font-weight: 900; line-height: 1.1; margin-bottom: 5px; }
+.details-mensualite { font-size: 0.9rem; color: var(--gray-text); }
 .budget-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px; }
 .budget-header { font-size: 0.95rem; margin-bottom: 10px; color: #166534; }
 .budget-bar-bg { width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
@@ -146,7 +165,7 @@ ul { list-style: none; }
 
 /* Camembert CSS */
 .pie-chart-container { display: flex; justify-content: center; }
-.pie-chart { width: 150px; height: 150px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.5s; }
+.pie-chart { width: 140px; height: 140px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: background 0.5s; }
 .pie-legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; font-size: 0.8rem; font-weight: 600; }
 .legend-item { display: flex; align-items: center; gap: 5px; color: var(--gray-text); }
 .dot-color { width: 12px; height: 12px; border-radius: 2px; }
@@ -157,7 +176,7 @@ ul { list-style: none; }
 .amortissement-table th { padding: 12px 10px; text-align: right; color: var(--gray-text); border-bottom: 1px solid var(--border); }
 .amortissement-table th:first-child { text-align: left; }
 .amortissement-table td { padding: 12px 10px; text-align: right; border-bottom: 1px solid var(--gray-light); }
-.amortissement-table td:first-child { text-align: left; font-weight: 600; }
+.amortissement-table td:first-child { text-align: left; font-weight: 600; color: var(--gray-text); }
 .amortissement-table tr:last-child td { border-bottom: none; }
 
 /* FOOTER */
