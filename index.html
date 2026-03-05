@@ -25,7 +25,7 @@
                 <li><a href="#" class="nav-item active" data-target="home" onclick="navigate('home')">Accueil</a></li>
                 <li><a href="#" class="nav-item" data-target="pauillac" onclick="navigate('pauillac')">Investir à Pauillac</a></li>
                 <li><a href="#" class="nav-item" data-target="catalogue" onclick="navigate('catalogue')">Biens à vendre</a></li>
-                <li><a href="#" class="nav-item" data-target="simulateur" onclick="navigate('simulateur')">Simulateur fiscal</a></li>
+                <li><a href="#" class="nav-item" data-target="simulateur" onclick="navigate('simulateur')">Outils & Simulation</a></li>
                 <li><button class="btn-red-nav" onclick="navigate('simulateur')">Simuler</button></li>
             </ul>
         </nav>
@@ -94,9 +94,9 @@
                     <div class="gray-box">
                         <h3>Pourquoi investir ici ?</h3>
                         <ul class="check-list">
-                            <li><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></span> Zone éligible Denormandie (B2)</li>
-                            <li><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></span> Prix au m² accessibles</li>
-                            <li><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></span> Demande locative forte</li>
+                            <li><span>✔️</span> Zone éligible Denormandie (B2)</li>
+                            <li><span>✔️</span> Prix au m² accessibles face à Bordeaux</li>
+                            <li><span>✔️</span> Demande locative forte (œnotourisme)</li>
                         </ul>
                     </div>
                 </div>
@@ -111,132 +111,144 @@
         </section>
 
         <section id="page-simulateur" class="page bg-light">
-            <div class="container section-padding">
-                <h1 class="page-title">Simulateur fiscal & financier</h1>
-                <p class="page-subtitle mb-20">Estimez vos mensualités, l'impact sur votre budget et votre réduction d'impôt.</p>
+            <div class="container pt-20 pb-50">
+                <div class="sim-tabs">
+                    <div class="sim-tab active" onclick="switchSimTab('complet')">📊 Simulation Complète</div>
+                    <div class="sim-tab" onclick="switchSimTab('capacite')">💰 Capacité d'Emprunt</div>
+                    <div class="sim-tab" onclick="switchSimTab('favoris')">⭐ Mes Projets</div>
+                </div>
 
-                <div class="sim-layout">
-                    <div class="sim-left">
-                        <div class="sim-card mb-20">
-                            <div class="grid-2 gap-15">
-                                <div class="input-box-v2">
-                                    <label>Prix de l'objet (€)</label>
-                                    <input type="number" id="sim-prix" value="150000" oninput="updateSim()">
+                <div id="tab-complet" class="sim-view active mt-20">
+                    <div class="sim-layout">
+                        <div class="sim-left">
+                            
+                            <div class="expert-box mb-20">
+                                <h4 class="expert-title">🧐 L'avis de l'Expert Transac</h4>
+                                <ul id="expert-list" class="expert-list">
+                                    </ul>
+                            </div>
+
+                            <div class="sim-card mb-20">
+                                <div class="grid-2 gap-15">
+                                    <div class="input-box-v2"><label>Prix du bien (€)</label><input type="number" id="sim-prix" value="150000" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Apport personnel (€)</label><input type="number" id="sim-apport" value="20000" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Frais de notaire (€)</label><input type="number" id="sim-notaire" value="12000" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Budget Travaux (€)</label><input type="number" id="sim-travaux" value="50000" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Taux du crédit (%)</label><input type="number" id="sim-taux" value="3.8" step="0.1" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Durée (mois)</label><input type="number" id="sim-duree-mois" value="240" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Assurance/Frais (€/m)</label><input type="number" id="sim-assurance" value="40" oninput="updateSim()"></div>
+                                    <div class="input-box-v2"><label>Mes revenus nets (€/m)</label><input type="number" id="sim-revenus" value="3000" oninput="updateSim()"></div>
+                                    <div class="input-box-v2" style="grid-column: 1 / span 2;"><label>Surface habitable (m²)</label><input type="number" id="sim-surface" value="60" oninput="updateSim()"></div>
                                 </div>
-                                <div class="input-box-v2">
-                                    <label>Argent mis de côté (€)</label>
-                                    <input type="number" id="sim-apport" value="20000" oninput="updateSim()">
+                            </div>
+
+                            <div class="sim-card mt-20">
+                                <h3 class="card-title text-sm mb-10 text-gray">DURÉE DENORMANDIE</h3>
+                                <div class="grid-3 gap-15">
+                                    <div class="duree-card" onclick="setDuree(0)"><div class="duree-years">6 ans</div><div class="duree-pct">12%</div></div>
+                                    <div class="duree-card active" onclick="setDuree(1)"><div class="duree-years">9 ans</div><div class="duree-pct text-red">18%</div></div>
+                                    <div class="duree-card" onclick="setDuree(2)"><div class="duree-years">12 ans</div><div class="duree-pct">21%</div></div>
                                 </div>
-                                <div class="input-box-v2">
-                                    <label>Frais de notaire (€)</label>
-                                    <input type="number" id="sim-notaire" value="12000" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Montant travaux (€)</label>
-                                    <input type="number" id="sim-travaux" value="50000" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Taux du prêt (%)</label>
-                                    <input type="number" id="sim-taux" value="4.5" step="0.1" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Durée (mois)</label>
-                                    <input type="number" id="sim-duree-mois" value="240" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Assurance/Frais (€/m)</label>
-                                    <input type="number" id="sim-assurance" value="30" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Mes revenus nets (€)</label>
-                                    <input type="number" id="sim-revenus" value="3000" oninput="updateSim()">
-                                </div>
-                                <div class="input-box-v2">
-                                    <label>Surface du bien (m²)</label>
-                                    <input type="number" id="sim-surface" value="60" oninput="updateSim()">
-                                </div>
+                            </div>
+
+                            <div class="save-box mt-20">
+                                <input type="text" id="sim-name" placeholder="Nom du projet (ex: Maison Centre-ville)">
+                                <button class="btn-primary" onclick="saveProject()">⭐ Sauvegarder</button>
                             </div>
                         </div>
 
-                        <div class="sim-card mt-20">
-                            <h3 class="card-title text-sm mb-10 text-gray">DURÉE D'ENGAGEMENT LOCATIF (DENORMANDIE)</h3>
-                            <div class="grid-3 gap-15">
-                                <div class="duree-card" onclick="setDuree(0)">
-                                    <div class="duree-years">6 ans</div>
-                                    <div class="duree-pct">12%</div>
-                                </div>
-                                <div class="duree-card active" onclick="setDuree(1)">
-                                    <div class="duree-years">9 ans</div>
-                                    <div class="duree-pct text-red">18%</div>
-                                </div>
-                                <div class="duree-card" onclick="setDuree(2)">
-                                    <div class="duree-years">12 ans</div>
-                                    <div class="duree-pct">21%</div>
+                        <div class="sim-right">
+                            <div class="fin-box-dark mb-20 text-center">
+                                <p class="fin-subtitle">MENSUALITÉ DE CRÉDIT</p>
+                                <h2 class="fin-montant" id="res-mensualite">1 150 €</h2>
+                                <p class="fin-details" id="res-mensualite-detail">1100€ (prêt) + 50€ (frais)</p>
+                            </div>
+
+                            <div class="fin-budget mb-20" id="budget-container">
+                                <div class="budget-header"><strong>Endettement global : <span id="res-endettement-txt">33%</span></strong></div>
+                                <div class="budget-bar-bg"><div class="budget-bar-fill" id="res-endettement-bar"></div></div>
+                                <div class="budget-status mt-10" id="res-endettement-status">✅ Raisonnable.</div>
+                            </div>
+
+                            <div class="sim-card border-card mb-20 text-center">
+                                <p class="subtitle text-gray">RÉDUCTION D'IMPÔT TOTALE</p>
+                                <h2 class="montant-impot text-red mt-10" id="res-reduction">38 160 €</h2>
+                                <p class="details-impot text-gray" id="res-sub">sur 9 ans • soit 4 240 €/an</p>
+                                <div class="divider mt-20 mb-20"></div>
+                                <div class="res-row"><span>Coût total projet</span><strong id="res-total">212 000 €</strong></div>
+                                <div class="res-row"><span>Loyer max. généré (B2)</span><strong id="res-loyer">600 €</strong></div>
+                            </div>
+
+                            <div class="sim-card border-card mb-20 text-center">
+                                <div class="pie-chart-container mt-20 mb-20"><div class="pie-chart" id="pie-chart"></div></div>
+                                <div class="pie-legend">
+                                    <div class="legend-item"><span class="dot-color" style="background:#10B981;"></span>Apport</div>
+                                    <div class="legend-item"><span class="dot-color" style="background:#2B2D42;"></span>Capital</div>
+                                    <div class="legend-item"><span class="dot-color" style="background:#E30613;"></span>Intérêts</div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="alert alert-red mt-20" id="alert-ratio" style="display:none;">
-                            <strong>⚠️ Projet non éligible Denormandie</strong>
-                            <p>Les travaux doivent représenter au moins 25% du coût total. Actuellement : <strong id="val-ratio-alert">0%</strong>.</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="sim-right">
+                <div id="tab-capacite" class="sim-view mt-20">
+                    <div class="sim-card mx-auto" style="max-width: 600px;">
+                        <h2 class="section-title text-center" style="font-size: 2rem;">Combien puis-je emprunter ?</h2>
+                        <p class="text-center text-gray mb-20">Calculez votre enveloppe budgétaire maximale selon votre effort d'épargne et les revenus locatifs espérés.</p>
                         
-                        <div class="fin-box-dark mb-20">
-                            <p class="fin-subtitle">JE PAYE CHAQUE MOIS :</p>
-                            <h2 class="fin-montant" id="res-mensualite">1 150 €</h2>
-                            <p class="fin-details" id="res-mensualite-detail">1100€ (prêt) + 50€ (frais)</p>
-                            <div class="fin-libere mt-10">🏁 Libéré de ce prêt en <strong id="res-date-fin">mars 2046</strong></div>
+                        <div class="input-box-v2 mt-20"><label>Mes revenus nets mensuels (€)</label><input type="number" id="capa-revenus" value="3500" oninput="calcCapacite()"></div>
+                        <div class="input-box-v2 mt-20"><label>Loyer mensuel espéré du bien (€)</label><input type="number" id="capa-loyer" value="600" oninput="calcCapacite()"></div>
+                        <div class="grid-2 gap-15 mt-20">
+                            <div class="input-box-v2"><label>Taux bancaire (%)</label><input type="number" id="capa-taux" value="3.8" step="0.1" oninput="calcCapacite()"></div>
+                            <div class="input-box-v2"><label>Durée (années)</label><input type="number" id="capa-annees" value="20" oninput="calcCapacite()"></div>
                         </div>
 
-                        <div class="fin-budget mb-20" id="budget-container">
-                            <div class="budget-header"><strong>Poids sur mon budget : <span id="res-endettement-txt">33%</span></strong></div>
-                            <div class="budget-bar-bg"><div class="budget-bar-fill" id="res-endettement-bar"></div></div>
-                            <div class="budget-status mt-10" id="res-endettement-status">✅ C'est très raisonnable.</div>
+                        <div class="fin-box-dark mt-50 text-center" style="background: var(--red);">
+                            <p class="fin-subtitle" style="color: white">ENVELOPPE MAXIMALE D'EMPRUNT</p>
+                            <h2 class="fin-montant" id="capa-result" style="color: white">0 €</h2>
+                            <p class="fin-details" style="color: rgba(255,255,255,0.8);">Basé sur la règle stricte des 35% d'endettement (HCSF)</p>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="sim-card border-card mb-20 text-center">
-                            <p class="subtitle text-gray">RÉDUCTION D'IMPÔT DENORMANDIE</p>
-                            <h2 class="montant-impot text-red mt-10" id="res-reduction">38 160 €</h2>
-                            <p class="details-impot text-gray" id="res-sub">sur 9 ans • soit 4 240 €/an</p>
-                            
-                            <div class="divider mt-20 mb-20"></div>
-                            
-                            <div class="res-row"><span>Coût total opération</span><strong id="res-total">212 000 €</strong></div>
-                            <div class="res-row"><span>Ratio travaux</span><strong id="res-ratio" class="text-red">23.6%</strong></div>
-                            <div class="res-row mt-10 border-top pt-10"><span>Loyer max. mensuel (Zone B2)</span><strong id="res-loyer">600 €</strong></div>
-                        </div>
-
-                        <div class="sim-card border-card mb-20 text-center">
-                            <div class="pie-chart-container mt-20 mb-20">
-                                <div class="pie-chart" id="pie-chart"></div>
+                <div id="tab-favoris" class="sim-view mt-20">
+                    <div class="container" style="max-width: 800px;">
+                        <h2 class="section-title">Mes projets sauvegardés</h2>
+                        <p class="text-gray mb-20">Retrouvez et comparez vos différentes simulations immobilières.</p>
+                        <div id="favorites-list" class="grid-2 gap-15">
                             </div>
-                            <div class="pie-legend">
-                                <div class="legend-item"><span class="dot-color" style="background:#10B981;"></span>Apport</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#3B82F6;"></span>Prêt (Capital)</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#EF4444;"></span>Coût Intérêts</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#F59E0B;"></span>Frais</div>
-                            </div>
-                        </div>
-
-                        <div class="sim-card border-card" style="padding:0; overflow:hidden;">
-                            <div class="table-header">📅 Calendrier de paiement annuel</div>
-                            <table class="amortissement-table">
-                                <thead>
-                                    <tr><th>Année</th><th>Intérêts</th><th>Capital</th><th>Reste dû</th></tr>
-                                </thead>
-                                <tbody id="amortissement-body">
-                                    </tbody>
-                            </table>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo-wrap mb-20">
+                        <svg width="30" height="25" viewBox="0 0 52 44" fill="none"><path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/></svg>
+                        <div class="logo-text"><span class="logo-transac" style="color:#E30613">TRANSAC</span><span class="logo-express" style="color:#8D99AE">EXPRESS</span></div>
+                    </div>
+                    <p class="text-gray text-sm">L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">NAVIGATION</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="navigate('home')">Accueil</a></li>
+                        <li><a href="#" onclick="navigate('pauillac')">Investir à Pauillac</a></li>
+                        <li><a href="#" onclick="navigate('catalogue')">Biens à vendre</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">CONTACT</h4>
+                    <ul class="footer-contact"><li>📍 Pauillac, Gironde (33)</li><li>📞 05 56 XX XX XX</li></ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
