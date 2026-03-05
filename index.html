@@ -1,40 +1,122 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transac Express — Marchand de Biens & Défiscalisation Pauillac Médoc</title>
-  <meta name="description" content="Transac Express, marchand de biens à Pauillac. Investissement immobilier Denormandie dans le Médoc. Défiscalisation jusqu'à 63 000 €. Simulateur gratuit.">
-  <meta name="keywords" content="défiscalisation Pauillac, marchand de biens Médoc, Denormandie Pauillac, investissement immobilier Gironde, réduction impôts immobilier">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href__="https://transac-express.fr/">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Transac Express — Défiscalisation Immobilière à Pauillac">
-  <meta property="og:description" content="Investissez dans la pierre médocaine avec le dispositif Denormandie. Réduction d'impôt jusqu'à 21%.">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_FR">
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"RealEstateAgent","name":"Transac Express","description":"Marchand de biens immobiliers spécialisé en défiscalisation Denormandie à Pauillac","address":{"@type":"PostalAddress","addressLocality":"Pauillac","addressRegion":"Gironde","postalCode":"33250","addressCountry":"FR"},"telephone":"+33556590000","url":"https://transac-express.fr"}
-  </script>
-  <link rel="stylesheet" href__="style.css">
-  <link rel="preconnect" href__="https://fonts.googleapis.com">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transac Express — Expert Immobilier & Défiscalisation Pauillac</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header id="header">
+        <nav class="navbar">
+            <div class="logo-wrap" onclick="navigateTo('home')">
+                <svg width="60" height="50" viewBox="0 0 52 44" fill="none">
+                    <path d="M2 26L10 18L18 26V36H2V26Z" fill="#8D99AE" opacity=".4"/>
+                    <path d="M16 23L24 15L32 23V33H16V23Z" fill="#8D99AE" opacity=".6"/>
+                    <path d="M7 28L15 20L23 28V38H7V28Z" fill="#2B2D42" opacity=".8"/>
+                    <path d="M22 25L30 17L38 25V38H22V25Z" fill="#2B2D42"/>
+                    <path d="M0 41Q26 37 52 41" stroke="#8D99AE" stroke-width="2" fill="none"/>
+                </svg>
+                <div class="logo-text">
+                    <span class="logo-transac">TRANSAC</span>
+                    <span class="logo-express">EXPRESS</span>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" onclick="navigateTo('home')">Accueil</a></li>
+                <li><a href="#pauillac" onclick="navigateTo('pauillac')">Investir à Pauillac</a></li>
+                <li><a href="#catalogue" onclick="navigateTo('catalogue')">Biens à vendre</a></li>
+                <li><a href="#simulateur" onclick="navigateTo('simulateur')" class="btn-nav">Simulateur Denormandie</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<!-- ============================
-     HEADER
-     ============================ -->
-<header id="header" class="transparent">
-  <nav class="navbar">
-    <!-- LOGO SVG -->
-    <a href__="#home" class="logo-wrap" data-page="home" aria-label="Transac Express — Accueil">
-      <svg width="52" height="44" viewBox="0 0 52 44" fill="none" aria-hidden="true">
-        <!-- House 4 (back-left) -->
-        <path d="M2 26L10 18L18 26V36H2V26Z" fill="#8D99AE" opacity=".4"/>
-        <path d="M10 18L2 26H18L10 18Z" fill="#8D99AE" opacity=".55"/>
-        <!-- House 3 (back-right) -->
-        <path d="M16 23L24 15L32 23V33H16V23Z" fill="#8D99AE" opacity=".5"/>
+    <main>
+        <section id="page-home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <span class="badge">Marchand de biens — Médoc</span>
+                    <h1>L'expertise de la pierre au service de votre <span>défiscalisation</span></h1>
+                    <p>Investissez à Pauillac et réduisez vos impôts jusqu'à 21% du montant de l'opération.</p>
+                    <div class="hero-btns">
+                        <button class="btn-primary" onclick="navigateTo('simulateur')">Simuler mon projet</button>
+                        <button class="btn-secondary" onclick="navigateTo('catalogue')">Voir les biens</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-pauillac" class="page">
+            <div class="container">
+                <h2 class="section-title">Investir à Pauillac : Le potentiel du Médoc</h2>
+                <div class="seo-content">
+                    <p>Située à 50 km de Bordeaux, <strong>Pauillac</strong> est mondialement connue pour ses Châteaux prestigieux. Mais c'est aussi une zone éligible au <strong>dispositif Denormandie (Zone B2)</strong>.</p>
+                    <p>Le marché offre des bâtisses en pierre de taille avec un fort potentiel de valorisation. En rénovant dans le centre historique, vous participez à la revitalisation urbaine tout en créant un patrimoine durable.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>-21%</h3><p>D'impôts max</p></div>
+                    <div class="stat-card"><h3>Zone B2</h3><p>Éligible Denormandie</p></div>
+                    <div class="stat-card"><h3>30%</h3><p>Gain énergétique requis</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-catalogue" class="page">
+            <div class="container">
+                <h2 class="section-title">Catalogue des biens</h2>
+                <div id="catalogue-grid" class="grid"></div>
+            </div>
+        </section>
+
+        <section id="page-simulateur" class="page">
+            <div class="container">
+                <h2 class="section-title">Simulateur Fiscal</h2>
+                <div class="sim-container">
+                    <div class="sim-form">
+                        <div class="input-group">
+                            <label>Prix du bien (€)</label>
+                            <input type="number" id="sim-prix" value="180000" oninput="updateSim()">
+                        </div>
+                        <div class="input-group">
+                            <label>Budget Travaux (€)</label>
+                            <input type="number" id="sim-travaux" value="65000" oninput="updateSim()">
+                        </div>
+                        <div class="input-group">
+                            <label>Surface habitable (m²)</label>
+                            <input type="number" id="sim-surface" value="75" oninput="updateSim()">
+                        </div>
+                    </div>
+                    <div id="sim-results" class="sim-results"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-mentions" class="page">
+            <div class="container">
+                <h2>Mentions Légales</h2>
+                <div class="legal-box">
+                    <p><strong>Éditeur :</strong> MEDOC INVESTISSEMENT (SARL)</p>
+                    <p><strong>Capital :</strong> 1 440 000 €</p>
+                    <p><strong>Siège :</strong> 4 rue Albert 1er, 33250 PAUILLAC</p>
+                    <p><strong>RCS :</strong> Bordeaux 477 710 222</p>
+                    <p><strong>Hébergeur :</strong> Google Ireland Limited</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>© 2026 Transac Express - Medoc Investissement</p>
+            <p>05.57.75.10.10 | contact@transacexpress.com</p>
+            <a href="#" onclick="navigateTo('mentions')">Mentions Légales</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>        <path d="M16 23L24 15L32 23V33H16V23Z" fill="#8D99AE" opacity=".5"/>
         <path d="M24 15L16 23H32L24 15Z" fill="#8D99AE" opacity=".65"/>
         <!-- House 2 (front-left) -->
         <path d="M7 28L15 20L23 28V38H7V28Z" fill="#2B2D42" opacity=".7"/>
