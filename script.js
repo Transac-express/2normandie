@@ -1,40 +1,65 @@
-script.js
-/* =============================================
-   TRANSAC EXPRESS — script.js
-   ============================================= */
-
-'use strict';
-
-/* =========================================
-   DONNÉES (injectées depuis data.json)
-   ========================================= */
-let APP_DATA = null;
-
-async function loadData() {
-  try {
-    const res = await fetch('data.json');
-    APP_DATA = await res.json();
-    init();
-  } catch (e) {
-    // fallback si pas de serveur — données embarquées
-    APP_DATA = FALLBACK_DATA;
-    init();
-  }
+// Navigation SPA
+function navigateTo(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// =========================================
-// NAVIGATION SPA
-// =========================================
-const PAGES = ['home', 'pauillac', 'catalogue', 'simulateur', 'mentions'];
+// Logique du Simulateur Denormandie
+function updateSim() {
+    const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
+    const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
+    const surface = parseFloat(document.getElementById('sim-surface').value) || 0;
+    
+    const fraisNotaire = prix * 0.08;
+    const totalOperation = prix + fraisNotaire + travaux;
+    
+    // Règle des 25% de travaux
+    const ratioTravaux = totalOperation > 0 ? (travaux / totalOperation) * 100 : 0;
+    const isEligible = ratioTravaux >= 25;
+    
+    // Plafond d'assiette 300 000€
+    const assiette = Math.min(totalOperation, 300000);
+    
+    // Calcul Loyer Zone B2 (9.83€/m²) avec coeff multiplicateur
+    const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19 / surface)) : 0;
+    const loyerMax = (9.83 * surface * coeff).toFixed(2);
 
-function navigateTo(pageId, push = true) {
-  PAGES.forEach(id => {
-    const el = document.getElementById('page-' + id);
-    if (el) el.classList.toggle('active', id === pageId);
-  });
-  document.querySelectorAll('.nav-link, .nav-mobile a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === pageId);
-  });
+    const resultsDiv = document.getElementById('sim-results');
+    resultsDiv.innerHTML = `
+        <div class="alert ${isEligible ? 'alert-success' : 'alert-error'}">
+            ${isEligible ? '✅ PROJET ÉLIGIBLE' : '❌ TRAVAUX INSUFFISANTS (< 25%)'}
+        </div>
+        <div style="margin-bottom:10px">Ratio travaux : <strong>${ratioTravaux.toFixed(1)}%</strong></div>
+        <div style="margin-bottom:10px">Investissement total : <strong>${totalOperation.toLocaleString()} €</strong></div>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #EEE">
+        <div style="font-size: 1.2rem; color: var(--primary); font-weight: 800">Réduction d'impôt (12 ans) : ${(assiette * 0.21).toLocaleString()} €</div>
+        <div style="margin-top:10px; font-weight:600">Loyer plafond Zone B2 : ${loyerMax} €/mois</div>
+    `;
+}
+
+// Initialisation
+window.onload = () => {
+    updateSim();
+    // Génération automatique du catalogue
+    const grid = document.getElementById('catalogue-grid');
+    const maisons = [
+        {t: "Maison de Maître - Centre Pauillac", p: "245 000€", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600"},
+        {t: "Appartement T3 - Vue Estuaire", p: "135 000€", img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600"},
+        {t: "Immeuble de rapport - 4 lots", p: "320 000€", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600"}
+    ];
+    grid.innerHTML = maisons.map(m => `
+        <div class="card">
+            <img src="${m.img}" alt="${m.t}">
+            <div class="card-body">
+                <h3>${m.t}</h3>
+                <p style="color:var(--primary); font-weight:900; font-size:1.2rem; margin: 10px 0">${m.p}</p>
+                <button class="btn-nav" style="width:100%; border:none; cursor:pointer" onclick="navigateTo('simulateur')">Calculer la rentabilité</button>
+            </div>
+        </div>
+    `).join('');
+};  });
   if (push) {
     history.pushState({ page: pageId }, '', '#' + pageId);
   }
