@@ -1,57 +1,62 @@
+// NAVIGATION SPA
 function navigateTo(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + pageId).classList.add('active');
+    
+    // Update Header style based on page
+    const header = document.getElementById('header');
+    if (pageId !== 'home') {
+        header.style.position = 'fixed';
+        header.style.background = 'white';
+        header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    } else {
+        header.style.position = 'absolute';
+        header.style.background = 'transparent';
+        header.style.boxShadow = 'none';
+    }
     window.scrollTo(0, 0);
 }
 
+// SIMULATEUR DENORMANDIE
 function updateSim() {
     const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
     const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
     const surface = parseFloat(document.getElementById('sim-surface').value) || 0;
-    const notaire = prix * 0.08;
-    const total = prix + notaire + travaux;
-
-    const ratioTravaux = (travaux / total) * 100;
-    const isEligible = ratioTravaux >= 25;
-
-    // Plafond 300k
-    const assiette = Math.min(total, 300000);
     
-    // Loyer Zone B2 avec coefficient
-    const coeff = Math.min(1.2, 0.7 + (19 / surface));
-    const loyerMax = (9.83 * surface * coeff).toFixed(2);
+    const total = prix + (prix * 0.08) + travaux;
+    const ratio = total > 0 ? (travaux / total) * 100 : 0;
+    const isEligible = ratio >= 25;
+    
+    const assiette = Math.min(total, 300000);
+    const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
+    const loyer = (9.83 * surface * coeff).toFixed(2);
 
-    const resultsDiv = document.getElementById('sim-results');
-    resultsDiv.innerHTML = `
-        <div class="alert ${isEligible ? 'alert-success' : 'alert-error'}">
-            ${isEligible ? '✅ Projet Éligible' : '❌ Travaux insuffisants (< 25%)'}
+    const res = document.getElementById('sim-results');
+    res.innerHTML = `
+        <div style="padding:15px; border-radius:10px; margin-bottom:20px; font-weight:800; text-align:center; background:${isEligible ? '#d1fae5' : '#fee2e2'}; color:${isEligible ? '#065f46' : '#991b1b'}">
+            ${isEligible ? '✅ PROJET ÉLIGIBLE' : '❌ TRAVAUX < 25%'}
         </div>
-        <div class="res-item">Ratio travaux : <strong>${ratioTravaux.toFixed(1)}%</strong></div>
-        <div class="res-item">Réduction d'impôt (12 ans) : <strong style="color:var(--primary)">${(assiette * 0.21).toLocaleString()} €</strong></div>
-        <div class="res-item">Loyer max conseillé : <strong>${loyerMax} €/mois</strong></div>
-        <p style="font-size:0.8rem; margin-top:1rem; color: #666">
-            * Amélioration énergétique de 30% requise.<br>
-            * Location nue à titre de résidence principale.
-        </p>
+        <div style="font-size:0.9rem; color:#666">Ratio Travaux : <strong>${ratio.toFixed(1)}%</strong></div>
+        <div style="font-size:1.5rem; color:#E30613; font-weight:900; margin: 15px 0">Économie d'impôt : ${(assiette * 0.21).toLocaleString()} €</div>
+        <div style="font-weight:700">Loyer Max (B2) : ${loyer} €/mois</div>
     `;
 }
 
-// Chargement initial
+// INITIALISATION
 window.onload = () => {
     updateSim();
-    // Simulation de chargement de catalogue
+    // Simulation Catalogue
     const grid = document.getElementById('catalogue-grid');
-    const maisons = [
-        {t: "Maison de ville", p: "185 000€", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400"},
-        {t: "Appartement T3", p: "125 000€", img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400"}
+    const items = [
+        {t: "Maison Pierre de Taille", p: "215 000€", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600"},
+        {t: "Immeuble Pauillac Centre", p: "340 000€", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600"}
     ];
-    grid.innerHTML = maisons.map(m => `
-        <div class="card">
-            <img src="${m.img}">
-            <div class="card-content">
-                <h3>${m.t}</h3>
-                <p style="color:var(--primary); font-weight:bold">${m.p}</p>
-                <span class="btn-nav" style="font-size:0.7rem">Éligible Denormandie</span>
+    grid.innerHTML = items.map(i => `
+        <div style="background:white; border-radius:20px; overflow:hidden; border:1px solid #eee">
+            <img src="${i.img}" style="width:100%; height:250px; object-fit:cover">
+            <div style="padding:20px">
+                <h3 style="font-weight:800">${i.t}</h3>
+                <p style="color:#E30613; font-weight:900; margin-top:10px">${i.p}</p>
             </div>
         </div>
     `).join('');
