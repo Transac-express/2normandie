@@ -1,13 +1,10 @@
 // --- NAVIGATION SPA ---
 function navigate(targetId) {
-    // Cacher toutes les pages
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
     });
-    // Afficher la page cible
     document.getElementById('page-' + targetId).classList.add('active');
     
-    // Mettre à jour les liens du header
     document.querySelectorAll('.nav-item').forEach(link => {
         link.classList.remove('active');
         if(link.getAttribute('data-target') === targetId) {
@@ -15,10 +12,7 @@ function navigate(targetId) {
         }
     });
 
-    // Remonter en haut
     window.scrollTo(0, 0);
-
-    // Initialiser les données si c'est le catalogue
     if(targetId === 'catalogue') renderCatalogue();
 }
 
@@ -28,7 +22,7 @@ const DURATIONS = [
     { years: 9, rate: 0.18 },
     { years: 12, rate: 0.21 }
 ];
-let currentDurationIndex = 1; // 9 ans par défaut
+let currentDurationIndex = 1;
 
 function formatEur(num) {
     return new Intl.NumberFormat('fr-FR').format(Math.round(num)) + ' €';
@@ -39,7 +33,6 @@ function updateSliderBackground(slider) {
     const max = parseFloat(slider.max) || 100;
     const val = parseFloat(slider.value) || 0;
     const percentage = ((val - min) / (max - min)) * 100;
-    // Remplit la partie gauche en noir/gris très foncé pour coller au design
     slider.style.background = `linear-gradient(to right, #2B2D42 0%, #2B2D42 ${percentage}%, #E5E7EB ${percentage}%, #E5E7EB 100%)`;
 }
 
@@ -54,19 +47,16 @@ function updateSim() {
     const travaux = parseFloat(elTravaux.value) || 0;
     const surface = parseFloat(elSurface.value) || 0;
 
-    // Mise à jour visuelle des sliders
     updateSliderBackground(elPrix);
     updateSliderBackground(elNotaire);
     updateSliderBackground(elTravaux);
     updateSliderBackground(elSurface);
 
-    // Mise à jour des labels
     document.getElementById('val-prix').innerText = formatEur(prix);
     document.getElementById('val-notaire').innerText = formatEur(notaire);
     document.getElementById('val-travaux').innerText = formatEur(travaux);
     document.getElementById('val-surface').innerText = surface + ' m²';
 
-    // Calculs
     const total = prix + notaire + travaux;
     const ratio = total > 0 ? (travaux / total) * 100 : 0;
     const isEligible = ratio >= 25;
@@ -79,7 +69,6 @@ function updateSim() {
     const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
     const loyer = (9.83 * surface * coeff).toFixed(0);
 
-    // Injection résultats
     document.getElementById('res-prix').innerText = formatEur(prix);
     document.getElementById('res-notaire').innerText = formatEur(notaire);
     document.getElementById('res-travaux').innerText = formatEur(travaux);
@@ -93,11 +82,9 @@ function updateSim() {
     document.getElementById('res-loyer').innerText = loyer + ' €/mois';
     document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. ${coeff.toFixed(2)}`;
 
-    // Bloc Header Réduction
     document.getElementById('res-reduction').innerText = formatEur(reduction);
     document.getElementById('res-sub').innerText = `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`;
 
-    // Alertes
     const alertRatio = document.getElementById('alert-ratio');
     const alertSmall = document.getElementById('res-eligibility');
     document.getElementById('val-ratio-alert').innerText = ratio.toFixed(1) + '%';
@@ -126,10 +113,9 @@ function setDuree(index) {
     updateSim();
 }
 
-// --- CATALOGUE ---
 function renderCatalogue() {
     const grid = document.getElementById('catalogue-grid');
-    if (grid.innerHTML !== "") return; // Déjà rendu
+    if (grid.innerHTML !== "") return; 
 
     const properties = [
         {
@@ -174,7 +160,6 @@ function renderCatalogue() {
     `).join('');
 }
 
-// Initialisation au chargement
 window.onload = () => {
     updateSim();
 };
