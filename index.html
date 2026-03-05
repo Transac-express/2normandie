@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transac Express — Expert Immobilier Pauillac</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header">
         <nav class="navbar">
-            <div class="logo-wrap" onclick="showPage('home')">
-                <svg width="45" height="40" viewBox="0 0 52 44" fill="none">
-                    <path d="M2 26L10 18L18 26V36H2V26Z" fill="#2B2D42" opacity=".4"/>
-                    <path d="M16 23L24 15L32 23V33H16V23Z" fill="#2B2D42" opacity=".6"/>
-                    <path d="M7 28L15 20L23 28V38H7V28Z" fill="#2B2D42" opacity=".8"/>
+            <div class="logo-wrap" onclick="navigate('home')">
+                <svg width="40" height="35" viewBox="0 0 52 44" fill="none">
+                    <path d="M2 26L10 18L18 26V36H2V26Z" fill="#2B2D42" opacity=".5"/>
+                    <path d="M16 23L24 15L32 23V33H16V23Z" fill="#2B2D42" opacity=".7"/>
                     <path d="M22 25L30 17L38 25V38H22V25Z" fill="#2B2D42"/>
                 </svg>
                 <div class="logo-text">
@@ -23,95 +22,256 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="#" onclick="showPage('home')">Accueil</a></li>
-                <li><a href="#" onclick="showPage('pauillac')">Investir à Pauillac</a></li>
-                <li><a href="#" onclick="showPage('catalogue')">Biens à vendre</a></li>
-                <li><a href="#" onclick="showPage('simulateur')">Simulateur fiscal</a></li>
-                <li><a href="#" onclick="showPage('simulateur')" class="btn-red-nav">Simuler</a></li>
+                <li><a href="#" class="nav-item active" data-target="home" onclick="navigate('home')">Accueil</a></li>
+                <li><a href="#" class="nav-item" data-target="pauillac" onclick="navigate('pauillac')">Investir à Pauillac</a></li>
+                <li><a href="#" class="nav-item" data-target="catalogue" onclick="navigate('catalogue')">Biens à vendre</a></li>
+                <li><a href="#" class="nav-item" data-target="simulateur" onclick="navigate('simulateur')">Simulateur fiscal</a></li>
+                <li><button class="btn-red-nav" onclick="navigate('simulateur')">Simuler</button></li>
             </ul>
         </nav>
     </header>
 
-    <main id="content">
+    <main id="main-content">
+        
         <section id="page-home" class="page active">
             <div class="hero-section">
                 <div class="hero-overlay"></div>
-                <div class="hero-container">
+                <div class="hero-content">
                     <div class="hero-badge"><span class="dot"></span> Marchand de biens — Pauillac, Médoc</div>
-                    <h1 class="hero-title">L'expertise du marchand de biens au service de votre <span class="highlight">défiscalisation</span></h1>
+                    <h1 class="hero-title">L'expertise du marchand de biens au service de votre <span class="text-red">défiscalisation</span></h1>
                     <p class="hero-subtitle">Investissez dans la pierre médocaine et bénéficiez du dispositif Denormandie pour réduire vos impôts jusqu'à 63 000 €.</p>
-                    <div class="hero-actions">
-                        <button class="btn-primary" onclick="showPage('simulateur')">Simuler ma défiscalisation →</button>
-                        <button class="btn-secondary" onclick="showPage('catalogue')">Voir nos biens</button>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="navigate('simulateur')">Simuler ma défiscalisation →</button>
+                        <button class="btn-secondary" onclick="navigate('catalogue')">Voir nos biens</button>
                     </div>
                 </div>
+            </div>
+            <div class="container section-padding text-center">
+                <p class="section-surtitle text-red">POURQUOI NOUS CHOISIR</p>
+                <h2 class="section-title">Votre investissement, notre expertise</h2>
+                <p class="section-desc mx-auto">Transac Express vous accompagne dans chaque étape de votre projet de défiscalisation immobilière à Pauillac.</p>
+                
+                <div class="grid-3 mt-50">
+                    <div class="feature-card">
+                        <div class="icon-box">🏛️</div>
+                        <h3>Dispositif Denormandie</h3>
+                        <p>Bénéficiez d'une réduction d'impôt allant jusqu'à 21% du montant de votre investissement en rénovant un bien ancien.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-box">📄</div>
+                        <h3>Accompagnement complet</h3>
+                        <p>De la sélection du bien à la mise en location, nous gérons l'intégralité de votre projet d'investissement.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon-box">🔧</div>
+                        <h3>Travaux maîtrisés</h3>
+                        <p>Nos artisans locaux rénovent avec excellence pour atteindre les objectifs énergétiques requis par le dispositif.</p>
+                    </div>
+                </div>
+                <button class="btn-text-red mt-50" onclick="navigate('pauillac')">Découvrir le potentiel de Pauillac →</button>
             </div>
         </section>
 
         <section id="page-pauillac" class="page">
-            <div class="container">
-                <h2 class="section-title">Investir à Pauillac</h2>
-                <div class="seo-content">
-                    <p>Située au cœur du Médoc, Pauillac offre un patrimoine en pierre de taille unique. Éligible au dispositif <strong>Denormandie (Zone B2)</strong>, c'est l'emplacement stratégique pour valoriser votre patrimoine.</p>
+            <div class="hero-pauillac">
+                <div class="hero-overlay-dark"></div>
+                <div class="hero-content text-center">
+                    <div class="badge-outline">📍 Gironde (33) — Médoc</div>
+                    <h1 class="hero-title-large">Investir à <span class="text-red">Pauillac</span></h1>
+                    <p class="hero-subtitle mx-auto">Au cœur du Médoc, entre vignobles prestigieux et estuaire de la Gironde, Pauillac offre un potentiel d'investissement immobilier unique.</p>
                 </div>
-                <div class="color-slides">
-                    <div class="slide-card red"><h3>Expertise</h3><p>Rénovation complète aux normes énergétiques.</p></div>
-                    <div class="slide-card dark"><h3>Sécurité</h3><p>Accompagnement juridique et fiscal total.</p></div>
-                    <div class="slide-card gray"><h3>Rendement</h3><p>Plafonds de loyer Zone B2 optimisés.</p></div>
+            </div>
+            <div class="container section-padding">
+                <div class="grid-2 align-start gap-50">
+                    <div class="text-article">
+                        <h2>Pauillac, joyau du Médoc et terre d'opportunités</h2>
+                        <p>Située à seulement <strong>50 km au nord de Bordeaux</strong>, Pauillac est mondialement connue pour ses grands crus classés — Lafite Rothschild, Mouton Rothschild, Latour. Mais au-delà du vin, c'est une ville en pleine mutation qui offre des opportunités immobilières remarquables pour les investisseurs avisés.</p>
+                        <p>La commune bénéficie du <strong>dispositif Denormandie</strong>, permettant aux acquéreurs de biens anciens à rénover de profiter d'une réduction d'impôt significative. Le centre-ville historique regorge de bâtisses en pierre de taille qui ne demandent qu'à être revalorisées.</p>
+                        <p>L'attractivité touristique croissante, combinée à la proximité de la métropole bordelaise et au développement des infrastructures, garantit une <strong>demande locative soutenue</strong> et une valorisation patrimoniale à long terme.</p>
+                    </div>
+                    <div class="gray-box">
+                        <h3>Pourquoi investir ici ?</h3>
+                        <ul class="check-list">
+                            <li><span>✔️</span> Ville classée en zone éligible Denormandie</li>
+                            <li><span>✔️</span> Prix au m² encore accessibles par rapport à Bordeaux</li>
+                            <li><span>✔️</span> Demande locative forte et croissante</li>
+                            <li><span>✔️</span> Patrimoine architectural exceptionnel</li>
+                            <li><span>✔️</span> Proximité des grands châteaux viticoles</li>
+                            <li><span>✔️</span> Qualité de vie et tourisme en plein essor</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center mt-80">
+                    <h2 class="section-title">Le Médoc en chiffres</h2>
+                    <div class="grid-4 mt-50">
+                        <div class="stat-card"><div class="stat-icon text-red">📍</div><div class="stat-num">50 km</div><div class="stat-text">de Bordeaux</div></div>
+                        <div class="stat-card"><div class="stat-icon text-red">🍷</div><div class="stat-num">5</div><div class="stat-text">premiers crus classés</div></div>
+                        <div class="stat-card"><div class="stat-icon text-red">🚆</div><div class="stat-num">1h</div><div class="stat-text">en voiture de Bordeaux</div></div>
+                        <div class="stat-card"><div class="stat-icon text-red">🏛️</div><div class="stat-num">Zone B2</div><div class="stat-text">éligible Denormandie</div></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="page-catalogue" class="page">
-            <div class="container">
-                <h2 class="section-title">Biens à vendre</h2>
-                <div id="catalogue-grid" class="grid"></div>
+            <div class="container section-padding">
+                <h2 class="section-title text-center">Biens à vendre</h2>
+                <div class="grid-3 mt-50" id="catalogue-grid">
+                    </div>
             </div>
         </section>
 
-        <section id="page-simulateur" class="page">
-            <div class="container">
-                <div class="sim-wrapper">
-                    <div class="sim-inputs">
-                        <h2>Votre Simulation</h2>
-                        <div class="field"><label>Prix d'achat (€)</label><input type="number" id="sim-prix" value="180000" oninput="updateSim()"></div>
-                        <div class="field"><label>Montant Travaux (€)</label><input type="number" id="sim-travaux" value="65000" oninput="updateSim()"></div>
-                        <div class="field"><label>Surface (m²)</label><input type="number" id="sim-surface" value="75" oninput="updateSim()"></div>
+        <section id="page-simulateur" class="page bg-light">
+            <div class="container section-padding">
+                <p class="section-surtitle text-red">OUTIL GRATUIT</p>
+                <h1 class="page-title">Simulateur fiscal Denormandie</h1>
+                <p class="page-subtitle">Estimez votre réduction d'impôt et vérifiez l'éligibilité de votre projet en quelques secondes.</p>
+
+                <div class="sim-layout mt-50">
+                    <div class="sim-left">
+                        <div class="sim-card">
+                            <h3 class="card-title">🧮 Paramètres de l'opération</h3>
+                            
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Prix d'achat du bien</label>
+                                    <span class="slider-value text-red" id="val-prix">150 000 €</span>
+                                </div>
+                                <input type="range" id="sim-prix" min="50000" max="500000" step="1000" value="150000" oninput="updateSim()">
+                                <div class="slider-bounds"><span>50 000 €</span><span>500 000 €</span></div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Frais de notaire (8%)</label>
+                                    <span class="slider-value" id="val-notaire">12 000 €</span>
+                                </div>
+                                <input type="range" id="sim-notaire" min="2000" max="40000" step="500" value="12000" oninput="updateSim()">
+                                <div class="slider-bounds"><span>2 000 €</span><span>40 000 €</span></div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Montant des travaux</label>
+                                    <span class="slider-value text-red" id="val-travaux">50 000 €</span>
+                                </div>
+                                <input type="range" id="sim-travaux" min="10000" max="300000" step="1000" value="50000" oninput="updateSim()">
+                                <div class="slider-bounds"><span>10 000 €</span><span>300 000 €</span></div>
+                            </div>
+
+                            <div class="slider-group">
+                                <div class="slider-header">
+                                    <label>Surface du bien (m²)</label>
+                                    <span class="slider-value" id="val-surface">60 m²</span>
+                                </div>
+                                <input type="range" id="sim-surface" min="20" max="200" step="1" value="60" oninput="updateSim()">
+                                <div class="slider-bounds"><span>20 m²</span><span>200 m²</span></div>
+                            </div>
+                        </div>
+
+                        <div class="sim-card mt-20">
+                            <h3 class="card-title">🛡️ Durée d'engagement locatif</h3>
+                            <div class="grid-3 gap-15 mt-20">
+                                <div class="duree-card" onclick="setDuree(0)">
+                                    <div class="duree-years">6 ans</div>
+                                    <div class="duree-pct">12%</div>
+                                    <div class="duree-sub">de réduction</div>
+                                </div>
+                                <div class="duree-card active" onclick="setDuree(1)">
+                                    <div class="duree-years">9 ans</div>
+                                    <div class="duree-pct text-red">18%</div>
+                                    <div class="duree-sub">de réduction</div>
+                                </div>
+                                <div class="duree-card" onclick="setDuree(2)">
+                                    <div class="duree-years">12 ans</div>
+                                    <div class="duree-pct">21%</div>
+                                    <div class="duree-sub">de réduction</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-red mt-20" id="alert-ratio">
+                            <strong>⚠️ Attention : non éligible</strong>
+                            <p>Le montant des travaux doit représenter au moins 25% de l'opération totale pour être éligible au dispositif Denormandie. Actuellement : <strong id="val-ratio-alert">23.6%</strong>.</p>
+                        </div>
+                        
+                        <div class="alert alert-blue mt-20">
+                            <p>ℹ️ <strong>Amélioration énergétique :</strong> Les travaux doivent permettre une amélioration de la performance énergétique du logement d'au moins 30%.</p>
+                            <p class="mt-10"><strong>Conditions de location :</strong> Le logement doit être loué nu à titre de résidence principale du locataire.</p>
+                        </div>
                     </div>
-                    <div id="sim-results" class="sim-results-box"></div>
+
+                    <div class="sim-right">
+                        <div class="result-card">
+                            <div class="result-header">
+                                <p>VOTRE RÉDUCTION D'IMPÔT</p>
+                                <h2 id="res-reduction">38 160 €</h2>
+                                <p class="result-sub" id="res-sub">sur 9 ans • soit 4 240 €/an</p>
+                            </div>
+                            <div class="result-body">
+                                <div class="res-row"><span>Prix d'achat</span><strong id="res-prix">150 000 €</strong></div>
+                                <div class="res-row"><span>Frais de notaire</span><strong id="res-notaire">12 000 €</strong></div>
+                                <div class="res-row"><span>Montant travaux</span><strong id="res-travaux">50 000 €</strong></div>
+                                <div class="res-row bold mt-10 border-top pt-10"><span>Coût total opération</span><strong id="res-total">212 000 €</strong></div>
+                                <div class="res-row mt-10"><span>Assiette fiscale</span><strong id="res-assiette">212 000 €</strong></div>
+                                <div class="res-row"><span>Ratio travaux</span><strong id="res-ratio" class="text-red">23.6%</strong></div>
+                                
+                                <div class="res-row mt-20 border-top pt-20">
+                                    <div>
+                                        <span>Loyer max. mensuel (Zone B2)</span>
+                                        <div class="text-xs text-gray mt-5" id="res-loyer-detail">Base : 9.83 €/m² × 60 m² × coeff. 1.02</div>
+                                    </div>
+                                    <strong id="res-loyer">600 €/mois</strong>
+                                </div>
+
+                                <div class="alert-small alert-red-light mt-20 text-center" id="res-eligibility">
+                                    ⚠️ Projet non éligible — augmentez le montant des travaux
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer id="footer">
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="logo-wrap-f">
-                    <svg width="35" height="30" viewBox="0 0 52 44" fill="none"><path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/></svg>
-                    <span class="f-transac">TRANSAC <span>EXPRESS</span></span>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo-wrap mb-20">
+                        <svg width="30" height="25" viewBox="0 0 52 44" fill="none"><path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/></svg>
+                        <div class="logo-text">
+                            <span class="logo-transac" style="color:#E30613">TRANSAC</span>
+                            <span class="logo-express" style="color:#8D99AE">EXPRESS</span>
+                        </div>
+                    </div>
+                    <p class="text-gray text-sm">L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
                 </div>
-                <p>L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
+                <div class="footer-col">
+                    <h4 class="footer-title">NAVIGATION</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="navigate('home')">Accueil</a></li>
+                        <li><a href="#" onclick="navigate('pauillac')">Investir à Pauillac</a></li>
+                        <li><a href="#" onclick="navigate('catalogue')">Biens à vendre</a></li>
+                        <li><a href="#" onclick="navigate('simulateur')">Simulateur fiscal</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">CONTACT</h4>
+                    <ul class="footer-contact">
+                        <li>📍 Pauillac, Gironde (33)</li>
+                        <li>📞 05 56 XX XX XX</li>
+                        <li>✉️ contact@transac-express.fr</li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-nav">
-                <h4>NAVIGATION</h4>
-                <ul>
-                    <li><a href="#" onclick="showPage('home')">Accueil</a></li>
-                    <li><a href="#" onclick="showPage('pauillac')">Investir à Pauillac</a></li>
-                    <li><a href="#" onclick="showPage('catalogue')">Biens à vendre</a></li>
-                    <li><a href="#" onclick="showPage('simulateur')">Simulateur fiscal</a></li>
-                </ul>
+            <div class="footer-bottom">
+                <p>© 2026 MEDOC INVESTISSEMENT — SARL au capital de 1 440 000 € — RCS Bordeaux 477 710 222</p>
+                <a href="#">Mentions légales</a>
             </div>
-            <div class="footer-contact">
-                <h4>CONTACT</h4>
-                <p>📍 Pauillac, Gironde (33)</p>
-                <p>📞 05 56 XX XX XX</p>
-                <p>✉️ contact@transac-express.fr</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2026 MEDOC INVESTISSEMENT — SARL 1 440 000 € — RCS Bordeaux 477 710 222</p>
-            <a href="#" onclick="showPage('mentions')">Mentions légales</a>
         </div>
     </footer>
 
