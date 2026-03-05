@@ -1,0 +1,125 @@
+{
+  "contact": {
+    "telephone": "05 56 59 00 00",
+    "email": "contact@transac-express.fr",
+    "adresse": "Pauillac, Gironde (33250)",
+    "societe": "MEDOC INVESTISSEMENT"
+  },
+  "societe": {
+    "forme": "SARL",
+    "capital": "1 440 000 €",
+    "rcs": "Bordeaux 477 710 222",
+    "siret": "477 710 222 00000",
+    "activite": "Marchand de biens immobiliers"
+  },
+  "textes": {
+    "slogan": "L'expertise du marchand de biens au service de votre défiscalisation",
+    "hero_sub": "Investissez dans la pierre médocaine et bénéficiez du dispositif Denormandie pour réduire vos impôts jusqu'à 63 000 €.",
+    "pauillac_h1": "Investir à Pauillac — Opportunités immobilières au cœur du Médoc",
+    "pauillac_p1": "Située à seulement 50 km au nord de Bordeaux, Pauillac est mondialement connue pour ses grands crus classés — Lafite Rothschild, Mouton Rothschild, Latour. Mais au-delà du vin, c'est une ville en pleine mutation qui offre des opportunités immobilières remarquables pour les investisseurs avisés.",
+    "pauillac_p2": "La commune bénéficie du dispositif Denormandie, permettant aux acquéreurs de biens anciens à rénover de profiter d'une réduction d'impôt significative. Le centre-ville historique regorge de bâtisses en pierre de taille qui ne demandent qu'à être revalorisées.",
+    "pauillac_p3": "L'attractivité touristique croissante, combinée à la proximité de la métropole bordelaise et au développement des infrastructures, garantit une demande locative soutenue et une valorisation patrimoniale à long terme.",
+    "denormandie_p1": "Le dispositif Denormandie, entré en vigueur le 1er janvier 2019, permet aux investisseurs qui achètent un bien ancien nécessitant des travaux de bénéficier d'une réduction d'impôt sur le revenu proportionnelle à la durée de location.",
+    "denormandie_p2": "Pour être éligible, le montant des travaux doit représenter au moins 25% du coût total de l'opération, et les travaux doivent permettre une amélioration de la performance énergétique d'au moins 30%.",
+    "avantages": [
+      "Ville classée en zone éligible Denormandie (Zone B2)",
+      "Prix au m² encore accessibles par rapport à Bordeaux",
+      "Demande locative forte et croissante",
+      "Patrimoine architectural exceptionnel en pierre de taille",
+      "Proximité des grands châteaux viticoles classés",
+      "Qualité de vie et tourisme œnotouristique en plein essor"
+    ]
+  },
+  "biens": [
+    {
+      "id": 1,
+      "titre": "Maison de ville en pierre — Centre Pauillac",
+      "prix": 185000,
+      "surface": 95,
+      "pieces": 5,
+      "chambres": 3,
+      "adresse": "Rue du Maréchal Joffre, Pauillac",
+      "travaux": 75000,
+      "eligible_denormandie": true,
+      "statut": "available",
+      "type": "house",
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
+      "description": "Belle maison de ville en pierre de taille avec jardin clos, idéale pour un projet de rénovation Denormandie."
+    },
+    {
+      "id": 2,
+      "titre": "Appartement T3 — Quais de Pauillac",
+      "prix": 120000,
+      "surface": 62,
+      "pieces": 3,
+      "chambres": 2,
+      "adresse": "Quai Antoine Ferchaud, Pauillac",
+      "travaux": 45000,
+      "eligible_denormandie": true,
+      "statut": "available",
+      "type": "apartment",
+      "image": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80",
+      "description": "Appartement lumineux avec vue sur l'estuaire, à rénover entièrement. Fort potentiel locatif."
+    },
+    {
+      "id": 3,
+      "titre": "Immeuble de rapport — 4 lots",
+      "prix": 280000,
+      "surface": 220,
+      "pieces": 12,
+      "chambres": 6,
+      "adresse": "Rue Edouard de Pontet, Pauillac",
+      "travaux": 120000,
+      "eligible_denormandie": true,
+      "statut": "available",
+      "type": "building",
+      "image": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80",
+      "description": "Immeuble en pierre comprenant 4 appartements à rénover. Rendement locatif exceptionnel après travaux."
+    },
+    {
+      "id": 4,
+      "titre": "Maison avec chai — Saint-Estèphe",
+      "prix": 165000,
+      "surface": 110,
+      "pieces": 4,
+      "chambres": 3,
+      "adresse": "Route des Châteaux, Saint-Estèphe",
+      "travaux": 65000,
+      "eligible_denormandie": true,
+      "statut": "reserved",
+      "type": "house",
+      "image": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80",
+      "description": "Maison en pierre avec chai attenant, à réhabiliter. Cadre viticole unique."
+    },
+    {
+      "id": 5,
+      "titre": "Appartement T2 rénové — Cœur de ville",
+      "prix": 95000,
+      "surface": 45,
+      "pieces": 2,
+      "chambres": 1,
+      "adresse": "Place du Général de Gaulle, Pauillac",
+      "travaux": 0,
+      "eligible_denormandie": false,
+      "statut": "available",
+      "type": "apartment",
+      "image": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80",
+      "description": "Charmant T2 entièrement rénové avec matériaux nobles. Prêt à louer."
+    },
+    {
+      "id": 6,
+      "titre": "Ensemble immobilier — Projet d'exception",
+      "prix": 350000,
+      "surface": 300,
+      "pieces": 15,
+      "chambres": 8,
+      "adresse": "Rue de la Verrerie, Pauillac",
+      "travaux": 150000,
+      "eligible_denormandie": true,
+      "statut": "available",
+      "type": "building",
+      "image": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+      "description": "Vaste ensemble immobilier en cœur de bourg, idéal pour un projet de défiscalisation ambitieux."
+    }
+  ]
+}
