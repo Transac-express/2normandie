@@ -1,22 +1,18 @@
 // --- NAVIGATION SPA ---
 function navigate(targetId) {
-    document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-    });
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById('page-' + targetId).classList.add('active');
     
     document.querySelectorAll('.nav-item').forEach(link => {
         link.classList.remove('active');
-        if(link.getAttribute('data-target') === targetId) {
-            link.classList.add('active');
-        }
+        if(link.getAttribute('data-target') === targetId) link.classList.add('active');
     });
 
     window.scrollTo(0, 0);
     if(targetId === 'catalogue') renderCatalogue();
 }
 
-// --- SIMULATEUR ---
+// --- LOGIQUE FINANCIÈRE ET FISCALE ---
 const DURATIONS = [
     { years: 6, rate: 0.12 },
     { years: 9, rate: 0.18 },
@@ -37,31 +33,33 @@ function updateSliderBackground(slider) {
 }
 
 function updateSim() {
-    const elPrix = document.getElementById('sim-prix');
-    const elNotaire = document.getElementById('sim-notaire');
-    const elTravaux = document.getElementById('sim-travaux');
-    const elSurface = document.getElementById('sim-surface');
+    // 1. Récupération des valeurs
+    const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
+    const notaire = parseFloat(document.getElementById('sim-notaire').value) || 0;
+    const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
+    const surface = parseFloat(document.getElementById('sim-surface').value) || 0;
+    
+    const apport = parseFloat(document.getElementById('sim-apport').value) || 0;
+    const revenus = parseFloat(document.getElementById('sim-revenus').value) || 0;
+    const tauxPret = parseFloat(document.getElementById('sim-taux').value) || 0;
+    const anneesPret = parseFloat(document.getElementById('sim-duree-pret').value) || 0;
+    const assurance = parseFloat(document.getElementById('sim-assurance').value) || 0;
 
-    const prix = parseFloat(elPrix.value) || 0;
-    const notaire = parseFloat(elNotaire.value) || 0;
-    const travaux = parseFloat(elTravaux.value) || 0;
-    const surface = parseFloat(elSurface.value) || 0;
-
-    updateSliderBackground(elPrix);
-    updateSliderBackground(elNotaire);
-    updateSliderBackground(elTravaux);
-    updateSliderBackground(elSurface);
-
+    // Mise à jour visuelle des sliders
+    ['sim-prix', 'sim-notaire', 'sim-travaux', 'sim-surface'].forEach(id => {
+        updateSliderBackground(document.getElementById(id));
+    });
     document.getElementById('val-prix').innerText = formatEur(prix);
     document.getElementById('val-notaire').innerText = formatEur(notaire);
     document.getElementById('val-travaux').innerText = formatEur(travaux);
     document.getElementById('val-surface').innerText = surface + ' m²';
 
-    const total = prix + notaire + travaux;
-    const ratio = total > 0 ? (travaux / total) * 100 : 0;
-    const isEligible = ratio >= 25;
+    // 2. Calculs Immobiliers & Fiscaux (Denormandie)
+    const totalProjet = prix + notaire + travaux;
+    const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
+    const isEligible = ratioTravaux >= 25;
     
-    const assiette = Math.min(total, 300000);
+    const assiette = Math.min(totalProjet, 300000);
     const durationObj = DURATIONS[currentDurationIndex];
     const reduction = assiette * durationObj.rate;
     const reductionAn = reduction / durationObj.years;
@@ -69,33 +67,108 @@ function updateSim() {
     const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
     const loyer = (9.83 * surface * coeff).toFixed(0);
 
-    document.getElementById('res-prix').innerText = formatEur(prix);
-    document.getElementById('res-notaire').innerText = formatEur(notaire);
-    document.getElementById('res-travaux').innerText = formatEur(travaux);
-    document.getElementById('res-total').innerText = formatEur(total);
-    document.getElementById('res-assiette').innerText = formatEur(assiette);
+    // 3. Calculs Bancaires (Crédit)
+    const capitalEmprunte = Math.max(0, totalProjet - apport);
+    const tauxMensuel = (tauxPret / 100) / 12;
+    const nbMois = anneesPret * 12;
     
-    const ratioEl = document.getElementById('res-ratio');
-    ratioEl.innerText = ratio.toFixed(1) + '%';
-    ratioEl.className = isEligible ? 'bold text-navy' : 'bold text-red';
+    let mensualitePret = 0;
+    if (tauxMensuel > 0 && nbMois > 0) {
+        mensualitePret = capitalEmprunte * (tauxMensuel * Math.pow(1 + tauxMensuel, nbMois)) / (Math.pow(1 + tauxMensuel, nbMois) - 1);
+    } else if (nbMois > 0) {
+        mensualitePret = capitalEmprunte / nbMois; // Taux 0%
+    }
+    
+    const mensualiteTotale = mensualitePret + assurance;
+    const totalInterets = (mensualitePret * nbMois) - capitalEmprunte;
+    const totalAssurance = assurance * nbMois;
+    const coutGlobal = apport + capitalEmprunte + totalInterets + totalAssurance;
 
-    document.getElementById('res-loyer').innerText = loyer + ' €/mois';
-    document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. ${coeff.toFixed(2)}`;
-
+    // 4. Endettement & Poids Budget
+    const tauxEndettement = revenus > 0 ? (mensualiteTotale / revenus) * 100 : 0;
+    
+    // 5. Injection DOM - Bloc Fiscalité
     document.getElementById('res-reduction').innerText = formatEur(reduction);
     document.getElementById('res-sub').innerText = `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`;
+    document.getElementById('res-total').innerText = formatEur(totalProjet);
+    document.getElementById('res-ratio').innerText = ratioTravaux.toFixed(1) + '%';
+    document.getElementById('res-loyer').innerText = loyer + ' €';
 
     const alertRatio = document.getElementById('alert-ratio');
-    const alertSmall = document.getElementById('res-eligibility');
-    document.getElementById('val-ratio-alert').innerText = ratio.toFixed(1) + '%';
+    document.getElementById('val-ratio-alert').innerText = ratioTravaux.toFixed(1) + '%';
+    alertRatio.style.display = isEligible ? 'none' : 'block';
+
+    // 6. Injection DOM - Bloc Crédit Mensuel
+    document.getElementById('res-mensualite').innerText = formatEur(mensualiteTotale);
+    document.getElementById('res-mensualite-detail').innerText = `${Math.round(mensualitePret)}€ (prêt) + ${Math.round(assurance)}€ (assurance)`;
     
-    if(isEligible) {
-        alertRatio.style.display = 'none';
-        alertSmall.style.display = 'none';
+    const dateFin = new Date();
+    dateFin.setMonth(dateFin.getMonth() + nbMois);
+    document.getElementById('res-date-fin').innerText = dateFin.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+    // 7. Injection DOM - Poids Budget
+    document.getElementById('res-endettement-txt').innerText = tauxEndettement.toFixed(1) + '%';
+    const barFill = document.getElementById('res-endettement-bar');
+    const budgetContainer = document.getElementById('budget-container');
+    const budgetStatus = document.getElementById('res-endettement-status');
+    
+    barFill.style.width = Math.min(tauxEndettement, 100) + '%';
+    if(tauxEndettement < 35) {
+        budgetContainer.style.background = '#d1fae5';
+        budgetContainer.style.borderColor = '#A7F3D0';
+        barFill.style.background = '#10B981';
+        budgetStatus.innerText = "✅ Endettement sain (< 35%).";
+        budgetStatus.style.color = '#065F46';
     } else {
-        alertRatio.style.display = 'block';
-        alertSmall.style.display = 'block';
+        budgetContainer.style.background = '#FEF2F2';
+        budgetContainer.style.borderColor = '#FECACA';
+        barFill.style.background = '#E30613';
+        budgetStatus.innerText = "⚠️ Endettement élevé (> 35%).";
+        budgetStatus.style.color = '#991B1B';
     }
+
+    // 8. Injection DOM - Pie Chart (CSS Conic Gradient)
+    if(coutGlobal > 0) {
+        const pctApport = (apport / coutGlobal) * 100;
+        const pctCapital = (capitalEmprunte / coutGlobal) * 100;
+        const pctInterets = Math.max(0, (totalInterets / coutGlobal) * 100);
+        const pctAssurance = (totalAssurance / coutGlobal) * 100;
+
+        const pieChart = document.getElementById('pie-chart');
+        pieChart.style.background = `conic-gradient(
+            #10B981 0% ${pctApport}%,
+            #3B82F6 ${pctApport}% ${pctApport + pctCapital}%,
+            #E30613 ${pctApport + pctCapital}% ${pctApport + pctCapital + pctInterets}%,
+            #F59E0B ${pctApport + pctCapital + pctInterets}% 100%
+        )`;
+    }
+
+    // 9. Injection DOM - Tableau d'amortissement (limité aux 4 premières années)
+    let htmlTable = '';
+    let resteDu = capitalEmprunte;
+    const maxYearsToShow = Math.min(anneesPret, 4);
+
+    for(let i=1; i<=maxYearsToShow; i++) {
+        let interetsAnnee = 0;
+        let capitalAnnee = 0;
+        for(let m=0; m<12; m++) {
+            let intMois = resteDu * tauxMensuel;
+            let capMois = mensualitePret - intMois;
+            interetsAnnee += intMois;
+            capitalAnnee += capMois;
+            resteDu -= capMois;
+        }
+        htmlTable += `<tr>
+            <td>Année ${i}</td>
+            <td>${formatEur(interetsAnnee)}</td>
+            <td>${formatEur(capitalAnnee)}</td>
+            <td class="bold">${formatEur(Math.max(0, resteDu))}</td>
+        </tr>`;
+    }
+    if(anneesPret > 4) {
+        htmlTable += `<tr><td colspan="4" class="text-center text-gray" style="padding:15px">... jusqu'à l'année ${anneesPret}</td></tr>`;
+    }
+    document.getElementById('amortissement-body').innerHTML = htmlTable;
 }
 
 function setDuree(index) {
