@@ -11,15 +11,7 @@
     <header id="header">
         <nav class="navbar">
             <div class="logo-wrap" onclick="navigate('home')">
-                <svg width="40" height="35" viewBox="0 0 52 44" fill="none">
-                    <path d="M2 26L10 18L18 26V36H2V26Z" fill="#2B2D42" opacity=".5"/>
-                    <path d="M16 23L24 15L32 23V33H16V23Z" fill="#2B2D42" opacity=".7"/>
-                    <path d="M22 25L30 17L38 25V38H22V25Z" fill="#2B2D42"/>
-                </svg>
-                <div class="logo-text">
-                    <span class="logo-transac">TRANSAC</span>
-                    <span class="logo-express">EXPRESS</span>
-                </div>
+                <img src="path/to/votre-logo.png" alt="Transac Express Logo" class="logo-img">
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="nav-item active" data-target="home" onclick="navigate('home')">Accueil</a></li>
@@ -157,7 +149,7 @@
                             </div>
                             <div class="grid-2 gap-15">
                                 <div class="input-group-pro">
-                                    <label>Prix d'achat (€)</label>
+                                    <label>Prix d'achat du bien ancien (€)</label>
                                     <input type="number" id="sim-prix" value="150000" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro">
@@ -165,11 +157,11 @@
                                     <input type="number" id="sim-notaire" value="12000" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro">
-                                    <label>Budget travaux (€)</label>
+                                    <label>Budget total travaux TTC (€)</label>
                                     <input type="number" id="sim-travaux" value="50000" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro">
-                                    <label>Surface (m²)</label>
+                                    <label>Surface habitable après travaux (m²)</label>
                                     <input type="number" id="sim-surface" value="60" oninput="updateSim()">
                                 </div>
                             </div>
@@ -182,24 +174,24 @@
                             </div>
                             <div class="grid-2 gap-15">
                                 <div class="input-group-pro">
-                                    <label>Apport personnel (€)</label>
+                                    <label>Apport personnel total (€)</label>
                                     <input type="number" id="sim-apport" value="20000" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro">
-                                    <label>Revenus nets (€/mois)</label>
+                                    <label>Vos revenus nets mensuels (€)</label>
                                     <input type="number" id="sim-revenus" value="3000" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro">
-                                    <label>Taux du crédit (%)</label>
+                                    <label>Taux d'intérêt nominal (%)</label>
                                     <input type="number" id="sim-taux" value="3.8" step="0.1" oninput="updateSim()">
                                 </div>
-                                <div class="input-box-v2">
-                                    <label>Durée (mois)</label>
+                                <div class="input-group-pro">
+                                    <label>Durée de l'emprunt (mois)</label>
                                     <input type="number" id="sim-duree-mois" value="240" oninput="updateSim()">
                                 </div>
                                 <div class="input-group-pro" style="grid-column: 1 / span 2;">
-                                    <label>Assurance emprunteur (€/mois)</label>
-                                    <input type="number" id="sim-assurance" value="30" oninput="updateSim()">
+                                    <label>Taux d'assurance emprunteur (TAEA en %)</label>
+                                    <input type="number" id="sim-assurance" value="0.30" step="0.01" oninput="updateSim()">
                                 </div>
                             </div>
                         </div>
@@ -240,7 +232,7 @@
                                 
                                 <div class="res-row mt-20 pt-15" style="border-top: 1px solid #E2E8F0; align-items: flex-start;">
                                     <div>
-                                        <span style="display:block; color:#0F172A; font-weight:600;">Loyer max. (Zone B2)</span>
+                                        <span style="display:block; color:#0F172A; font-weight:600;">Loyer max. estimé (Zone B2)</span>
                                         <span class="text-xs text-gray" id="res-loyer-detail">Base...</span>
                                     </div>
                                     <strong class="text-blue" style="font-size:1.2rem;" id="res-loyer">600 €/m</strong>
@@ -250,22 +242,22 @@
 
                         <div class="pro-card">
                             <div class="text-center mb-20">
-                                <div class="jess-surtitle" style="color:#64748B;">MENSUALITÉ DE CRÉDIT</div>
-                                <div class="text-blue mt-10" style="font-size:3rem; font-weight:900; line-height:1;" id="res-mensualite">1 150 €</div>
-                                <div class="text-sm text-gray mt-10" id="res-mensualite-detail">1100€ (prêt) + 50€ (assurance)</div>
+                                <div class="jess-surtitle" style="color:#64748B;">MENSUALITÉ DE CRÉDIT (hors assurance)</div>
+                                <div class="text-blue mt-10" style="font-size:3rem; font-weight:900; line-height:1;" id="res-mensualite">904 €</div>
+                                <div class="text-sm text-gray mt-10" id="res-mensualite-detail">+ 48€ d'assurance emprunteur</div>
                             </div>
                             
                             <div class="budget-box" id="budget-container">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:700; font-size:0.9rem;" id="budget-header">
-                                    <span>Poids sur mon budget</span>
-                                    <span id="res-endettement-txt">33%</span>
+                                    <span>Poids sur mon budget (Endettement)</span>
+                                    <span id="res-endettement-txt">31.7%</span>
                                 </div>
-                                <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar"></div></div>
-                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Raisonnable</div>
+                                <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar" style="width: 31.7%"></div></div>
+                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Endettement sain (<35%)</div>
                             </div>
 
                             <div class="mt-30">
-                                <div class="jess-surtitle text-center" style="color:#64748B; margin-bottom:20px;">RÉPARTITION DU COÛT TOTAL</div>
+                                <div class="jess-surtitle text-center" style="color:#64748B; margin-bottom:20px;">RÉPARTITION DU COÛT TOTAL (sur 20 ans)</div>
                                 <div class="pie-chart-container mb-20"><div class="pie-chart" id="pie-chart"></div></div>
                                 <div class="pie-legend">
                                     <div class="legend-item"><span class="dot-color" style="background:#10B981;"></span>Apport</div>
@@ -309,8 +301,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="logo-wrap mb-20">
-                        <svg width="30" height="25" viewBox="0 0 52 44" fill="none"><path d="M22 25L30 17L38 25V38H22V25Z" fill="#8D99AE"/></svg>
-                        <div class="logo-text"><span class="logo-transac" style="color:#E30613">TRANSAC</span><span class="logo-express" style="color:#8D99AE">EXPRESS</span></div>
+                        <img src="path/to/votre-logo.png" alt="Transac Express Logo" class="logo-img footer-logo-img">
                     </div>
                     <p class="text-gray text-sm">L'expertise du marchand de biens au service de votre patrimoine immobilier dans le Médoc.</p>
                 </div>
