@@ -25,7 +25,7 @@ function formatEur(num) {
 }
 
 function updateSim() {
-    // 1. Récupération des inputs manuels
+    // 1. Récupération des inputs (Gauche)
     const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
     const notaire = parseFloat(document.getElementById('sim-notaire').value) || 0;
     const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
@@ -66,9 +66,9 @@ function updateSim() {
     const coutGlobal = apport + capitalEmprunte + totalInterets + (assurance * nbMois);
     const tauxEndettement = revenus > 0 ? (mensualiteTotale / revenus) * 100 : 0;
 
-    // --- INJECTION DANS L'INTERFACE --- //
+    // --- INJECTION DANS L'INTERFACE (Droite) ---
 
-    // Bloc "La Jess" (Réduction Impôt - Top Right)
+    // La Jess (Réduction Impôt)
     document.getElementById('res-reduction').innerText = formatEur(reduction);
     document.getElementById('res-sub').innerText = `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`;
     document.getElementById('res-prix').innerText = formatEur(prix);
@@ -86,29 +86,29 @@ function updateSim() {
     alertRatio.style.display = isEligible ? 'none' : 'block';
     if(!isEligible) document.getElementById('val-ratio-alert').innerText = ratioTravaux.toFixed(1) + '%';
 
-    // Bloc Crédit Mensuel
+    // Crédit Mensuel
     document.getElementById('res-mensualite').innerText = formatEur(mensualiteTotale);
     document.getElementById('res-mensualite-detail').innerText = `${Math.round(mensualitePret)}€ (prêt) + ${Math.round(assurance)}€ (assurance)`;
 
-    // Bloc Poids Budget
+    // Poids Budget
     document.getElementById('res-endettement-txt').innerText = tauxEndettement.toFixed(1) + '%';
     const barFill = document.getElementById('res-endettement-bar');
     const budgetContainer = document.getElementById('budget-container');
     const budgetStatus = document.getElementById('res-endettement-status');
-    const headerColor = document.querySelector('.budget-header');
+    const headerColor = document.getElementById('budget-header');
     
     barFill.style.width = Math.min(tauxEndettement, 100) + '%';
     if(tauxEndettement <= 35) {
         budgetContainer.style.background = '#F0FDF4'; budgetContainer.style.borderColor = '#BBF7D0';
         barFill.style.background = '#10B981'; headerColor.style.color = '#166534';
-        budgetStatus.innerText = "✅ C'est très raisonnable."; budgetStatus.style.color = '#166534';
+        budgetStatus.innerText = "✅ Endettement sain."; budgetStatus.style.color = '#166534';
     } else {
         budgetContainer.style.background = '#FEF2F2'; budgetContainer.style.borderColor = '#FECACA';
         barFill.style.background = '#E30613'; headerColor.style.color = '#991B1B';
         budgetStatus.innerText = "⚠️ Endettement élevé (> 35%)."; budgetStatus.style.color = '#991B1B';
     }
 
-    // Graphique Camembert
+    // Camembert
     if(coutGlobal > 0) {
         const pApport = (apport / coutGlobal) * 100;
         const pCapital = (capitalEmprunte / coutGlobal) * 100;
@@ -135,10 +135,10 @@ function updateSim() {
             let capMois = mensualitePret - intMois;
             interetsAnnee += intMois; capitalAnnee += capMois; resteDu -= capMois;
         }
-        htmlTable += `<tr><td>Année ${i}</td><td>${formatEur(interetsAnnee)}</td><td>${formatEur(capitalAnnee)}</td><td class="bold text-navy">${formatEur(Math.max(0, resteDu))}</td></tr>`;
+        htmlTable += `<tr><td>Année ${i}</td><td>${formatEur(interetsAnnee)}</td><td>${formatEur(capitalAnnee)}</td><td class="bold text-navy" style="font-size:0.95rem;">${formatEur(Math.max(0, resteDu))}</td></tr>`;
     }
     if(anneesPret > 4) {
-        htmlTable += `<tr><td colspan="4" class="text-center text-gray" style="padding:15px">... jusqu'à l'année ${anneesPret}</td></tr>`;
+        htmlTable += `<tr><td colspan="4" class="text-center text-gray" style="padding:15px; font-style:italic;">... jusqu'à l'année ${anneesPret}</td></tr>`;
     }
     document.getElementById('amortissement-body').innerHTML = htmlTable;
 }
