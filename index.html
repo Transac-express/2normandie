@@ -147,85 +147,136 @@
                 <p class="page-subtitle mb-20 text-gray">Estimez votre réduction d'impôt, vos mensualités de crédit et la rentabilité de votre projet.</p>
                 
                 <div class="sim-layout mt-50">
+                    
                     <div class="sim-left">
-                        <div class="sim-card mb-20">
-                            <h3 class="card-title">1. Paramètres de l'opération</h3>
-                            <div class="grid-2 gap-15 mt-20">
-                                <div class="input-box"><label>Prix d'achat (€)</label><input type="number" id="sim-prix" value="150000" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Frais de notaire (€)</label><input type="number" id="sim-notaire" value="12000" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Montant travaux (€)</label><input type="number" id="sim-travaux" value="50000" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Surface (m²)</label><input type="number" id="sim-surface" value="60" oninput="updateSim()"></div>
+                        
+                        <div class="pro-card">
+                            <div class="pro-card-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                                1. Le Bien & Les Travaux
+                            </div>
+                            <div class="grid-2 gap-15">
+                                <div class="input-group-pro">
+                                    <label>Prix d'achat (€)</label>
+                                    <input type="number" id="sim-prix" value="150000" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro">
+                                    <label>Frais de notaire (€)</label>
+                                    <input type="number" id="sim-notaire" value="12000" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro">
+                                    <label>Budget travaux (€)</label>
+                                    <input type="number" id="sim-travaux" value="50000" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro">
+                                    <label>Surface (m²)</label>
+                                    <input type="number" id="sim-surface" value="60" oninput="updateSim()">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="sim-card mb-20">
-                            <h3 class="card-title">2. Le Financement</h3>
-                            <div class="grid-2 gap-15 mt-20">
-                                <div class="input-box"><label>Apport personnel (€)</label><input type="number" id="sim-apport" value="20000" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Revenus nets (€/m)</label><input type="number" id="sim-revenus" value="3000" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Taux du crédit (%)</label><input type="number" id="sim-taux" value="3.8" step="0.1" oninput="updateSim()"></div>
-                                <div class="input-box"><label>Durée (mois)</label><input type="number" id="sim-duree-mois" value="240" oninput="updateSim()"></div>
-                                <div class="input-box" style="grid-column: 1 / span 2;"><label>Assurance/Frais (€/m)</label><input type="number" id="sim-assurance" value="30" oninput="updateSim()"></div>
+                        <div class="pro-card">
+                            <div class="pro-card-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                                2. Le Financement Bancaire
+                            </div>
+                            <div class="grid-2 gap-15">
+                                <div class="input-group-pro">
+                                    <label>Apport personnel (€)</label>
+                                    <input type="number" id="sim-apport" value="20000" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro">
+                                    <label>Revenus nets (€/mois)</label>
+                                    <input type="number" id="sim-revenus" value="3000" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro">
+                                    <label>Taux du crédit (%)</label>
+                                    <input type="number" id="sim-taux" value="3.8" step="0.1" oninput="updateSim()">
+                                </div>
+                                <div class="input-box-v2">
+                                    <label>Durée (mois)</label>
+                                    <input type="number" id="sim-duree-mois" value="240" oninput="updateSim()">
+                                </div>
+                                <div class="input-group-pro" style="grid-column: 1 / span 2;">
+                                    <label>Assurance emprunteur (€/mois)</label>
+                                    <input type="number" id="sim-assurance" value="30" oninput="updateSim()">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="sim-card">
-                            <h3 class="card-title">3. Durée d'engagement locatif</h3>
-                            <div class="grid-3 gap-15 mt-20">
+                        <div class="pro-card">
+                            <div class="pro-card-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E30613" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                3. Durée d'engagement locatif
+                            </div>
+                            <div class="grid-3 gap-15">
                                 <div class="duree-card" onclick="setDuree(0)"><div class="duree-years">6 ans</div><div class="duree-pct">12%</div></div>
                                 <div class="duree-card active" onclick="setDuree(1)"><div class="duree-years">9 ans</div><div class="duree-pct text-red">18%</div></div>
                                 <div class="duree-card" onclick="setDuree(2)"><div class="duree-years">12 ans</div><div class="duree-pct">21%</div></div>
                             </div>
                         </div>
                         
-                        <div class="alert alert-red mt-20" id="alert-ratio" style="display:none;">
+                        <div class="alert-red mt-20" id="alert-ratio" style="display:none;">
                             <strong>⚠️ Projet non éligible Denormandie</strong>
-                            <p>Les travaux doivent représenter au moins 25% du coût total. (<strong id="val-ratio-alert">0%</strong>)</p>
+                            <p>Les travaux doivent représenter au moins 25% du coût total. Actuellement : <strong id="val-ratio-alert">0%</strong></p>
                         </div>
                     </div>
 
                     <div class="sim-right">
                         
-                        <div class="result-card result-dark text-center" style="border-radius: 12px 12px 0 0; padding-bottom: 20px;">
-                            <p class="subtitle" style="color: rgba(255,255,255,0.7);">VOTRE RÉDUCTION D'IMPÔT</p>
-                            <h2 class="montant-impot" style="color: white; font-size: 3.5rem; margin: 5px 0;" id="res-reduction">38 160 €</h2>
-                            <p class="details-impot" style="color: rgba(255,255,255,0.5);" id="res-sub">sur 9 ans • soit 4 240 €/an</p>
-                        </div>
-                        <div class="result-card border-card mb-20" style="border-radius: 0 0 12px 12px; border-top: none; padding-top: 30px;">
-                            <div class="res-row"><span>Prix d'achat</span><strong id="res-prix">150 000 €</strong></div>
-                            <div class="res-row"><span>Frais de notaire</span><strong id="res-notaire">12 000 €</strong></div>
-                            <div class="res-row"><span>Montant travaux</span><strong id="res-travaux">50 000 €</strong></div>
-                            <div class="res-row bold mt-10 border-top pt-10"><span>Coût total opération</span><strong id="res-total">212 000 €</strong></div>
-                            <div class="res-row mt-10"><span>Assiette fiscale</span><strong id="res-assiette">212 000 €</strong></div>
-                            <div class="res-row"><span>Ratio travaux</span><strong id="res-ratio" class="text-red">23.6%</strong></div>
-                            <div class="res-row mt-20 border-top pt-20" style="align-items: flex-start;">
-                                <div><span style="display:block;margin-bottom:5px;">Loyer max. mensuel (Zone B2)</span><span class="text-xs text-gray" id="res-loyer-detail">Base...</span></div>
-                                <strong id="res-loyer">600 €/mois</strong>
+                        <div class="jess-card">
+                            <div class="jess-header">
+                                <div class="jess-surtitle">VOTRE RÉDUCTION D'IMPÔT</div>
+                                <div class="jess-amount" id="res-reduction">38 160 €</div>
+                                <div class="jess-sub" id="res-sub">sur 9 ans • soit 4 240 €/an</div>
+                            </div>
+                            <div class="jess-body">
+                                <div class="res-row"><span>Prix d'achat</span><strong id="res-prix">150 000 €</strong></div>
+                                <div class="res-row"><span>Frais de notaire</span><strong id="res-notaire">12 000 €</strong></div>
+                                <div class="res-row"><span>Montant travaux</span><strong id="res-travaux">50 000 €</strong></div>
+                                <div class="res-row bold mt-10 pt-10" style="border-top: 1px solid #E2E8F0;"><span>Coût total opération</span><strong id="res-total">212 000 €</strong></div>
+                                <div class="res-row mt-10"><span>Assiette fiscale retenue</span><strong id="res-assiette">212 000 €</strong></div>
+                                <div class="res-row"><span>Ratio travaux</span><strong id="res-ratio" class="text-red">23.6%</strong></div>
+                                
+                                <div class="res-row mt-20 pt-15" style="border-top: 1px solid #E2E8F0; align-items: flex-start;">
+                                    <div>
+                                        <span style="display:block; color:#0F172A; font-weight:600;">Loyer max. (Zone B2)</span>
+                                        <span class="text-xs text-gray" id="res-loyer-detail">Base...</span>
+                                    </div>
+                                    <strong class="text-blue" style="font-size:1.2rem;" id="res-loyer">600 €/m</strong>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="result-card border-card mb-20 text-center" style="border-radius: 12px;">
-                            <p class="subtitle text-gray" style="margin-bottom: 5px;">JE PAYE CHAQUE MOIS (Crédit)</p>
-                            <h2 class="montant-mensuel text-blue" id="res-mensualite">1 150 €</h2>
-                            <p class="details-mensualite text-gray mb-20" id="res-mensualite-detail">1100€ (prêt) + 50€ (assurance)</p>
-                            
-                            <div class="budget-card text-left" id="budget-container">
-                                <div class="budget-header"><strong>Poids sur mon budget : <span id="res-endettement-txt">33%</span></strong></div>
-                                <div class="budget-bar-bg"><div class="budget-bar-fill" id="res-endettement-bar"></div></div>
-                                <div class="budget-status mt-10" id="res-endettement-status">✅ C'est très raisonnable.</div>
+                        <div class="pro-card">
+                            <div class="text-center mb-20">
+                                <div class="jess-surtitle" style="color:#64748B;">MENSUALITÉ DE CRÉDIT</div>
+                                <div class="text-blue mt-10" style="font-size:3rem; font-weight:900; line-height:1;" id="res-mensualite">1 150 €</div>
+                                <div class="text-sm text-gray mt-10" id="res-mensualite-detail">1100€ (prêt) + 50€ (assurance)</div>
                             </div>
                             
-                            <h3 class="card-title mt-30 mb-20" style="font-size: 1rem;">Répartition du coût total</h3>
-                            <div class="pie-chart-container mb-20"><div class="pie-chart" id="pie-chart"></div></div>
-                            <div class="pie-legend">
-                                <div class="legend-item"><span class="dot-color" style="background:#10B981;"></span>Apport</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#3B82F6;"></span>Capital</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#EF4444;"></span>Intérêts</div>
-                                <div class="legend-item"><span class="dot-color" style="background:#F59E0B;"></span>Frais</div>
+                            <div class="budget-box" id="budget-container">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:700; font-size:0.9rem;" id="budget-header">
+                                    <span>Poids sur mon budget</span>
+                                    <span id="res-endettement-txt">33%</span>
+                                </div>
+                                <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar"></div></div>
+                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Raisonnable</div>
+                            </div>
+
+                            <div class="mt-30">
+                                <div class="jess-surtitle text-center" style="color:#64748B; margin-bottom:20px;">RÉPARTITION DU COÛT TOTAL</div>
+                                <div class="pie-chart-container mb-20"><div class="pie-chart" id="pie-chart"></div></div>
+                                <div class="pie-legend">
+                                    <div class="legend-item"><span class="dot-color" style="background:#10B981;"></span>Apport</div>
+                                    <div class="legend-item"><span class="dot-color" style="background:#3B82F6;"></span>Capital</div>
+                                    <div class="legend-item"><span class="dot-color" style="background:#EF4444;"></span>Intérêts</div>
+                                    <div class="legend-item"><span class="dot-color" style="background:#F59E0B;"></span>Assurance</div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="result-card border-card" style="padding:0; overflow:hidden; border-radius: 12px;">
+                        <div class="pro-card" style="padding:0; overflow:hidden;">
                             <div class="table-header">📅 Calendrier de paiement annuel</div>
                             <table class="amortissement-table">
                                 <thead><tr><th>Année</th><th>Intérêts</th><th>Capital</th><th>Reste dû</th></tr></thead>
@@ -237,20 +288,20 @@
                 </div>
             </div>
         </section>
-
+        
         <section id="page-mentions" class="page">
             <div class="container section-padding" style="max-width: 800px;">
                 <h1 class="page-title">Mentions légales</h1>
-                <div class="gray-box mt-20" style="background: white; border: 1px solid #E5E7EB;">
+                <div class="pro-card mt-20">
                     <p class="mb-10"><strong>Éditeur du site :</strong> MEDOC INVESTISSEMENT</p>
                     <p class="mb-10"><strong>Forme sociale :</strong> SARL au capital de 1 440 000 €</p>
                     <p class="mb-10"><strong>Siège social :</strong> 4 rue Albert 1er, 33250 PAUILLAC</p>
                     <p class="mb-10"><strong>RCS :</strong> Bordeaux 477 710 222</p>
                     <p class="mb-10"><strong>Contact :</strong> contact@transac-express.fr | 05 56 XX XX XX</p>
-                    <p class="mb-10"><strong>Hébergeur :</strong> Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlande</p>
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer class="footer">
