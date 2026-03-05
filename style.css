@@ -6,7 +6,6 @@
     --gray-text: #6B7280;
     --gray-light: #F9FAFB;
     --border: #E5E7EB;
-    --pink-bg: #FEE2E2;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -66,54 +65,22 @@ ul { list-style: none; }
 .btn-primary:hover { background: var(--red-hover); }
 .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 16px 32px; border-radius: 50px; font-weight: 700; font-size: 1.05rem; cursor: pointer; backdrop-filter: blur(8px); }
 
-/* POURQUOI NOUS CHOISIR */
+/* POURQUOI NOUS CHOISIR (CARTES & ICÔNES ROUGES) */
 .section-surtitle { font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 10px; }
 .section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; }
 .section-desc { font-size: 1.1rem; color: var(--gray-text); max-width: 600px; line-height: 1.6; }
 .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
-/* Style des icônes PRO (Minimaliste, Contour Rouge) */
-/* BOÎTE DE L'ICÔNE (Le petit carré rose clair) */
-.icon-box-pro {
-    width: 48px;
-    height: 48px;
-    background-color: #FFF0F0; /* Le fond rose très clair de ta capture */
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    transition: transform 0.2s ease;
-}
 
-/* L'ICÔNE EN ELLE-MÊME (Petite et minimaliste) */
-.icon-box-pro svg {
-    width: 24px; /* On bloque la taille à 24px pour que ce soit petit */
-    height: 24px;
-}
+/* L'icône Rouge épaisse parfaitement proportionnée */
+.icon-box-pro { width: 60px; height: 60px; margin-bottom: 25px; }
+.icon-box-pro svg { width: 100%; height: 100%; }
 
-/* Force l'épaisseur du trait fin et la couleur rouge */
-.icon-box-pro svg path,
-.icon-box-pro svg polyline,
-.icon-box-pro svg line {
-    stroke: #E30613;
-    stroke-width: 1.5;
-    fill: none;
-}
-
-/* Petit effet au survol (optionnel) */
-.feature-card:hover .icon-box-pro {
-    transform: scale(1.05);
-}
-
-/* Change la couleur du tracé de l'icône en blanc quand le fond devient rouge au survol */
-.feature-card:hover .icon-box-pro svg path {
-    stroke: #ffffff; 
-}.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
+.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
 .feature-card p { color: var(--gray-text); font-size: 0.95rem; line-height: 1.6; }
 .btn-text-red { background: none; border: none; color: var(--red); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
 
-/* INVESTIR PAUILLAC */
+/* INVESTIR PAUILLAC & NOUVELLE SECTION DENORMANDIE */
 .hero-pauillac { position: relative; height: 50vh; display: flex; align-items: center; justify-content: center; background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600') center/cover; }
 .hero-overlay-dark { position: absolute; inset: 0; background: rgba(31,32,47,0.85); }
 .badge-outline { border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; display: inline-block; margin-bottom: 20px; }
@@ -127,6 +94,16 @@ ul { list-style: none; }
 .stat-icon { font-size: 1.5rem; margin-bottom: 15px; }
 .stat-num { font-size: 2rem; font-weight: 900; margin-bottom: 5px; }
 .stat-text { font-size: 0.85rem; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* NOUVEAU : CARTES DE REDUCTION DENORMANDIE */
+.denormandie-text { max-width: 800px; color: var(--gray-text); font-size: 1.05rem; line-height: 1.7; text-align: left; }
+.denormandie-text strong { color: var(--navy); }
+.tax-card { background: #FAFAFA; border: 1px solid var(--border); border-radius: 16px; padding: 40px 20px; text-align: center; transition: 0.2s ease; }
+.tax-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
+.tax-label { font-size: 0.9rem; color: var(--gray-text); margin-bottom: 5px; }
+.tax-years { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+.tax-pct { font-size: 3rem; font-weight: 900; margin: 10px 0; line-height: 1; }
+.tax-max { font-size: 0.85rem; color: var(--gray-text); }
 
 /* CATALOGUE */
 .property-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.03); }
@@ -152,18 +129,14 @@ ul { list-style: none; }
 .slider-group { margin-bottom: 30px; }
 .slider-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 0.95rem; }
 .slider-value { font-weight: 800; }
-
-/* Custom Range Slider */
 input[type=range] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 5px; outline: none; margin-bottom: 10px; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; border: 2px solid var(--border); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-top: -7px; }
 .slider-bounds { display: flex; justify-content: space-between; font-size: 0.75rem; color: #9CA3AF; font-weight: 600; }
-
 .duree-card { border: 2px solid var(--border); border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
 .duree-card.active { border-color: var(--red); background: #FFF5F5; }
 .duree-years { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
 .duree-pct { font-size: 1.8rem; font-weight: 900; color: var(--gray-text); }
 .duree-sub { font-size: 0.75rem; color: var(--gray-text); margin-top: 5px; }
-
 .alert { border-radius: 12px; padding: 20px; font-size: 0.9rem; line-height: 1.5; }
 .alert-red { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
 .alert-blue { background: #F0F9FF; border: 1px solid #BAE6FD; color: #075985; }
