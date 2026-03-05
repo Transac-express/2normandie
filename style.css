@@ -73,31 +73,36 @@ ul { list-style: none; }
 .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
 /* Style des icônes PRO (Minimaliste, Contour Rouge) */
+/* BOÎTE DE L'ICÔNE (Le petit carré rose clair) */
 .icon-box-pro {
-    width: 5px;
-    height: 5px;
-    /* Suppression du fond rose (--pink-bg) pour le minimalisme */
-    background: transparent; 
-    /* Ajout du contour rouge sur la boîte carrée */
-    border: 1.5px solid var(--red); 
+    width: 48px;
+    height: 48px;
+    background-color: #FFF0F0; /* Le fond rose très clair de ta capture */
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 25px;
-    padding: 12px; /* Espace intérieur pour l'icône */
-    transition: 0.3s ease;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
 }
 
-/* Force la couleur rouge et l'épaisseur fine sur le tracé de l'icône SVG */
+/* L'ICÔNE EN ELLE-MÊME (Petite et minimaliste) */
 .icon-box-pro svg {
-    width: 10%;
-    height: 10%;
+    width: 24px; /* On bloque la taille à 24px pour que ce soit petit */
+    height: 24px;
 }
 
-/* Effet au survol de la carte (optionnel, pour le côté dynamique "Pro") */
+/* Force l'épaisseur du trait fin et la couleur rouge */
+.icon-box-pro svg path,
+.icon-box-pro svg polyline,
+.icon-box-pro svg line {
+    stroke: #E30613;
+    stroke-width: 1.5;
+    fill: none;
+}
+
+/* Petit effet au survol (optionnel) */
 .feature-card:hover .icon-box-pro {
-    background-color: var(--red); /* Le fond devient rouge */
     transform: scale(1.05);
 }
 
