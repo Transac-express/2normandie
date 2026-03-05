@@ -91,8 +91,8 @@ ul { list-style: none; }
 
 /* Force la couleur rouge et l'épaisseur fine sur le tracé de l'icône SVG */
 .icon-box-pro svg {
-    width: 100%;
-    height: 100%;
+    width: 10%;
+    height: 10%;
 }
 
 /* Effet au survol de la carte (optionnel, pour le côté dynamique "Pro") */
