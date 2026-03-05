@@ -74,8 +74,8 @@ ul { list-style: none; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
 /* Style des icônes PRO (Minimaliste, Contour Rouge) */
 .icon-box-pro {
-    width: 55px;
-    height: 55px;
+    width: 5px;
+    height: 5px;
     /* Suppression du fond rose (--pink-bg) pour le minimalisme */
     background: transparent; 
     /* Ajout du contour rouge sur la boîte carrée */
