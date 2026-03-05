@@ -39,10 +39,16 @@ ul { list-style: none; }
 /* HEADER */
 #header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
 .navbar { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 15px 40px; }
-.logo-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.logo-text { display: flex; flex-direction: column; line-height: 1; }
-.logo-transac { font-weight: 900; font-size: 1.2rem; color: var(--red); letter-spacing: 0.5px; }
-.logo-express { font-weight: 600; font-size: 0.7rem; color: var(--navy); letter-spacing: 2px; }
+
+/* LOGO WRAP MODIFIÉ */
+.logo-wrap { display: flex; align-items: center; cursor: pointer; }
+
+/* CSS POUR LE NOUVEAU LOGO IMAGE */
+.logo-img {
+    height: 45px; /* Ajuster la hauteur souhaitée du logo dans le header */
+    width: auto; /* Conserver le ratio */
+    object-fit: contain; /* Éviter les déformations */
+}
 
 .nav-links { display: flex; align-items: center; gap: 30px; }
 .nav-item { font-size: 0.95rem; font-weight: 600; color: var(--navy); transition: 0.2s; }
@@ -105,7 +111,7 @@ ul { list-style: none; }
 .tax-max { font-size: 0.85rem; color: var(--gray-text); }
 
 /* CATALOGUE */
-.property-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: 0.3s; }
+.property-card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: 0.3s; }
 .property-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 .property-img-wrap { position: relative; height: 240px; }
 .property-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
@@ -179,3 +185,8 @@ ul { list-style: none; }
 .footer-links li, .footer-contact li { margin-bottom: 15px; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
 .footer-links a:hover { color: white; }
 .footer-bottom { display: flex; justify-content: space-between; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+/* CLASSE SPÉCIFIQUE POUR LE LOGO DU FOOTER (souvent un peu plus petit) */
+.footer-logo-img {
+    height: 35px; /* Ajuster la hauteur du logo dans le footer */
+}
