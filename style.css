@@ -72,8 +72,39 @@ ul { list-style: none; }
 .section-desc { font-size: 1.1rem; color: var(--gray-text); max-width: 600px; line-height: 1.6; }
 .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.02); transition: 0.3s; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.05); }
-.icon-box { width: 50px; height: 50px; background: var(--pink-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 20px; }
-.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
+/* Style des icônes PRO (Minimaliste, Contour Rouge) */
+.icon-box-pro {
+    width: 55px;
+    height: 55px;
+    /* Suppression du fond rose (--pink-bg) pour le minimalisme */
+    background: transparent; 
+    /* Ajout du contour rouge sur la boîte carrée */
+    border: 1.5px solid var(--red); 
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    padding: 12px; /* Espace intérieur pour l'icône */
+    transition: 0.3s ease;
+}
+
+/* Force la couleur rouge et l'épaisseur fine sur le tracé de l'icône SVG */
+.icon-box-pro svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Effet au survol de la carte (optionnel, pour le côté dynamique "Pro") */
+.feature-card:hover .icon-box-pro {
+    background-color: var(--red); /* Le fond devient rouge */
+    transform: scale(1.05);
+}
+
+/* Change la couleur du tracé de l'icône en blanc quand le fond devient rouge au survol */
+.feature-card:hover .icon-box-pro svg path {
+    stroke: #ffffff; 
+}.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; }
 .feature-card p { color: var(--gray-text); font-size: 0.95rem; line-height: 1.6; }
 .btn-text-red { background: none; border: none; color: var(--red); font-weight: 700; font-size: 1.1rem; cursor: pointer; }
 
