@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transac Express — Marchand de Biens & Défiscalisation Pauillac</title>
+    <title>Transac Express — Expert Immobilier Pauillac</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header">
         <nav class="navbar">
             <div class="logo-wrap" onclick="navigateTo('home')">
-                <svg width="50" height="40" viewBox="0 0 50 40">
-                    <path d="M5 25L12 18L19 25V35H5V25Z" fill="#8D99AE" opacity="0.4"/>
-                    <path d="M10 22L17 15L24 22V32H10V22Z" fill="#8D99AE" opacity="0.6"/>
-                    <path d="M15 19L22 12L29 19V29H15V19Z" fill="#8D99AE" opacity="0.8"/>
-                    <path d="M20 16L27 9L34 16V26H20V16Z" fill="#8D99AE"/>
-                    <path d="M5 38Q25 35 45 38" stroke="#8D99AE" stroke-width="2" fill="none"/>
+                <svg width="45" height="40" viewBox="0 0 52 44" fill="none">
+                    <path d="M2 26L10 18L18 26V36H2V26Z" fill="#2B2D42" opacity=".4"/>
+                    <path d="M16 23L24 15L32 23V33H16V23Z" fill="#2B2D42" opacity=".6"/>
+                    <path d="M7 28L15 20L23 28V38H7V28Z" fill="#2B2D42" opacity=".8"/>
+                    <path d="M22 25L30 17L38 25V38H22V25Z" fill="#2B2D42"/>
+                    <path d="M0 41Q26 37 52 41" stroke="#2B2D42" stroke-width="2" fill="none"/>
                 </svg>
                 <div class="logo-text">
                     <span class="logo-transac">TRANSAC</span>
@@ -24,70 +24,91 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="#" onclick="navigateTo('home')">Accueil</a></li>
-                <li><a href="#" onclick="navigateTo('pauillac')">Investir à Pauillac</a></li>
-                <li><a href="#" onclick="navigateTo('catalogue')">Biens à vendre</a></li>
-                <li><a href="#" onclick="navigateTo('simulateur')" class="btn-nav">Simulateur</a></li>
+                <li><a href="#home" onclick="navigateTo('home')" class="active">Accueil</a></li>
+                <li><a href="#pauillac" onclick="navigateTo('pauillac')">Investir à Pauillac</a></li>
+                <li><a href="#catalogue" onclick="navigateTo('catalogue')">Biens à vendre</a></li>
+                <li><a href="#simulateur" onclick="navigateTo('simulateur')">Simulateur fiscal</a></li>
+                <li><a href="#simulateur" onclick="navigateTo('simulateur')" class="btn-red-nav">Simuler</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         <section id="page-home" class="page active">
-            <div class="hero">
-                <div class="hero-content">
-                    <h1>L'expertise du marchand de biens au service de votre <span>défiscalisation</span></h1>
-                    <p>Réduisez vos impôts jusqu'à 63 000 € grâce au dispositif Denormandie à Pauillac.</p>
-                    <button class="btn-primary" onclick="navigateTo('simulateur')">Lancer le simulateur</button>
+            <div class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="hero-container">
+                    <div class="hero-badge">
+                        <span class="dot"></span> Marchand de biens — Pauillac, Médoc
+                    </div>
+                    <h1 class="hero-title">
+                        L'expertise du marchand de biens au service de votre <span class="highlight">défiscalisation</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Investissez dans la pierre médocaine et bénéficiez du dispositif Denormandie pour réduire vos impôts jusqu'à 63 000 €.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" onclick="navigateTo('simulateur')">Simuler ma défiscalisation <span class="arrow">→</span></button>
+                        <button class="btn-secondary" onclick="navigateTo('catalogue')">Voir nos biens</button>
+                    </div>
+                </div>
+                <div class="glass-stats">
+                    <div class="stat-item">
+                        <span class="stat-val">21%</span>
+                        <span class="stat-lab">Réduction d'impôt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">Zone B2</span>
+                        <span class="stat-lab">Éligibilité</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">30%</span>
+                        <span class="stat-lab">Économie Énergie</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-pauillac" class="page">
+            <div class="container-full">
+                <h2 class="section-title">Investir à Pauillac</h2>
+                <div class="seo-text">
+                    <p>Située au cœur du Médoc, Pauillac est le terrain idéal pour le dispositif Denormandie. 
+                    Le patrimoine en pierre de taille offre des opportunités de rénovation uniques.</p>
                 </div>
             </div>
         </section>
 
         <section id="page-catalogue" class="page">
-            <div class="container">
-                <h2 class="section-title">Nos Biens Éligibles</h2>
-                <div id="catalogue-grid" class="grid"></div>
+            <div class="container-full">
+                <h2 class="section-title">Nos Opportunités</h2>
+                <div id="catalogue-grid" class="grid-catalogue"></div>
             </div>
         </section>
 
         <section id="page-simulateur" class="page">
-            <div class="container">
-                <h2 class="section-title">Simulateur Denormandie</h2>
-                <div class="sim-wrapper">
+            <div class="container-full">
+                <h2 class="section-title">Calculateur Denormandie</h2>
+                <div class="sim-card">
                     <div class="sim-inputs">
-                        <div class="input-group">
+                        <div class="group">
                             <label>Prix d'achat (€)</label>
-                            <input type="number" id="sim-prix" value="150000" oninput="updateSim()">
+                            <input type="number" id="sim-prix" value="180000" oninput="updateSim()">
                         </div>
-                        <div class="input-group">
-                            <label>Montant des travaux (€)</label>
-                            <input type="number" id="sim-travaux" value="50000" oninput="updateSim()">
+                        <div class="group">
+                            <label>Montant travaux (€)</label>
+                            <input type="number" id="sim-travaux" value="65000" oninput="updateSim()">
                         </div>
-                        <div class="input-group">
+                        <div class="group">
                             <label>Surface (m²)</label>
-                            <input type="number" id="sim-surface" value="60" oninput="updateSim()">
+                            <input type="number" id="sim-surface" value="75" oninput="updateSim()">
                         </div>
                     </div>
-                    <div class="sim-results" id="sim-results">
-                        </div>
+                    <div id="sim-results" class="sim-results"></div>
                 </div>
             </div>
         </section>
-
-        <section id="page-mentions" class="page">
-            <div class="container">
-                <h2>Mentions Légales</h2>
-                <p><strong>Société :</strong> MEDOC INVESTISSEMENT (SARL)</p>
-                <p><strong>Siège :</strong> 4 rue Albert 1er, 33250 PAUILLAC</p>
-                <p><strong>RCS :</strong> Bordeaux 477 710 222</p>
-                <p><strong>Hébergeur :</strong> Google Ireland Limited</p>
-            </div>
-        </section>
     </main>
-
-    <footer>
-        <p>© 2026 MEDOC INVESTISSEMENT - 05.57.75.10.10 - contact@transacexpress.com</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
