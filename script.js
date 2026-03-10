@@ -27,7 +27,7 @@ function formatEur(num) {
 function updateSim() {
     // 1. Récupération des inputs (Gauche)
     const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
-    const notaire = parseFloat(document.getElementById('sim-notaire').value) || 0;
+    const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 8;
     const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
     const surface = parseFloat(document.getElementById('sim-surface').value) || 0;
     
@@ -35,13 +35,19 @@ function updateSim() {
     const revenus = parseFloat(document.getElementById('sim-revenus').value) || 0;
     const tauxPret = parseFloat(document.getElementById('sim-taux').value) || 0;
     const nbMois = parseFloat(document.getElementById('sim-duree-mois').value) || 0;
-    const assurance = parseFloat(document.getElementById('sim-assurance').value) || 0;
+    const assurancePct = parseFloat(document.getElementById('sim-assurance').value) || 0;
+
+    // Calcul du montant notaire basé sur le pourcentage saisi
+    const notaireMontant = prix * (notairePct / 100);
+    document.getElementById('val-notaire-montant').innerText = `= ${formatEur(notaireMontant)}`;
 
     // 2. Calculs Fiscaux (La Jess)
-    const totalProjet = prix + notaire + travaux;
+    // L'assiette est maintenant calculée avec le montant dynamique du notaire
+    const totalProjet = prix + notaireMontant + travaux;
     const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
     const isEligible = ratioTravaux >= 25;
     
+    // Plafond de l'assiette à 300 000 €
     const assiette = Math.min(totalProjet, 300000);
     const durationObj = DURATIONS[currentDurationIndex];
     const reduction = assiette * durationObj.rate;
@@ -61,86 +67,53 @@ function updateSim() {
         mensualitePret = capitalEmprunte / nbMois; 
     }
     
-    const mensualiteTotale = mensualitePret + assurance;
-    const totalInterets = (mensualitePret * nbMois) - capitalEmprunte;
-    const coutGlobal = apport + capitalEmprunte + totalInterets + (assurance * nbMois);
+    const assuranceMensuelle = (capitalEmprunte * (assurancePct / 100)) / 12;
+    const mensualiteTotale = mensualitePret + assuranceMensuelle;
+    
     const tauxEndettement = revenus > 0 ? (mensualiteTotale / revenus) * 100 : 0;
 
     // --- INJECTION DANS L'INTERFACE (Droite) ---
 
+    // NOUVEAU : Bloc "Résumé de votre projet"
+    document.getElementById('res-resume-prix').innerText = formatEur(prix);
+    document.getElementById('res-resume-notaire').innerText = formatEur(notaireMontant);
+    document.getElementById('res-resume-travaux').innerText = formatEur(travaux);
+    document.getElementById('res-resume-total').innerText = formatEur(totalProjet);
+
     // La Jess (Réduction Impôt)
     document.getElementById('res-reduction').innerText = formatEur(reduction);
     document.getElementById('res-sub').innerText = `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`;
-    document.getElementById('res-prix').innerText = formatEur(prix);
-    document.getElementById('res-notaire').innerText = formatEur(notaire);
-    document.getElementById('res-travaux').innerText = formatEur(travaux);
-    document.getElementById('res-total').innerText = formatEur(totalProjet);
     document.getElementById('res-assiette').innerText = formatEur(assiette);
     document.getElementById('res-loyer').innerText = loyer + ' €/mois';
-    document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. ${coeff.toFixed(2)}`;
+    document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. B2 (${coeff.toFixed(2)})`;
     
     const alertRatio = document.getElementById('alert-ratio');
     const resRatio = document.getElementById('res-ratio');
     resRatio.innerText = ratioTravaux.toFixed(1) + '%';
-    resRatio.className = isEligible ? 'bold text-navy' : 'bold text-red';
+    resRatio.className = isEligible ? 'bold text-blue' : 'bold text-red';
     alertRatio.style.display = isEligible ? 'none' : 'block';
     if(!isEligible) document.getElementById('val-ratio-alert').innerText = ratioTravaux.toFixed(1) + '%';
 
     // Crédit Mensuel
-    document.getElementById('res-mensualite').innerText = formatEur(mensualiteTotale);
-    document.getElementById('res-mensualite-detail').innerText = `${Math.round(mensualitePret)}€ (prêt) + ${Math.round(assurance)}€ (assurance)`;
+    document.getElementById('res-mensualite').innerText = formatEur(mensualitePret);
+    document.getElementById('res-mensualite-detail').innerText = `+ ${Math.round(assuranceMensuelle)}€ d'assurance emprunteur`;
 
     // Poids Budget
     document.getElementById('res-endettement-txt').innerText = tauxEndettement.toFixed(1) + '%';
     const barFill = document.getElementById('res-endettement-bar');
     const budgetContainer = document.getElementById('budget-container');
     const budgetStatus = document.getElementById('res-endettement-status');
-    const headerColor = document.getElementById('budget-header');
     
     barFill.style.width = Math.min(tauxEndettement, 100) + '%';
     if(tauxEndettement <= 35) {
-        budgetContainer.style.background = '#F0FDF4'; budgetContainer.style.borderColor = '#BBF7D0';
-        barFill.style.background = '#10B981'; headerColor.style.color = '#166534';
-        budgetStatus.innerText = "✅ Endettement sain."; budgetStatus.style.color = '#166534';
+        budgetContainer.style.background = '#F0FDF4'; budgetContainer.style.borderColor = '#BBF7D0'; budgetContainer.style.color = '#166534';
+        barFill.style.background = '#10B981';
+        budgetStatus.innerText = `✅ Endettement sain (<35%)`;
     } else {
-        budgetContainer.style.background = '#FEF2F2'; budgetContainer.style.borderColor = '#FECACA';
-        barFill.style.background = '#E30613'; headerColor.style.color = '#991B1B';
-        budgetStatus.innerText = "⚠️ Endettement élevé (> 35%)."; budgetStatus.style.color = '#991B1B';
+        budgetContainer.style.background = '#FEF2F2'; budgetContainer.style.borderColor = '#FECACA'; budgetContainer.style.color = '#991B1B';
+        barFill.style.background = '#E30613';
+        budgetStatus.innerText = `⚠️ Endettement élevé (>35%)`;
     }
-
-    // Camembert
-    if(coutGlobal > 0) {
-        const pApport = (apport / coutGlobal) * 100;
-        const pCapital = (capitalEmprunte / coutGlobal) * 100;
-        const pInterets = Math.max(0, (totalInterets / coutGlobal) * 100);
-        document.getElementById('pie-chart').style.background = `conic-gradient(
-            #10B981 0% ${pApport}%,
-            #3B82F6 ${pApport}% ${pApport + pCapital}%,
-            #EF4444 ${pApport + pCapital}% ${pApport + pCapital + pInterets}%,
-            #F59E0B ${pApport + pCapital + pInterets}% 100%
-        )`;
-    }
-
-    // Tableau d'amortissement
-    let htmlTable = '';
-    let resteDu = capitalEmprunte;
-    const anneesPret = Math.ceil(nbMois / 12);
-    const maxYearsToShow = Math.min(anneesPret, 4);
-
-    for(let i=1; i<=maxYearsToShow; i++) {
-        let interetsAnnee = 0; let capitalAnnee = 0;
-        for(let m=0; m<12; m++) {
-            if(resteDu <= 0) break;
-            let intMois = resteDu * tauxMensuel;
-            let capMois = mensualitePret - intMois;
-            interetsAnnee += intMois; capitalAnnee += capMois; resteDu -= capMois;
-        }
-        htmlTable += `<tr><td>Année ${i}</td><td>${formatEur(interetsAnnee)}</td><td>${formatEur(capitalAnnee)}</td><td class="bold text-navy" style="font-size:0.95rem;">${formatEur(Math.max(0, resteDu))}</td></tr>`;
-    }
-    if(anneesPret > 4) {
-        htmlTable += `<tr><td colspan="4" class="text-center text-gray" style="padding:15px; font-style:italic;">... jusqu'à l'année ${anneesPret}</td></tr>`;
-    }
-    document.getElementById('amortissement-body').innerHTML = htmlTable;
 }
 
 function setDuree(index) {
@@ -158,9 +131,9 @@ function renderCatalogue() {
     if (grid.innerHTML !== "") return; 
 
     const properties = [
-        { title: "Maison avec chai — Saint-Estèphe", price: 165000, address: "Route des Châteaux", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", surface: 110, pieces: 4, travaux: 65000, status: "Réservé", statusClass: "badge-yellow" },
-        { title: "Appartement T2 rénové", price: 95000, address: "Cœur de ville", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800", surface: 45, pieces: 2, travaux: 0, status: "Disponible", statusClass: "badge-green", nodeno: true },
-        { title: "Ensemble immobilier", price: 350000, address: "Rue de la Verrerie", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800", surface: 300, pieces: 15, travaux: 150000, status: "Disponible", statusClass: "badge-green" }
+        { title: "Maison avec chai — Saint-Estèphe", price: 165000, address: "Route des Châteaux, Saint-Estèphe", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", surface: 110, pieces: 4, travaux: 65000, status: "Réservé", statusClass: "badge-yellow" },
+        { title: "Appartement T2 rénové — Cœur de ville", price: 95000, address: "Place du Général de Gaulle, Pauillac", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800", surface: 45, pieces: 2, travaux: 0, status: "Disponible", statusClass: "badge-green", nodeno: true },
+        { title: "Ensemble immobilier — Projet d'exception", price: 350000, address: "Rue de la Verrerie, Pauillac", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800", surface: 300, pieces: 15, travaux: 150000, status: "Disponible", statusClass: "badge-green" }
     ];
 
     grid.innerHTML = properties.map(p => `
