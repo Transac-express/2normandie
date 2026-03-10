@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transac Express — Expert Immobilier Pauillac</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
     <header id="header">
@@ -132,12 +132,14 @@
 
         <section id="page-simulateur" class="page bg-light">
             <div class="container section-padding">
-                <p class="section-surtitle text-red">OUTIL D'INGÉNIERIE PATRIMONIALE</p>
-                <h1 class="page-title">Simulateur fiscal & financier</h1>
-                <p class="page-subtitle mb-20 text-gray">Estimez votre réduction d'impôt Denormandie, ajustez vos frais, et téléchargez votre plan de financement sur-mesure.</p>
+                <p class="section-surtitle text-red">CABINET D'EXPERT</p>
+                <h1 class="page-title">Simulateur d'Ingénierie Patrimoniale</h1>
+                <p class="page-subtitle mb-20 text-gray">Analysez la viabilité fiscale et financière de votre investissement Denormandie.</p>
                 
                 <div class="sim-layout mt-50">
+                    
                     <div class="sim-left">
+                        
                         <div class="pro-card">
                             <div class="pro-card-header">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
@@ -217,14 +219,14 @@
                         
                         <div class="resume-card mb-20">
                             <h3 class="resume-title text-center">Résumé de votre projet</h3>
-                            <div class="res-row mt-20"><span>Prix d'acquisition</span><strong id="res-resume-prix">150 000 €</strong></div>
-                            <div class="res-row"><span>Frais de notaire estimés</span><strong id="res-resume-notaire">12 000 €</strong></div>
+                            <div class="res-row mt-20"><span>Acquisition</span><strong id="res-resume-prix">150 000 €</strong></div>
+                            <div class="res-row"><span>Frais de notaire estimés</span><strong id="res-resume-notaire">12 000 € (8%)</strong></div>
                             <div class="res-row"><span>Montant des travaux</span><strong id="res-resume-travaux">50 000 €</strong></div>
-                            <div class="res-row bold pt-15 mt-10" style="border-top: 1px solid var(--border-fine);">
-                                <span>Coût total de l'opération</span><strong id="res-resume-total" class="text-blue">212 000 €</strong>
+                            <div class="res-row bold pt-15 mt-10" style="border-top: 1px solid var(--border-gold);">
+                                <span>Économie d'impôt totale</span><strong id="res-resume-reduction" class="text-red" style="font-size: 1.2rem;">38 160 €</strong>
                             </div>
                         </div>
-                        
+
                         <div class="jess-card mb-20">
                             <div class="jess-header">
                                 <div class="jess-surtitle">VOTRE RÉDUCTION D'IMPÔT</div>
@@ -239,29 +241,30 @@
                                         <span style="display:block; color:var(--primary); font-weight:600;">Loyer max. estimé (Zone B2)</span>
                                         <span class="text-xs text-gray" id="res-loyer-detail">Base...</span>
                                     </div>
-                                    <strong class="text-blue" style="font-size:1.2rem;" id="res-loyer">600 €/m</strong>
+                                    <strong class="text-primary" style="font-size:1.1rem;" id="res-loyer">600 €/m</strong>
                                 </div>
                             </div>
                         </div>
 
-                        <button class="btn-lead mb-30" onclick="alert('Module de génération de PDF en cours de création !')">
-                            Télécharger mon plan de financement personnalisé
-                        </button>
+                        <div class="cta-container mb-30">
+                            <button class="btn-lead" onclick="alert('Formulaire de contact à venir pour l\'envoi du PDF !')">
+                                Télécharger mon plan de financement personnalisé
+                            </button>
+                            <p class="promise-text">Inclus : Analyse graphique de vos pôles de dépenses, calendrier de défiscalisation et plan de financement détaillé (PDF).</p>
+                        </div>
 
-                        <div class="pro-card">
-                            <div class="text-center mb-20">
-                                <div class="jess-surtitle" style="color:var(--gray-text);">MENSUALITÉ DE CRÉDIT (hors assurance)</div>
-                                <div class="text-blue mt-10" style="font-size:3rem; font-weight:900; line-height:1; font-family:var(--font-title);" id="res-mensualite">904 €</div>
-                                <div class="text-sm text-gray mt-10" id="res-mensualite-detail">+ 48€ d'assurance emprunteur</div>
-                            </div>
+                        <div class="pro-card text-center" style="padding: 30px;">
+                            <div class="jess-surtitle" style="color:var(--gray-text);">MENSUALITÉ DE CRÉDIT (hors assurance)</div>
+                            <div class="text-primary mt-10" style="font-size:2.5rem; font-weight:700; font-family:var(--font-title);" id="res-mensualite">904 €</div>
+                            <div class="text-sm text-gray mt-10" id="res-mensualite-detail">+ 48€ d'assurance emprunteur</div>
                             
-                            <div class="budget-box" id="budget-container">
+                            <div class="budget-box mt-20 text-left" id="budget-container">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:600; font-size:0.9rem;" id="budget-header">
                                     <span>Poids sur mon budget</span>
                                     <strong id="res-endettement-txt">31.7%</strong>
                                 </div>
                                 <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar" style="width: 31.7%"></div></div>
-                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Endettement sain (<35%)</div>
+                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Capacité d'emprunt respectée</div>
                             </div>
                         </div>
 
