@@ -24,115 +24,67 @@ function formatEur(num) {
     return new Intl.NumberFormat('fr-FR').format(Math.round(num)) + ' €';
 }
 
-// Fonction de sécurité pour ne jamais faire planter le script
+// Fonction de sécurité pour injecter le texte sans planter
 function setSafeText(id, text) {
     const el = document.getElementById(id);
     if (el) el.innerText = text;
 }
 
 function updateSim() {
-    // 1. Récupération des inputs (Gauche)
-    const prix = parseFloat(document.getElementById('sim-prix')?.value) || 0;
-    const notairePct = parseFloat(document.getElementById('sim-notaire-pct')?.value) || 0;
-    const travaux = parseFloat(document.getElementById('sim-travaux')?.value) || 0;
-    const surface = parseFloat(document.getElementById('sim-surface')?.value) || 0;
-    
-    const apport = parseFloat(document.getElementById('sim-apport')?.value) || 0;
-    const revenus = parseFloat(document.getElementById('sim-revenus')?.value) || 0;
-    const tauxPret = parseFloat(document.getElementById('sim-taux')?.value) || 0;
-    const nbMois = parseFloat(document.getElementById('sim-duree-mois')?.value) || 0;
-    const assurancePct = parseFloat(document.getElementById('sim-assurance')?.value) || 0;
+    try {
+        // 1. Récupération des inputs
+        const prix = parseFloat(document.getElementById('sim-prix')?.value) || 0;
+        const notairePct = parseFloat(document.getElementById('sim-notaire-pct')?.value) || 8;
+        const travaux = parseFloat(document.getElementById('sim-travaux')?.value) || 0;
+        const surface = parseFloat(document.getElementById('sim-surface')?.value) || 0;
+        
+        // Calcul dynamique des frais de notaire
+        const notaireMontant = prix * (notairePct / 100);
+        setSafeText('val-notaire-montant', `= ${formatEur(notaireMontant)}`);
 
-    // Calcul dynamique des frais de notaire
-    const notaireMontant = prix * (notairePct / 100);
-    setSafeText('val-notaire-montant', `= ${formatEur(notaireMontant)}`);
+        // 2. Calculs Fiscaux (Assiette = Prix + Notaire + Travaux)
+        const totalProjet = prix + notaireMontant + travaux;
+        const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
+        const isEligible = ratioTravaux >= 25;
+        
+        const assiette = Math.min(totalProjet, 300000);
+        const durationObj = DURATIONS[currentDurationIndex];
+        const reduction = assiette * durationObj.rate;
+        const reductionAn = reduction / durationObj.years;
 
-    // 2. Calculs Fiscaux (La Jess)
-    const totalProjet = prix + notaireMontant + travaux;
-    const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
-    const isEligible = ratioTravaux >= 25;
-    
-    // Plafond d'assiette fixé par l'État
-    const assiette = Math.min(totalProjet, 300000);
-    const durationObj = DURATIONS[currentDurationIndex];
-    const reduction = assiette * durationObj.rate;
-    const reductionAn = reduction / durationObj.years;
+        const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
+        const loyer = (9.83 * surface * coeff).toFixed(0);
 
-    const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
-    const loyer = (9.83 * surface * coeff).toFixed(0);
+        // --- INJECTION DANS L'INTERFACE --- //
 
-    // 3. Calculs Bancaires
-    const capitalEmprunte = Math.max(0, totalProjet - apport);
-    const tauxMensuel = (tauxPret / 100) / 12;
-    
-    let mensualitePret = 0;
-    if (tauxMensuel > 0 && nbMois > 0) {
-        mensualitePret = capitalEmprunte * (tauxMensuel * Math.pow(1 + tauxMensuel, nbMois)) / (Math.pow(1 + tauxMensuel, nbMois) - 1);
-    } else if (nbMois > 0) {
-        mensualitePret = capitalEmprunte / nbMois; 
-    }
-    
-    const assuranceMensuelle = (capitalEmprunte * (assurancePct / 100)) / 12;
-    const mensualiteTotale = mensualitePret + assuranceMensuelle;
-    const tauxEndettement = revenus > 0 ? (mensualiteTotale / revenus) * 100 : 0;
+        // Bloc "Résumé de votre projet"
+        setSafeText('res-resume-prix', formatEur(prix));
+        setSafeText('res-resume-notaire', formatEur(notaireMontant));
+        setSafeText('res-resume-travaux', formatEur(travaux));
+        setSafeText('res-resume-reduction', formatEur(reduction));
 
-    // --- INJECTION DANS L'INTERFACE (Droite) ---
-
-    // Bloc "Résumé de votre projet"
-    setSafeText('res-resume-prix', formatEur(prix));
-    setSafeText('res-resume-notaire', formatEur(notaireMontant));
-    setSafeText('res-resume-travaux', formatEur(travaux));
-    setSafeText('res-resume-reduction', formatEur(reduction));
-
-    // La Jess (Détail Impôt)
-    setSafeText('res-reduction', formatEur(reduction));
-    setSafeText('res-sub', `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`);
-    setSafeText('res-assiette', formatEur(assiette));
-    setSafeText('res-loyer', loyer + ' €/mois');
-    setSafeText('res-loyer-detail', `Base : 9.83 €/m² × ${surface} m² × coeff. B2 (${coeff.toFixed(2)})`);
-    
-    // Alertes Éligibilité
-    const alertRatio = document.getElementById('alert-ratio');
-    const resRatio = document.getElementById('res-ratio');
-    
-    if (resRatio) {
-        resRatio.innerText = ratioTravaux.toFixed(1) + '%';
-        resRatio.className = isEligible ? 'bold text-primary' : 'bold text-red';
-    }
-    if (alertRatio) {
-        alertRatio.style.display = isEligible ? 'none' : 'block';
-    }
-    setSafeText('val-ratio-alert', ratioTravaux.toFixed(1) + '%');
-
-    // Crédit Mensuel
-    setSafeText('res-mensualite', formatEur(mensualitePret));
-    setSafeText('res-mensualite-detail', `+ ${Math.round(assuranceMensuelle)}€ d'assurance emprunteur`);
-
-    // Poids Budget (Barre minimaliste)
-    setSafeText('res-endettement-txt', tauxEndettement.toFixed(1) + '%');
-    
-    const barFill = document.getElementById('res-endettement-bar');
-    const budgetContainer = document.getElementById('budget-container');
-    const budgetStatus = document.getElementById('res-endettement-status');
-    const headerColor = document.getElementById('budget-header');
-    
-    if (barFill && budgetContainer && budgetStatus && headerColor) {
-        barFill.style.width = Math.min(tauxEndettement, 100) + '%';
-        if(tauxEndettement <= 35) {
-            budgetContainer.style.background = '#F9F9F7'; 
-            budgetContainer.style.borderColor = 'rgba(197, 160, 89, 0.4)'; 
-            headerColor.style.color = '#1A2B3C';
-            barFill.style.background = '#C5A059';
-            budgetStatus.innerText = `✅ Capacité d'emprunt respectée (<35%)`;
-            budgetStatus.style.color = '#1A2B3C';
-        } else {
-            budgetContainer.style.background = '#FAF5F5'; 
-            budgetContainer.style.borderColor = '#C5A059'; 
-            headerColor.style.color = '#1A2B3C';
-            barFill.style.background = '#1A2B3C';
-            budgetStatus.innerText = `⚠️ Alerte : Endettement élevé (>35%)`;
-            budgetStatus.style.color = '#1A2B3C';
+        // La Jess (Détail Impôt)
+        setSafeText('res-reduction', formatEur(reduction));
+        setSafeText('res-sub', `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`);
+        setSafeText('res-assiette', formatEur(assiette));
+        setSafeText('res-loyer', loyer + ' €/mois');
+        setSafeText('res-loyer-detail', `Base : 9.83 €/m² × ${surface} m² × coeff. B2 (${coeff.toFixed(2)})`);
+        
+        // Alertes Éligibilité
+        const alertRatio = document.getElementById('alert-ratio');
+        const resRatio = document.getElementById('res-ratio');
+        
+        if (resRatio) {
+            resRatio.innerText = ratioTravaux.toFixed(1) + '%';
+            resRatio.className = isEligible ? 'bold text-primary' : 'bold text-red';
         }
+        if (alertRatio) {
+            alertRatio.style.display = isEligible ? 'none' : 'block';
+        }
+        setSafeText('val-ratio-alert', ratioTravaux.toFixed(1) + '%');
+
+    } catch(e) {
+        console.error("Erreur de calcul :", e);
     }
 }
 
@@ -162,6 +114,43 @@ function renderCatalogue() {
             <div class="property-body"><div class="property-header"><h3>${p.title}</h3><span class="property-price">${formatEur(p.price)}</span></div><p class="property-address">📍 ${p.address}</p><div class="property-meta"><span>📏 ${p.surface} m²</span><span>🚪 ${p.pieces} pièces</span><span>🔨 Trv: ${p.travaux > 0 ? formatEur(p.travaux) : 'Aucun'}</span></div></div>
         </div>
     `).join('');
+}
+
+// ==========================================
+// LOGIQUE POP-IN (LEAD CAPTURE)
+// ==========================================
+function openModal() {
+    const modal = document.getElementById('lead-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeModal(event) {
+    // Si l'event existe (clic), on ferme
+    if (event) event.preventDefault();
+    const modal = document.getElementById('lead-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+function submitForm(event) {
+    event.preventDefault(); // Empêche le rechargement de la page
+    
+    // Récupération des données
+    const name = document.getElementById('lead-name').value;
+    const email = document.getElementById('lead-email').value;
+    const phone = document.getElementById('lead-phone').value;
+    
+    // Simulation de l'envoi (Console)
+    console.log("=== NOUVEAU LEAD CAPTURÉ ===");
+    console.log("Nom :", name);
+    console.log("Email :", email);
+    console.log("Téléphone :", phone);
+    
+    // Message de succès pour l'utilisateur
+    alert(`Merci ${name} ! Votre étude complète a été envoyée à l'adresse : ${email}`);
+    
+    // Fermeture et réinitialisation
+    closeModal();
+    event.target.reset();
 }
 
 window.onload = () => {
