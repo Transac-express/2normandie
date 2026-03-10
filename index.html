@@ -75,6 +75,7 @@
                 <div class="hero-content text-center">
                     <div class="badge-outline">📍 Gironde (33) — Médoc</div>
                     <h1 class="hero-title-large">Investir à <span class="text-red">Pauillac</span></h1>
+                    <p class="hero-subtitle mx-auto">Au cœur du Médoc, entre vignobles prestigieux et estuaire de la Gironde, Pauillac offre un potentiel d'investissement immobilier unique.</p>
                 </div>
             </div>
             
@@ -82,7 +83,8 @@
                 <div class="grid-2 align-start gap-50">
                     <div class="text-article">
                         <h2>Pauillac, joyau du Médoc et terre d'opportunités</h2>
-                        <p>Située à seulement <strong>50 km au nord de Bordeaux</strong>, Pauillac est mondialement connue pour ses grands crus classés. La commune bénéficie du <strong>dispositif Denormandie</strong>, permettant aux acquéreurs de biens anciens à rénover de profiter d'une réduction d'impôt significative.</p>
+                        <p>Située à seulement <strong>50 km au nord de Bordeaux</strong>, Pauillac est mondialement connue pour ses grands crus classés. Mais au-delà du vin, c'est une ville en pleine mutation qui offre des opportunités immobilières remarquables pour les investisseurs avisés.</p>
+                        <p>La commune bénéficie du <strong>dispositif Denormandie</strong>, permettant aux acquéreurs de biens anciens à rénover de profiter d'une réduction d'impôt significative. Le centre-ville historique regorge de bâtisses en pierre de taille qui ne demandent qu'à être revalorisées.</p>
                     </div>
                     <div class="gray-box">
                         <h3>Pourquoi investir ici ?</h3>
@@ -121,7 +123,6 @@
                 <div class="sim-layout mt-50">
                     
                     <div class="sim-left">
-                        
                         <div class="pro-card">
                             <div class="pro-card-header">1. Paramètres de l'opération</div>
                             <div class="grid-2 gap-15">
@@ -166,10 +167,6 @@
                                     <label>Durée de l'emprunt (mois)</label>
                                     <input type="number" id="sim-duree-mois" value="240" oninput="updateSim()">
                                 </div>
-                                <div class="input-group-pro" style="grid-column: 1 / span 2;">
-                                    <label>Taux d'assurance emprunteur (TAEA en %)</label>
-                                    <input type="number" id="sim-assurance" value="0.30" step="0.01" oninput="updateSim()">
-                                </div>
                             </div>
                         </div>
 
@@ -199,7 +196,7 @@
                                 <span>Économie d'impôt totale</span><strong id="res-resume-reduction" class="text-red" style="font-size: 1.2rem;">38 160 €</strong>
                             </div>
                         </div>
-
+                        
                         <div class="jess-card mb-20">
                             <div class="jess-header">
                                 <div class="jess-surtitle">VOTRE RÉDUCTION D'IMPÔT</div>
@@ -220,27 +217,11 @@
                         </div>
 
                         <div class="cta-container mb-30">
-                            <button class="btn-lead" onclick="alert('Formulaire de contact à venir pour l\'envoi du PDF !')">
-                                Télécharger mon plan de financement personnalisé
+                            <button class="btn-lead" onclick="openModal()">
+                                TÉLÉCHARGER MON PLAN DE FINANCEMENT PERSONNALISÉ
                             </button>
                             <p class="promise-text">Inclus : Analyse graphique de vos pôles de dépenses, calendrier de défiscalisation et plan de financement détaillé (PDF).</p>
                         </div>
-
-                        <div class="pro-card text-center" style="padding: 30px;">
-                            <div class="jess-surtitle" style="color:var(--gray-text);">MENSUALITÉ DE CRÉDIT (hors assurance)</div>
-                            <div class="text-primary mt-10" style="font-size:2.5rem; font-weight:700; font-family:var(--font-title);" id="res-mensualite">904 €</div>
-                            <div class="text-sm text-gray mt-10" id="res-mensualite-detail">+ 48€ d'assurance emprunteur</div>
-                            
-                            <div class="budget-box mt-20 text-left" id="budget-container">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:600; font-size:0.9rem;" id="budget-header">
-                                    <span>Poids sur mon budget</span>
-                                    <strong id="res-endettement-txt">31.7%</strong>
-                                </div>
-                                <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar" style="width: 31.7%"></div></div>
-                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Capacité d'emprunt respectée</div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -251,6 +232,8 @@
                 <h1 class="page-title">Mentions légales</h1>
                 <div class="pro-card mt-20">
                     <p class="mb-10"><strong>Éditeur du site :</strong> MEDOC INVESTISSEMENT</p>
+                    <p class="mb-10"><strong>Forme sociale :</strong> SARL au capital de 1 440 000 €</p>
+                    <p class="mb-10"><strong>Siège social :</strong> 4 rue Albert 1er, 33250 PAUILLAC</p>
                     <p class="mb-10"><strong>Contact :</strong> contact@transac-express.fr</p>
                 </div>
             </div>
@@ -271,11 +254,43 @@
                     <ul class="footer-links">
                         <li><a href="#" onclick="navigate('home')">Accueil</a></li>
                         <li><a href="#" onclick="navigate('pauillac')">Investir à Pauillac</a></li>
+                        <li><a href="#" onclick="navigate('catalogue')">Biens à vendre</a></li>
                     </ul>
                 </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">CONTACT</h4>
+                    <ul class="footer-contact"><li>📍 Pauillac, Gironde (33)</li><li>📞 05 56 XX XX XX</li></ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 MEDOC INVESTISSEMENT — SARL au capital de 1 440 000 €</p>
+                <a href="#" onclick="navigate('mentions')">Mentions légales</a>
             </div>
         </div>
     </footer>
+
+    <div id="lead-modal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal(event)">&times;</span>
+            <h2 class="modal-title">Votre étude patrimoniale est prête.</h2>
+            <p class="modal-text">Recevez votre dossier complet par email. Ce document inclut votre analyse graphique détaillée, votre calendrier de défiscalisation Denormandie ainsi qu'une simulation de financement optimisée.</p>
+            
+            <form class="modal-form" onsubmit="submitForm(event)">
+                <div class="input-group-pro mb-10">
+                    <input type="text" id="lead-name" placeholder="Prénom & Nom" required>
+                </div>
+                <div class="input-group-pro mb-10">
+                    <input type="email" id="lead-email" placeholder="Email, professionnel de préférence" required>
+                </div>
+                <div class="input-group-pro mb-20">
+                    <input type="tel" id="lead-phone" placeholder="Téléphone - facultatif">
+                </div>
+                <button type="submit" class="modal-btn">ENVOYER MON PLAN DÉTAILLÉ (PDF)</button>
+            </form>
+            
+            <p class="modal-note">🔒 Vos données sont protégées. Aucun spam, uniquement votre étude personnalisée.</p>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
