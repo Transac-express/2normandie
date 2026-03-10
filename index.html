@@ -119,7 +119,6 @@
                 <p class="page-subtitle mb-20 text-gray">Analysez la viabilité fiscale et financière de votre investissement Denormandie.</p>
                 
                 <div class="sim-layout mt-50">
-                    
                     <div class="sim-left">
                         <div class="pro-card">
                             <div class="pro-card-header">1. Paramètres de l'opération</div>
@@ -225,6 +224,15 @@
                             <div class="jess-surtitle" style="color:var(--gray-text);">MENSUALITÉ DE CRÉDIT (hors assurance)</div>
                             <div class="text-primary mt-10" style="font-size:2.5rem; font-weight:700; font-family:var(--font-title);" id="res-mensualite">904 €</div>
                             <div class="text-sm text-gray mt-10" id="res-mensualite-detail">+ 48€ d'assurance emprunteur</div>
+                            
+                            <div class="budget-box mt-20 text-left" id="budget-container">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-weight:600; font-size:0.9rem;" id="budget-header">
+                                    <span>Poids sur mon budget</span>
+                                    <strong id="res-endettement-txt">31.7%</strong>
+                                </div>
+                                <div class="gauge-track"><div class="gauge-fill" id="res-endettement-bar" style="width: 31.7%"></div></div>
+                                <div class="text-xs mt-10 bold" id="res-endettement-status">✅ Capacité d'emprunt respectée</div>
+                            </div>
                         </div>
 
                     </div>
@@ -290,13 +298,16 @@
                 <div class="input-group-pro mb-20">
                     <input type="tel" id="lead-phone" placeholder="Téléphone - facultatif">
                 </div>
-                <button type="submit" class="modal-btn" id="submit-btn">ENVOYER MON PLAN DÉTAILLÉ (PDF)</button>
+                <button type="submit" class="modal-btn" id="submit-btn">
+                    <span id="btn-text">ENVOYER MON PLAN DÉTAILLÉ (PDF)</span>
+                    <span class="loader" id="btn-loader" style="display:none;"></span>
+                </button>
             </form>
 
             <div id="success-message" style="display: none; text-align: center; padding: 20px 0;">
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">Votre étude est en route !</h3>
-                <p style="color: var(--text-body); line-height: 1.6; font-size: 1rem;">Vérifiez votre boîte mail dans quelques instants pour découvrir votre plan de financement sur-mesure.</p>
+                <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">Merci <span id="success-name"></span> !</h3>
+                <p style="color: var(--text-body); line-height: 1.6; font-size: 1rem;">Votre étude personnalisée a été générée. Vérifiez vos emails d'ici quelques instants.</p>
             </div>
             
             <p class="modal-note" id="modal-note">🔒 Vos données sont protégées. Aucun spam, uniquement votre étude personnalisée.</p>
