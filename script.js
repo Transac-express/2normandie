@@ -28,7 +28,7 @@ function updateSim() {
     try {
         // 1. Récupération des inputs (Gauche)
         const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
-        const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 0;
+        const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 8;
         const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
         const surface = parseFloat(document.getElementById('sim-surface').value) || 0;
         
@@ -43,10 +43,12 @@ function updateSim() {
         document.getElementById('val-notaire-montant').innerText = `= ${formatEur(notaireMontant)}`;
 
         // 2. Calculs Fiscaux (La Jess)
+        // L'assiette prend en compte le Prix + Notaire + Travaux
         const totalProjet = prix + notaireMontant + travaux;
         const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
         const isEligible = ratioTravaux >= 25;
         
+        // Plafond d'assiette fixé par l'État
         const assiette = Math.min(totalProjet, 300000);
         const durationObj = DURATIONS[currentDurationIndex];
         const reduction = assiette * durationObj.rate;
@@ -76,9 +78,9 @@ function updateSim() {
         document.getElementById('res-resume-prix').innerText = formatEur(prix);
         document.getElementById('res-resume-notaire').innerText = formatEur(notaireMontant);
         document.getElementById('res-resume-travaux').innerText = formatEur(travaux);
-        document.getElementById('res-resume-total').innerText = formatEur(totalProjet);
+        document.getElementById('res-resume-reduction').innerText = formatEur(reduction);
 
-        // La Jess (Réduction Impôt)
+        // La Jess (Détail Impôt)
         document.getElementById('res-reduction').innerText = formatEur(reduction);
         document.getElementById('res-sub').innerText = `sur ${durationObj.years} ans • soit ${formatEur(reductionAn)}/an`;
         document.getElementById('res-assiette').innerText = formatEur(assiette);
@@ -97,25 +99,28 @@ function updateSim() {
         document.getElementById('res-mensualite').innerText = formatEur(mensualitePret);
         document.getElementById('res-mensualite-detail').innerText = `+ ${Math.round(assuranceMensuelle)}€ d'assurance emprunteur`;
 
-        // Poids Budget
+        // Poids Budget (Barre minimaliste)
         document.getElementById('res-endettement-txt').innerText = tauxEndettement.toFixed(1) + '%';
         const barFill = document.getElementById('res-endettement-bar');
         const budgetContainer = document.getElementById('budget-container');
         const budgetStatus = document.getElementById('res-endettement-status');
+        const headerColor = document.getElementById('budget-header');
         
         barFill.style.width = Math.min(tauxEndettement, 100) + '%';
         if(tauxEndettement <= 35) {
-            budgetContainer.style.background = '#F0FDF4'; 
-            budgetContainer.style.borderColor = '#BBF7D0'; 
-            budgetContainer.style.color = '#166534';
-            barFill.style.background = '#10B981';
-            budgetStatus.innerText = `✅ Endettement sain (<35%)`;
+            budgetContainer.style.background = '#F9F9F7'; 
+            budgetContainer.style.borderColor = 'rgba(197, 160, 89, 0.4)'; 
+            headerColor.style.color = '#1A2B3C';
+            barFill.style.background = '#C5A059';
+            budgetStatus.innerText = `✅ Capacité d'emprunt respectée (<35%)`;
+            budgetStatus.style.color = '#1A2B3C';
         } else {
-            budgetContainer.style.background = '#FEF2F2'; 
-            budgetContainer.style.borderColor = '#FECACA'; 
-            budgetContainer.style.color = '#991B1B';
-            barFill.style.background = '#E30613';
-            budgetStatus.innerText = `⚠️ Endettement élevé (>35%)`;
+            budgetContainer.style.background = '#FAF5F5'; 
+            budgetContainer.style.borderColor = '#C5A059'; 
+            headerColor.style.color = '#1A2B3C';
+            barFill.style.background = '#1A2B3C';
+            budgetStatus.innerText = `⚠️ Alerte : Endettement élevé (>35%)`;
+            budgetStatus.style.color = '#1A2B3C';
         }
     } catch(e) {
         console.error("Erreur d'exécution du JS :", e);
