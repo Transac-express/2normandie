@@ -76,13 +76,13 @@ ul { list-style: none; }
 
 /* POURQUOI NOUS CHOISIR */
 .section-surtitle { font-weight: 800; font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-.section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; color: #0F172A; }
+.section-title { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; color: #1A2B3C; }
 .section-desc { font-size: 1.1rem; color: var(--gray-text); max-width: 600px; line-height: 1.6; }
 .feature-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 40px 30px; text-align: left; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: 0.3s; }
 .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
 .icon-box-pro { width: 48px; height: 48px; background-color: #FFF0F0; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 10px; }
 .icon-box-pro svg { width: 100%; height: 100%; }
-.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; color: #0F172A;}
+.feature-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 15px; color: #1A2B3C;}
 .feature-card p { color: var(--gray-text); font-size: 0.95rem; line-height: 1.6; }
 
 /* INVESTIR PAUILLAC */
@@ -90,10 +90,10 @@ ul { list-style: none; }
 .hero-overlay-dark { position: absolute; inset: 0; background: rgba(15,23,42,0.85); }
 .badge-outline { border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; display: inline-block; margin-bottom: 20px; font-weight: 600; }
 .hero-title-large { font-size: 4.5rem; font-weight: 900; color: white; margin-bottom: 15px; letter-spacing: -1px; }
-.text-article h2 { font-size: 2rem; font-weight: 800; margin-bottom: 25px; line-height: 1.2; color: #0F172A; }
+.text-article h2 { font-size: 2rem; font-weight: 800; margin-bottom: 25px; line-height: 1.2; color: #1A2B3C; }
 .text-article p { font-size: 1.05rem; color: var(--gray-text); line-height: 1.7; margin-bottom: 20px; }
 .gray-box { background: #F8FAFC; border-radius: 20px; padding: 40px; border: 1px solid var(--border); }
-.gray-box h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 25px; color: #0F172A; }
+.gray-box h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 25px; color: #1A2B3C; }
 .check-list li { display: flex; gap: 15px; margin-bottom: 15px; font-weight: 600; font-size: 0.95rem; color: #334155; }
 
 .stat-card { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
