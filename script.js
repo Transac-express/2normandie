@@ -45,7 +45,7 @@ function updateSim() {
         const notaireMontant = prix * (notairePct / 100);
         setSafeText('val-notaire-montant', `= ${formatEur(notaireMontant)}`);
 
-        // Assiette globale (Prix + Notaire + Travaux) plafonnée à 300 000€
+        // Assiette globale
         const totalProjet = prix + notaireMontant + travaux;
         const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
         const isEligible = ratioTravaux >= 25;
@@ -69,6 +69,8 @@ function updateSim() {
         }
         
         const assuranceMensuelle = (capitalEmprunte * (assurancePct / 100)) / 12;
+        const mensualiteTotale = mensualitePret + assuranceMensuelle;
+        const tauxEndettement = revenus > 0 ? (mensualiteTotale / revenus) * 100 : 0;
         
         // MAJ Interface
         setSafeText('res-resume-prix', formatEur(prix));
@@ -96,6 +98,31 @@ function updateSim() {
         setSafeText('res-mensualite', formatEur(mensualitePret));
         setSafeText('res-mensualite-detail', `+ ${Math.round(assuranceMensuelle)}€ d'assurance emprunteur`);
 
+        setSafeText('res-endettement-txt', tauxEndettement.toFixed(1) + '%');
+        
+        const barFill = document.getElementById('res-endettement-bar');
+        const budgetContainer = document.getElementById('budget-container');
+        const budgetStatus = document.getElementById('res-endettement-status');
+        const headerColor = document.getElementById('budget-header');
+        
+        if (barFill && budgetContainer && budgetStatus && headerColor) {
+            barFill.style.width = Math.min(tauxEndettement, 100) + '%';
+            if(tauxEndettement <= 35) {
+                budgetContainer.style.background = '#F9F9F7'; 
+                budgetContainer.style.borderColor = 'rgba(197, 160, 89, 0.4)'; 
+                headerColor.style.color = '#1A2B3C';
+                barFill.style.background = '#C5A059';
+                budgetStatus.innerText = `✅ Capacité d'emprunt respectée (<35%)`;
+                budgetStatus.style.color = '#1A2B3C';
+            } else {
+                budgetContainer.style.background = '#FAF5F5'; 
+                budgetContainer.style.borderColor = '#C5A059'; 
+                headerColor.style.color = '#1A2B3C';
+                barFill.style.background = '#1A2B3C';
+                budgetStatus.innerText = `⚠️ Alerte : Endettement élevé (>35%)`;
+                budgetStatus.style.color = '#1A2B3C';
+            }
+        }
     } catch(e) {
         console.error("Erreur de calcul :", e);
     }
@@ -113,9 +140,12 @@ function setDuree(index) {
 
 function renderCatalogue() {}
 
+
 // ==========================================
-// LOGIQUE API BREVO (LEAD CAPTURE)
+// LOGIQUE WEBHOOK (MAKE/ZAPIER)
 // ==========================================
+
+const WEBHOOK_URL = "https://hook.eu1.make.com/ztu9s3dt8jtlycb3kvvvgkjkn36ii6k1"; 
 
 function openModal() {
     const modal = document.getElementById('lead-modal');
@@ -128,46 +158,16 @@ function closeModal(event) {
     if (modal) modal.classList.remove('active');
 }
 
-// Fonction d'envoi à l'API Brevo v3
-async function sendLeadToWorkflow(leadData) {
-    // CLÉ API FRONT-END (ATTENTION : Non recommandé en production)
-    const apiKey = "FzqLhpRTW5CX2rVd";
-    const url = "https://api.brevo.com/v3/smtp/email";
-
-    const payload = {
-        sender: { name: "Transac Express", email: "contact@transac-express.fr" }, // Ton adresse expéditeur
-        to: [{ email: leadData.email, name: leadData.nom }], // Envoi à l'utilisateur
-        subject: "Votre Étude Patrimoniale Denormandie - Transac Express",
-        htmlContent: `
-            <div style="font-family: Arial, sans-serif; color: #1A2B3C;">
-                <h2 style="color: #C5A059;">Bonjour ${leadData.nom},</h2>
-                <p>Suite à votre simulation sur notre site, voici le détail de votre projet d'investissement :</p>
-                <ul>
-                    <li><strong>Prix d'achat :</strong> ${leadData.projet_prix_achat} €</li>
-                    <li><strong>Budget travaux :</strong> ${leadData.projet_travaux} €</li>
-                    <li><strong>Économie d'impôt ciblée :</strong> ${leadData.projet_economie_impot}</li>
-                </ul>
-                <p>Comme convenu, vous pouvez télécharger votre plan de financement personnalisé (PDF) en cliquant sur le lien ci-dessous :</p>
-                <p><a href="https://transac-express.github.io/2normandie/etude-patrimoniale.pdf" style="display:inline-block; padding:12px 24px; background-color:#C5A059; color:#1A2B3C; text-decoration:none; font-weight:bold; border-radius:2px;">TÉLÉCHARGER MON ÉTUDE</a></p>
-                <p>Un de nos conseillers vous contactera prochainement au ${leadData.telephone} pour vous accompagner dans votre projet.</p>
-                <p>À très bientôt,<br>L'équipe Transac Express</p>
-            </div>
-        `
-    };
-
+async function sendToAutomation(data) {
     try {
-        const response = await fetch(url, {
+        const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
-            headers: {
-                'accept': 'application/json',
-                'api-key': apiKey,
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         });
         return response.ok;
     } catch (error) {
-        console.error("Erreur API Brevo :", error);
+        console.error("Erreur d'envoi Webhook :", error);
         return false;
     }
 }
@@ -176,41 +176,56 @@ async function submitForm(event) {
     event.preventDefault(); 
     
     const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
     const form = document.getElementById('lead-form');
     const successMsg = document.getElementById('success-message');
     const introText = document.getElementById('modal-intro');
     const noteText = document.getElementById('modal-note');
     
-    // État "Chargement"
-    const originalBtnText = btn.innerText;
-    btn.innerText = "GÉNÉRATION EN COURS...";
-    btn.disabled = true;
-    btn.style.opacity = "0.7";
+    // Prénom (pour la personnalisation)
+    const fullName = document.getElementById('lead-name').value;
+    const firstName = fullName.split(' ')[0];
     
-    // Données du prospect et du simulateur
+    // 1. État "Chargement" visuel (Sécurité anti double clic)
+    btn.disabled = true;
+    btn.style.opacity = "0.8";
+    btnText.innerText = "TRAITEMENT EN COURS...";
+    btnLoader.style.display = "inline-block";
+    
+    // 2. Compilation des données (Formulaire + Simulateur)
     const leadData = {
-        nom: document.getElementById('lead-name').value,
+        date: new Date().toISOString(),
+        nom: fullName,
         email: document.getElementById('lead-email').value,
         telephone: document.getElementById('lead-phone').value || "Non renseigné",
-        projet_prix_achat: document.getElementById('sim-prix').value,
-        projet_travaux: document.getElementById('sim-travaux').value,
-        projet_economie_impot: document.getElementById('res-reduction').innerText
+        projet_prix_achat: document.getElementById('res-resume-prix').innerText,
+        projet_notaire: document.getElementById('res-resume-notaire').innerText,
+        projet_travaux: document.getElementById('res-resume-travaux').innerText,
+        projet_economie_impot: document.getElementById('res-resume-reduction').innerText
     };
     
-    // Requête vers Brevo
-    const isSuccess = await sendLeadToWorkflow(leadData);
+    // 3. Envoi via Webhook Make
+    const isSuccess = await sendToAutomation(leadData);
     
-    // Succès ou Erreur
+    // 4. Succès ou Erreur
     if (isSuccess) {
         form.style.display = 'none';
         if(introText) introText.style.display = 'none';
         if(noteText) noteText.style.display = 'none';
+        
+        // Personnalisation du message de succès
+        const successNameEl = document.getElementById('success-name');
+        if(successNameEl) successNameEl.innerText = firstName;
+        
         successMsg.style.display = 'block';
     } else {
-        alert("Une erreur de connexion est survenue. Veuillez réessayer.");
-        btn.innerText = originalBtnText;
+        alert("Une erreur technique est survenue. Veuillez vérifier votre connexion internet et réessayer.");
+        // Restauration du bouton en cas d'erreur
         btn.disabled = false;
         btn.style.opacity = "1";
+        btnText.innerText = "ENVOYER MON PLAN DÉTAILLÉ (PDF)";
+        btnLoader.style.display = "none";
     }
 }
 
