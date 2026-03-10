@@ -287,9 +287,10 @@
         <div class="modal-box" onclick="event.stopPropagation()">
             <span class="modal-close" onclick="closeModal(event)">&times;</span>
             <h2 class="modal-title">Votre étude patrimoniale est prête.</h2>
-            <p class="modal-text">Recevez votre dossier complet par email. Ce document inclut votre analyse graphique détaillée, votre calendrier de défiscalisation Denormandie ainsi qu'une simulation de financement optimisée.</p>
             
-            <form class="modal-form" onsubmit="submitForm(event)">
+            <p class="modal-text" id="modal-intro">Recevez votre dossier complet par email. Ce document inclut votre analyse graphique détaillée, votre calendrier de défiscalisation Denormandie ainsi qu'une simulation de financement optimisée.</p>
+            
+            <form class="modal-form" id="lead-form" onsubmit="submitForm(event)">
                 <div class="input-group-pro mb-10">
                     <input type="text" id="lead-name" placeholder="Prénom & Nom" required>
                 </div>
@@ -299,10 +300,16 @@
                 <div class="input-group-pro mb-20">
                     <input type="tel" id="lead-phone" placeholder="Téléphone - facultatif">
                 </div>
-                <button type="submit" class="modal-btn">ENVOYER MON PLAN DÉTAILLÉ (PDF)</button>
+                <button type="submit" class="modal-btn" id="submit-btn">ENVOYER MON PLAN DÉTAILLÉ (PDF)</button>
             </form>
+
+            <div id="success-message" style="display: none; text-align: center; padding: 20px 0;">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">C'est envoyé !</h3>
+                <p style="color: var(--text-body); line-height: 1.6; font-size: 1rem;">Vérifiez votre boîte mail dans quelques instants pour découvrir votre plan de financement sur-mesure.</p>
+            </div>
             
-            <p class="modal-note">🔒 Vos données sont protégées. Aucun spam, uniquement votre étude personnalisée.</p>
+            <p class="modal-note" id="modal-note">🔒 Vos données sont protégées. Aucun spam, uniquement votre étude personnalisée.</p>
         </div>
     </div>
 
