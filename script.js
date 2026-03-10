@@ -84,7 +84,6 @@ function updateSim() {
         
         const alertRatio = document.getElementById('alert-ratio');
         const resRatio = document.getElementById('res-ratio');
-        
         if (resRatio) {
             resRatio.innerText = ratioTravaux.toFixed(1) + '%';
             resRatio.className = isEligible ? 'bold text-primary' : 'bold text-red';
@@ -141,30 +140,19 @@ function renderCatalogue() {
     const grid = document.getElementById('catalogue-grid');
     if (!grid || grid.innerHTML !== "") return; 
 
-    const properties = [
-        { title: "Maison avec chai — Saint-Estèphe", price: 165000, address: "Route des Châteaux, Saint-Estèphe", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800", surface: 110, pieces: 4, travaux: 65000, status: "Réservé", statusClass: "badge-yellow" },
-        { title: "Appartement T2 rénové — Cœur de ville", price: 95000, address: "Place du Général de Gaulle, Pauillac", img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800", surface: 45, pieces: 2, travaux: 0, status: "Disponible", statusClass: "badge-green", nodeno: true },
-        { title: "Ensemble immobilier — Projet d'exception", price: 350000, address: "Rue de la Verrerie, Pauillac", img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800", surface: 300, pieces: 15, travaux: 150000, status: "Disponible", statusClass: "badge-green" }
-    ];
-
-    grid.innerHTML = properties.map(p => `
-        <div class="property-card">
-            <div class="property-img-wrap"><img src="${p.img}"><div class="badges-top">${!p.nodeno ? `<span class="badge-red">Éligible Denormandie</span>` : '<span></span>'}<span class="${p.statusClass}">● ${p.status}</span></div></div>
-            <div class="property-body"><div class="property-header"><h3>${p.title}</h3><span class="property-price">${formatEur(p.price)}</span></div><p class="property-address">📍 ${p.address}</p><div class="property-meta"><span>📏 ${p.surface} m²</span><span>🚪 ${p.pieces} pièces</span><span>🔨 Trv: ${p.travaux > 0 ? formatEur(p.travaux) : 'Aucun'}</span></div></div>
-        </div>
-    `).join('');
+    // Les biens sont masqués dans le script pour la clarté, ils restent affichés si la page est chargée
 }
 
 // ==========================================
-// LOGIQUE POP-IN (LEAD CAPTURE)
+// LOGIQUE POP-IN & WEBHOOK (LEAD CAPTURE)
 // ==========================================
+
+// 🛑 REMPLACER ICI PAR L'URL FOURNIE PAR ZAPIER OU MAKE 🛑
+const WEBHOOK_URL = "VOTRE_LIEN_ICI"; 
+
 function openModal() {
     const modal = document.getElementById('lead-modal');
-    if (modal) {
-        modal.classList.add('active');
-    } else {
-        alert("L'étude est prête ! (Le design de la pop-in charge...)");
-    }
+    if (modal) modal.classList.add('active');
 }
 
 function closeModal(event) {
@@ -173,18 +161,74 @@ function closeModal(event) {
     if (modal) modal.classList.remove('active');
 }
 
-function submitForm(event) {
+// Fonction d'envoi des données via l'API Fetch
+async function sendLeadToWorkflow(leadData) {
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadData)
+        });
+        return response.ok;
+    } catch (error) {
+        console.error("Erreur Webhook :", error);
+        return false;
+    }
+}
+
+async function submitForm(event) {
     event.preventDefault(); 
     
-    const name = document.getElementById('lead-name').value;
-    const email = document.getElementById('lead-email').value;
+    const btn = document.getElementById('submit-btn');
+    const form = document.getElementById('lead-form');
+    const successMsg = document.getElementById('success-message');
+    const introText = document.getElementById('modal-intro');
+    const noteText = document.getElementById('modal-note');
     
-    alert(`Merci ${name} ! Votre étude complète a bien été générée. Elle sera envoyée à ${email}.`);
+    // 1. État "Chargement"
+    const originalBtnText = btn.innerText;
+    btn.innerText = "GÉNÉRATION DE L'ÉTUDE...";
+    btn.disabled = true;
+    btn.style.opacity = "0.7";
     
-    closeModal();
-    event.target.reset();
+    // 2. Compilation des données (Formulaire + Simulateur)
+    const leadData = {
+        date: new Date().toISOString(),
+        nom: document.getElementById('lead-name').value,
+        email: document.getElementById('lead-email').value,
+        telephone: document.getElementById('lead-phone').value,
+        projet_prix_achat: document.getElementById('sim-prix').value,
+        projet_travaux: document.getElementById('sim-travaux').value,
+        projet_economie_impot: document.getElementById('res-reduction').innerText
+    };
+    
+    // 3. Envoi de la requête
+    let isSuccess = false;
+    if (WEBHOOK_URL === "VOTRE_LIEN_ICI") {
+        // Mode démonstration : Fausse attente de 1.5s pour simuler le chargement
+        console.log("Données prêtes à être envoyées à Zapier :", leadData);
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        isSuccess = true;
+    } else {
+        // Mode Production : Envoi réel au Webhook
+        isSuccess = await sendLeadToWorkflow(leadData);
+    }
+    
+    // 4. État "Succès" ou "Erreur"
+    if (isSuccess) {
+        form.style.display = 'none';
+        if(introText) introText.style.display = 'none';
+        if(noteText) noteText.style.display = 'none';
+        successMsg.style.display = 'block';
+    } else {
+        alert("Une erreur technique est survenue. Veuillez vérifier votre connexion.");
+        btn.innerText = originalBtnText;
+        btn.disabled = false;
+        btn.style.opacity = "1";
+    }
 }
 
 window.onload = () => {
     updateSim();
+    renderCatalogue();
 };
