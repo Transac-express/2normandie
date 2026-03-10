@@ -1,7 +1,7 @@
 :root {
     --primary: #1A2B3C;
     --accent: #C5A059;
-    --accent-hover: #A88644;
+    --accent-hover: #1A2B3C; /* Au survol, le bouton Or devient Bleu Nuit */
     --bg-ivoire: #F9F9F7;
     --text-body: #333333;
     --white: #FFFFFF;
@@ -31,13 +31,13 @@ ul { list-style: none; }
 .text-red { color: var(--accent); }
 .text-blue { color: var(--primary); }
 .text-primary { color: var(--primary); }
-.text-gray { color: #666666; font-weight: 300; }
+.text-gray { color: #666666; font-weight: 400; }
 .text-center { text-align: center; }
+.text-left { text-align: left; }
 .mt-10 { margin-top: 10px; } .mt-15 { margin-top: 15px; } .mt-20 { margin-top: 20px; } .mt-30 { margin-top: 30px; } .mt-50 { margin-top: 50px; } .mt-80 { margin-top: 80px; }
 .mb-10 { margin-bottom: 10px; } .mb-20 { margin-bottom: 20px; } .mb-30 { margin-bottom: 30px; }
 .pt-10 { padding-top: 10px; } .pt-15 { padding-top: 15px; }
 .mx-auto { margin-left: auto; margin-right: auto; }
-.border-top { border-top: 1px solid var(--border-fine); }
 .bold { font-weight: 600; }
 .text-xs { font-size: 0.8rem; }
 .uppercase { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
@@ -133,16 +133,17 @@ ul { list-style: none; }
 .property-address { font-size: 0.85rem; color: var(--text-body); margin-bottom: 25px; }
 .property-meta { display: flex; justify-content: space-between; border-top: 1px solid var(--border-fine); padding-top: 20px; font-size: 0.85rem; color: var(--primary); font-weight: 600; }
 
-/* SIMULATEUR PRO */
+/* SIMULATEUR PRO (Design Expert) */
 .page-title { font-size: 3rem; font-weight: 600; margin-bottom: 15px; color: var(--primary); }
 .page-subtitle { font-size: 1.1rem; }
 .sim-layout { display: grid; grid-template-columns: 1fr 450px; gap: 50px; align-items: start; }
 
+/* Bloc de Saisie Gauche */
 .pro-card { background: var(--white); border-radius: var(--radius-luxe); padding: 40px; border: 1px solid var(--border-fine); margin-bottom: 30px; }
 .pro-card-header { font-family: var(--font-title); font-size: 1.4rem; font-weight: 600; color: var(--primary); margin-bottom: 30px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-fine); padding-bottom: 15px; }
 
 .input-group-pro { display: flex; flex-direction: column; gap: 10px; }
-.input-group-pro label { font-size: 0.8rem; font-weight: 600; color: var(--text-body); text-transform: uppercase; letter-spacing: 1px; }
+.input-group-pro label { font-size: 0.8rem; font-weight: 500; color: var(--text-body); text-transform: uppercase; letter-spacing: 1px; }
 .input-group-pro input { padding: 15px 20px; border: 1px solid var(--border-fine); border-radius: var(--radius-luxe); font-family: var(--font-body); font-size: 1.05rem; font-weight: 500; color: var(--primary); background: var(--white); transition: all 0.3s ease; outline: none; }
 .input-group-pro input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
@@ -151,15 +152,14 @@ ul { list-style: none; }
 .duree-years { font-weight: 600; font-size: 1rem; margin-bottom: 5px; color: var(--text-body); text-transform: uppercase; letter-spacing: 1px; }
 .duree-pct { font-family: var(--font-title); font-size: 2rem; color: var(--primary); }
 .duree-card.active .duree-pct { color: var(--accent); }
-
 .alert-red { background: #FAF5F5; border: 1px solid var(--accent); color: var(--primary); border-radius: var(--radius-luxe); padding: 25px; font-size: 0.9rem; line-height: 1.6; }
 
-/* RÉSUMÉ DU PROJET (Nouveau) */
-.resume-card { background: var(--bg-ivoire); border: 1px solid var(--accent); border-radius: var(--radius-luxe); padding: 30px; }
-.resume-title { font-family: var(--font-title); font-size: 1.3rem; font-weight: 600; color: var(--primary); border-bottom: 1px solid var(--border-gold); padding-bottom: 15px; margin-bottom: 20px; }
+/* Bloc Résumé */
+.resume-card { background: var(--white); border: 1px solid var(--border-gold); border-radius: var(--radius-luxe); padding: 40px; }
+.resume-title { font-family: var(--font-title); font-size: 1.4rem; font-weight: 600; color: var(--primary); border-bottom: 1px solid var(--border-gold); padding-bottom: 15px; margin-bottom: 20px; }
 
-/* LA JESS (IMPÔTS) */
-.jess-card { background: var(--white); border-radius: var(--radius-luxe); border: 1px solid var(--border-fine); margin-bottom: 30px; }
+/* La Jess (Impôts) */
+.jess-card { background: var(--white); border-radius: var(--radius-luxe); border: 1px solid var(--border-fine); }
 .jess-header { background: var(--primary); color: var(--white); padding: 40px 30px; text-align: center; border-radius: var(--radius-luxe) var(--radius-luxe) 0 0; }
 .jess-surtitle { font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 15px; }
 .jess-amount { font-family: var(--font-title); font-size: 3.8rem; font-weight: 600; line-height: 1; margin-bottom: 10px; color: var(--white); }
@@ -171,10 +171,12 @@ ul { list-style: none; }
 .res-row strong { font-weight: 600; color: var(--primary); }
 
 /* CTA Capture Lead */
-.btn-lead { background: var(--accent); color: var(--primary); font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; padding: 18px 24px; width: 100%; border: none; border-radius: var(--radius-luxe); cursor: pointer; font-weight: 700; font-size: 0.9rem; transition: background 0.3s ease, transform 0.3s ease; box-shadow: 0 4px 6px -1px rgba(197, 160, 89, 0.2); }
-.btn-lead:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(197, 160, 89, 0.3); }
+.cta-container { text-align: center; }
+.btn-lead { background: var(--accent); color: var(--primary); font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; padding: 20px 24px; width: 100%; border: 1px solid var(--accent); border-radius: var(--radius-luxe); cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15); }
+.btn-lead:hover { background: var(--primary); color: var(--accent); border-color: var(--primary); transform: translateY(-2px); }
+.promise-text { font-size: 0.8rem; color: var(--text-body); font-style: italic; line-height: 1.5; margin-top: 15px; }
 
-/* BUDGET */
+/* Budget Mensualité */
 .budget-box { background: var(--bg-ivoire); border: 1px solid var(--border-fine); border-radius: var(--radius-luxe); padding: 25px; }
 .gauge-track { width: 100%; height: 4px; background: #E2E8F0; border-radius: 2px; overflow: hidden; }
 .gauge-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
@@ -182,8 +184,8 @@ ul { list-style: none; }
 /* FOOTER */
 .footer { background: var(--primary); color: var(--white); padding: 100px 0 40px; margin-top: auto; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 60px; margin-bottom: 40px; }
-.footer-title { font-size: 0.85rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 30px; font-weight: 600; text-transform: uppercase; }
-.footer-links li, .footer-contact li { margin-bottom: 15px; font-size: 0.95rem; color: #CBD5E1; font-weight: 400; }
+.footer-title { font-size: 0.85rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 30px; font-weight: 500; text-transform: uppercase; }
+.footer-links li, .footer-contact li { margin-bottom: 15px; font-size: 0.95rem; color: #CBD5E1; font-weight: 300; }
 .footer-links a:hover { color: var(--accent); }
-.footer-bottom { display: flex; justify-content: space-between; font-size: 0.85rem; color: #CBD5E1; font-weight: 400; }
+.footer-bottom { display: flex; justify-content: space-between; font-size: 0.85rem; color: #CBD5E1; font-weight: 300; }
 .footer-logo-img { height: 50px; filter: brightness(0) invert(1); }
