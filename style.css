@@ -357,3 +357,64 @@ ul { list-style: none; }
 
 /* LOGO FOOTER */
 .footer-logo-img { height: 50px; filter: brightness(0) invert(1); } /* Rend le logo blanc s'il est sombre */
+
+/* =========================================
+   NOUVEAUX ÉLÉMENTS UX SIMULATEUR PRO
+   ========================================= */
+
+/* Résumé du projet */
+.resume-card {
+    background: var(--bg-ivoire);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-luxe);
+    padding: 30px;
+}
+.resume-title {
+    font-family: var(--font-title);
+    font-size: 1.3rem;
+    color: var(--primary);
+    border-bottom: 1px solid var(--border-gold);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+/* Bouton Capture de Lead */
+.btn-lead {
+    background: var(--accent);
+    color: var(--primary);
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 18px 24px;
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-luxe);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(197, 160, 89, 0.2);
+}
+.btn-lead:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(197, 160, 89, 0.3);
+}
+
+/* Affinage des bordures inputs */
+.input-group-pro input { 
+    padding: 15px 20px; 
+    border: 1px solid var(--border-fine); 
+    border-radius: var(--radius-luxe); 
+    font-family: var(--font-body);
+    font-size: 1.05rem; 
+    font-weight: 500; 
+    color: var(--primary); 
+    background: var(--white); 
+    transition: all 0.3s ease; 
+    outline: none; 
+}
+.input-group-pro input:focus { 
+    border-color: var(--accent); 
+    box-shadow: 0 0 0 1px var(--accent);
+}
