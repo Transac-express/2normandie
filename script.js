@@ -131,7 +131,7 @@ function closeModal(event) {
 // Fonction d'envoi à l'API Brevo v3
 async function sendLeadToWorkflow(leadData) {
     // CLÉ API FRONT-END (ATTENTION : Non recommandé en production)
-    const apiKey = "4WdOI7Saw1jqR8DY";
+    const apiKey = "FzqLhpRTW5CX2rVd";
     const url = "https://api.brevo.com/v3/smtp/email";
 
     const payload = {
