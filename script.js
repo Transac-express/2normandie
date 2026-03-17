@@ -145,7 +145,7 @@ function renderCatalogue() {}
 // LOGIQUE WEBHOOK (MAKE/ZAPIER) - MODE NO-CORS
 // ==========================================
 
-const WEBHOOK_URL = "https://hook.eu1.make.com/our4lbo473b5ctyysfzzry86qgz4xlg3"; 
+const WEBHOOK_URL = "https://hook.eu1.make.com/hxhno44iv4ad9cpt9ilt82cgm5c8sx1n"; 
 
 function openModal() {
     const modal = document.getElementById('lead-modal');
