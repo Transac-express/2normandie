@@ -1,39 +1,4 @@
-// ==========================================
-// 1. NAVIGATION SPA (SÉCURISÉE)
-// ==========================================
-function navigate(targetId) {
-    if (window.event) window.event.preventDefault();
 
-    const targetPage = document.getElementById('page-' + targetId);
-    
-    if (targetPage) {
-        document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
-            page.style.display = 'none'; 
-        });
-
-        targetPage.classList.add('active');
-        targetPage.style.display = 'block'; 
-
-        document.querySelectorAll('.nav-item').forEach(link => {
-            link.classList.remove('active');
-            if(link.getAttribute('data-target') === targetId) {
-                link.classList.add('active');
-            }
-        });
-
-        window.scrollTo(0, 0);
-
-        if(targetId === 'catalogue') renderCatalogue();
-    } else {
-        console.error("Erreur : La section 'page-" + targetId + "' n'existe pas.");
-    }
-}
-
-// ==========================================
-// 2. SIMULATEUR FISCAL EXPERT
-// ==========================================
-const DURATIONS = [
     { years: 6, rate: 0.12 },
     { years: 9, rate: 0.18 },
     { years: 12, rate: 0.21 }
@@ -204,7 +169,7 @@ function loadPropertyInSim(prix, travaux, surface) {
 // ==========================================
 // 3. LOGIQUE WEBHOOK (MAKE.COM) & MODALES
 // ==========================================
-const WEBHOOK_URL = "https://hook.eu1.make.com/ztu9s3dt8jtlycb3kvvvgkjkn36ii6k1"; 
+const WEBHOOK_URL = "https://hook.eu1.make.com/hxhno44iv4ad9cpt9ilt82cgm5c8sx1n"; 
 
 function openModal() { document.getElementById('lead-modal').classList.add('active'); }
 function closeModal(e) { if(e) e.preventDefault(); document.getElementById('lead-modal').classList.remove('active'); }
