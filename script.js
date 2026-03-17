@@ -140,12 +140,12 @@ function setDuree(index) {
 
 function renderCatalogue() {}
 
-
 // ==========================================
-// LOGIQUE WEBHOOK (MAKE/ZAPIER) - MODE NO-CORS
+// LOGIQUE WEBHOOK (MAKE/ZAPIER) - NO-CORS
 // ==========================================
 
-const WEBHOOK_URL = "https://hook.eu1.make.com/hxhno44iv4ad9cpt9ilt82cgm5c8sx1n"; 
+// ⚠️ À REMPLACER PAR TON LIEN WEBHOOK MAKE ACTIF ⚠️
+const WEBHOOK_URL = "https://hook.eu1.make.com/TON_LIEN_ICI"; 
 
 function openModal() {
     const modal = document.getElementById('lead-modal');
@@ -158,32 +158,19 @@ function closeModal(event) {
     if (modal) modal.classList.remove('active');
 }
 
-// Nouvelle fonction d'envoi "Fire and Forget" anti-CORS
-async function sendToAutomation(data) {
-    try {
-        await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Contourne le blocage CORS strict de Safari
-            headers: { 
-                // text/plain évite la requête de pré-vérification (preflight)
-                'Content-Type': 'text/plain' 
-            },
-            body: JSON.stringify(data)
-        });
-        
-        // En mode 'no-cors', la réponse est "opaque" (le navigateur nous empêche de la lire).
-        // On ne peut donc pas vérifier response.ok. Si le fetch n'a pas crashé (ex: pas de coupure internet),
-        // on considère que c'est un succès absolu et on valide.
-        return true;
-        
-    } catch (error) {
-        // Cette erreur ne se déclenchera qu'en cas de vraie coupure réseau du client
-        console.error("Erreur réseau lors de l'envoi :", error);
-        return false;
-    }
+// Fonction d'envoi Fire & Forget
+function sendToAutomation(data) {
+    fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Évite le blocage de sécurité de Safari
+        headers: { 
+            'Content-Type': 'text/plain' // Force l'envoi sans vérification Preflight
+        },
+        body: JSON.stringify(data)
+    }).catch(err => console.log("Envoi silencieux :", err));
 }
 
-async function submitForm(event) {
+function submitForm(event) {
     event.preventDefault(); 
     
     const btn = document.getElementById('submit-btn');
@@ -194,52 +181,49 @@ async function submitForm(event) {
     const introText = document.getElementById('modal-intro');
     const noteText = document.getElementById('modal-note');
     
-    // Prénom (pour la personnalisation du message de succès)
+    // Prénom pour la personnalisation
     const fullName = document.getElementById('lead-name').value;
     const firstName = fullName.split(' ')[0];
     
     // 1. État "Chargement" visuel (Sécurité anti double clic)
-    if (btn) {
-        btn.disabled = true;
-        btn.style.opacity = "0.8";
-    }
+    if (btn) { btn.disabled = true; btn.style.opacity = "0.8"; }
     if (btnText) btnText.innerText = "TRAITEMENT EN COURS...";
     if (btnLoader) btnLoader.style.display = "inline-block";
     
-    // 2. Compilation des données (Formulaire + Simulateur)
+    // 2. Structuration précise des variables pour Make (JSON pur)
     const leadData = {
-        date: new Date().toISOString(),
-        nom: fullName,
+        prenom_nom: fullName,
         email: document.getElementById('lead-email').value,
         telephone: document.getElementById('lead-phone').value || "Non renseigné",
-        projet_prix_achat: document.getElementById('res-resume-prix').innerText,
-        projet_notaire: document.getElementById('res-resume-notaire').innerText,
-        projet_travaux: document.getElementById('res-resume-travaux').innerText,
-        projet_economie_impot: document.getElementById('res-resume-reduction').innerText
+        prix_achat: document.getElementById('res-resume-prix').innerText,
+        frais_notaire: document.getElementById('res-resume-notaire').innerText,
+        montant_travaux: document.getElementById('res-resume-travaux').innerText,
+        gain_fiscal_total: document.getElementById('res-resume-reduction').innerText,
+        duree_engagement: DURATIONS[currentDurationIndex].years + " ans"
     };
     
-    // 3. Envoi via Webhook Make (Méthode blindée)
-    const isSuccess = await sendToAutomation(leadData);
+    // 3. Envoi immédiat en arrière-plan
+    sendToAutomation(leadData);
     
-    // 4. Succès ou Erreur (Affichage immédiat)
-    if (isSuccess) {
+    // 4. UX : Affichage immédiat du succès avec personnalisation
+    setTimeout(() => {
         if (form) form.style.display = 'none';
         if (introText) introText.style.display = 'none';
         if (noteText) noteText.style.display = 'none';
         
-        // Personnalisation du message
-        const successNameEl = document.getElementById('success-name');
-        if (successNameEl) successNameEl.innerText = firstName;
-        
-        if (successMsg) successMsg.style.display = 'block';
-    } else {
-        alert("Une erreur technique est survenue. Veuillez vérifier votre connexion internet et réessayer.");
-        // Restauration du bouton en cas d'erreur réseau
-        if (btn) {
-            btn.disabled = false;
-            btn.style.opacity = "1";
+        // Injection du texte de succès premium
+        if (successMsg) {
+            successMsg.innerHTML = `
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">Merci ${firstName},</h3>
+                <p style="color: var(--text-body); line-height: 1.6; font-size: 1rem;">Votre étude est en cours de génération ! Vérifiez vos emails d'ici quelques instants.</p>
+            `;
+            successMsg.style.display = 'block';
         }
-        if (btnText) btnText.innerText = "ENVOYER MON PLAN DÉTAILLÉ (PDF)";
-        if (btnLoader) btnLoader.style.display = "none";
-    }
+    }, 800); // Petit délai visuel de 0.8s pour donner une impression de "travail" au client
 }
+
+window.onload = () => {
+    updateSim();
+    renderCatalogue();
+};
