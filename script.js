@@ -1,4 +1,39 @@
+// ==========================================
+// 1. NAVIGATION SPA (SÉCURISÉE)
+// ==========================================
+function navigate(targetId) {
+    if (window.event) window.event.preventDefault();
 
+    const targetPage = document.getElementById('page-' + targetId);
+    
+    if (targetPage) {
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+            page.style.display = 'none'; 
+        });
+
+        targetPage.classList.add('active');
+        targetPage.style.display = 'block'; 
+
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.classList.remove('active');
+            if(link.getAttribute('data-target') === targetId) {
+                link.classList.add('active');
+            }
+        });
+
+        window.scrollTo(0, 0);
+
+        if(targetId === 'catalogue') renderCatalogue();
+    } else {
+        console.error("Erreur : La section 'page-" + targetId + "' n'existe pas.");
+    }
+}
+
+// ==========================================
+// 2. SIMULATEUR FISCAL EXPERT
+// ==========================================
+const DURATIONS = [
     { years: 6, rate: 0.12 },
     { years: 9, rate: 0.18 },
     { years: 12, rate: 0.21 }
@@ -88,6 +123,7 @@ function setDuree(index) {
 // CATALOGUE ET INJECTION SIMULATEUR
 // ==========================================
 
+// Voici ta base de données de biens (Tu pourras modifier les prix, surfaces, photos ici)
 const PROPERTIES = [
     {
         id: 1,
@@ -97,7 +133,8 @@ const PROPERTIES = [
         surface: 140,
         travaux: 65000,
         img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
-        badge: "Idéal Investisseur"
+        badge: "Idéal Investisseur",
+        plan: "plan-immeuble.pdf" // 👈 NOUVEAUTÉ ICI
     },
     {
         id: 2,
@@ -107,7 +144,8 @@ const PROPERTIES = [
         surface: 90,
         travaux: 45000,
         img: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=600&q=80",
-        badge: "Forte rentabilité"
+        badge: "Forte rentabilité",
+        plan: "plan-immeuble.pdf" // 👈 NOUVEAUTÉ ICI
     },
     {
         id: 3,
@@ -117,7 +155,8 @@ const PROPERTIES = [
         surface: 65,
         travaux: 35000,
         img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=600&q=80",
-        badge: "Coup de cœur"
+        badge: "Coup de cœur",
+        plan: "plan-immeuble.pdf" // 👈 NOUVEAUTÉ ICI
     }
 ];
 
@@ -125,6 +164,7 @@ function renderCatalogue() {
     const grid = document.getElementById('catalogue-grid');
     if (!grid) return;
 
+    // Construit le HTML pour chaque bien de la liste
     grid.innerHTML = PROPERTIES.map(prop => `
         <div class="property-card">
             <div class="property-img-wrap">
@@ -153,32 +193,47 @@ function renderCatalogue() {
                 <button class="btn-primary" style="width: 100%; font-size: 0.85rem; margin-bottom: 10px;" onclick="loadPropertyInSim(${prop.price}, ${prop.travaux}, ${prop.surface})">
                     ÉTUDIER CE PROJET
                 </button>
+                
+                <a href="${prop.plan}" target="_blank" style="display: flex; justify-content: center; align-items: center; width: 100%; font-size: 0.85rem; padding: 14px; border: 1px solid var(--accent); color: var(--primary); font-weight: 700; border-radius: var(--radius-luxe); text-transform: uppercase; transition: all 0.3s ease; text-decoration: none;" onmouseover="this.style.background='var(--accent)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)'">
+                    📄 Voir les plans (PDF)
+                </a>
+
             </div>
         </div>
     `).join('');
 }
 
+// Fonction magique qui relie le catalogue au simulateur
 function loadPropertyInSim(prix, travaux, surface) {
+    // 1. Remplir les champs du simulateur
     document.getElementById('sim-prix').value = prix;
     document.getElementById('sim-travaux').value = travaux;
     document.getElementById('sim-surface').value = surface;
+    
+    // 2. Mettre à jour les calculs
     updateSim();
+    
+    // 3. Basculer sur la page du simulateur automatiquement
     navigate('simulateur');
 }
 
 // ==========================================
 // 3. LOGIQUE WEBHOOK (MAKE.COM) & MODALES
 // ==========================================
-const WEBHOOK_URL = "https://hook.eu1.make.com/hxhno44iv4ad9cpt9ilt82cgm5c8sx1n"; 
+const WEBHOOK_URL = "https://hook.eu1.make.com/etxjs1gzjern0shmrdn6n2cbuh8y174r"; 
 
+// Gestion Modale PDF (Lead)
 function openModal() { document.getElementById('lead-modal').classList.add('active'); }
 function closeModal(e) { if(e) e.preventDefault(); document.getElementById('lead-modal').classList.remove('active'); }
 
+// Gestion Modale GPS
 function openMapChoice() { document.getElementById('map-modal').classList.add('active'); }
 
+// Gestion Modale Appel Téléphonique
 function confirmCall() { document.getElementById('call-modal').classList.add('active'); }
 function closeCallModal(e) { if(e) e.preventDefault(); document.getElementById('call-modal').classList.remove('active'); }
 
+// Soumission du formulaire
 async function submitForm(event) {
     event.preventDefault(); 
     
@@ -186,39 +241,19 @@ async function submitForm(event) {
     const form = document.getElementById('lead-form');
     const successMsg = document.getElementById('success-message');
     
-    const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
-    const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 8;
-    const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
-    const notaire = prix * (notairePct / 100);
-    const totalInvestissement = prix + notaire + travaux;
-    const assiette = Math.min(totalInvestissement, 300000);
-    
-    const durationObj = DURATIONS[currentDurationIndex];
-    const reduction = assiette * durationObj.rate;
-    const reductionAn = reduction / durationObj.years;
-    const ratioTravaux = totalInvestissement > 0 ? (travaux / totalInvestissement) * 100 : 0;
-
     const leadData = {
-        date: new Date().toLocaleDateString('fr-FR'),
-        id_lead: "LEAD-" + Math.floor(Math.random() * 10000),
-        prenom_nom: document.getElementById('lead-name').value,
+        date: new Date().toISOString(),
+        nom: document.getElementById('lead-name').value,
         email: document.getElementById('lead-email').value,
-        telephone: document.getElementById('lead-phone').value || "Non renseigné",
-        prix_achat: formatEur(prix),
-        frais_notaire: formatEur(notaire),
-        montant_travaux: formatEur(travaux),
-        total_investissement: formatEur(totalInvestissement),
-        gain_fiscal_total: formatEur(reduction),
-        gain_fiscal_annuel: formatEur(reductionAn) + " / an",
-        duree_engagement: durationObj.years + " ans",
-        pourcentage_etat: (durationObj.rate * 100) + " %",
-        pourcentage_travaux: ratioTravaux.toFixed(1) + " %"
+        projet_prix: document.getElementById('res-resume-prix').innerText,
+        projet_travaux: document.getElementById('res-resume-travaux').innerText,
+        projet_reduction: document.getElementById('res-resume-reduction').innerText
     };
 
     btn.disabled = true;
     btn.innerText = "ENVOI EN COURS...";
 
-    try {
+   try {
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -226,14 +261,18 @@ async function submitForm(event) {
         });
 
         if (response.ok) {
+            // Le formulaire disparaît, le message de succès apparaît
             form.style.display = 'none';
             successMsg.style.display = 'block';
+            
+            // On ne force plus le téléchargement ici, c'est Make.com qui envoie l'email !
+
         } else {
             alert("Erreur lors de l'envoi. Veuillez réessayer.");
             btn.disabled = false;
             btn.innerText = "ENVOYER MON PLAN (PDF)";
         }
-    } catch (error) {
+    }catch (error) {
         console.error("Erreur Webhook :", error);
         btn.disabled = false;
         btn.innerText = "ENVOYER MON PLAN (PDF)";
