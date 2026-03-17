@@ -142,10 +142,10 @@ function renderCatalogue() {}
 
 
 // ==========================================
-// LOGIQUE WEBHOOK (MAKE/ZAPIER)
+// LOGIQUE WEBHOOK (MAKE/ZAPIER) - MODE NO-CORS
 // ==========================================
 
-const WEBHOOK_URL = "https://hook.eu1.make.com/our4lbo473b5ctyysfzzry86qgz4xlg3"; 
+const WEBHOOK_URL = "https://hook.eu1.make.com/ztu9s3dt8jtlycb3kvvvgkjkn36ii6k1"; 
 
 function openModal() {
     const modal = document.getElementById('lead-modal');
@@ -158,16 +158,27 @@ function closeModal(event) {
     if (modal) modal.classList.remove('active');
 }
 
+// Nouvelle fonction d'envoi "Fire and Forget" anti-CORS
 async function sendToAutomation(data) {
     try {
-        const response = await fetch(WEBHOOK_URL, {
+        await fetch(WEBHOOK_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            mode: 'no-cors', // Contourne le blocage CORS strict de Safari
+            headers: { 
+                // text/plain évite la requête de pré-vérification (preflight)
+                'Content-Type': 'text/plain' 
+            },
             body: JSON.stringify(data)
         });
-        return response.ok;
+        
+        // En mode 'no-cors', la réponse est "opaque" (le navigateur nous empêche de la lire).
+        // On ne peut donc pas vérifier response.ok. Si le fetch n'a pas crashé (ex: pas de coupure internet),
+        // on considère que c'est un succès absolu et on valide.
+        return true;
+        
     } catch (error) {
-        console.error("Erreur d'envoi Webhook :", error);
+        // Cette erreur ne se déclenchera qu'en cas de vraie coupure réseau du client
+        console.error("Erreur réseau lors de l'envoi :", error);
         return false;
     }
 }
@@ -183,15 +194,17 @@ async function submitForm(event) {
     const introText = document.getElementById('modal-intro');
     const noteText = document.getElementById('modal-note');
     
-    // Prénom (pour la personnalisation)
+    // Prénom (pour la personnalisation du message de succès)
     const fullName = document.getElementById('lead-name').value;
     const firstName = fullName.split(' ')[0];
     
     // 1. État "Chargement" visuel (Sécurité anti double clic)
-    btn.disabled = true;
-    btn.style.opacity = "0.8";
-    btnText.innerText = "TRAITEMENT EN COURS...";
-    btnLoader.style.display = "inline-block";
+    if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = "0.8";
+    }
+    if (btnText) btnText.innerText = "TRAITEMENT EN COURS...";
+    if (btnLoader) btnLoader.style.display = "inline-block";
     
     // 2. Compilation des données (Formulaire + Simulateur)
     const leadData = {
@@ -205,31 +218,28 @@ async function submitForm(event) {
         projet_economie_impot: document.getElementById('res-resume-reduction').innerText
     };
     
-    // 3. Envoi via Webhook Make
+    // 3. Envoi via Webhook Make (Méthode blindée)
     const isSuccess = await sendToAutomation(leadData);
     
-    // 4. Succès ou Erreur
+    // 4. Succès ou Erreur (Affichage immédiat)
     if (isSuccess) {
-        form.style.display = 'none';
-        if(introText) introText.style.display = 'none';
-        if(noteText) noteText.style.display = 'none';
+        if (form) form.style.display = 'none';
+        if (introText) introText.style.display = 'none';
+        if (noteText) noteText.style.display = 'none';
         
-        // Personnalisation du message de succès
+        // Personnalisation du message
         const successNameEl = document.getElementById('success-name');
-        if(successNameEl) successNameEl.innerText = firstName;
+        if (successNameEl) successNameEl.innerText = firstName;
         
-        successMsg.style.display = 'block';
+        if (successMsg) successMsg.style.display = 'block';
     } else {
         alert("Une erreur technique est survenue. Veuillez vérifier votre connexion internet et réessayer.");
-        // Restauration du bouton en cas d'erreur
-        btn.disabled = false;
-        btn.style.opacity = "1";
-        btnText.innerText = "ENVOYER MON PLAN DÉTAILLÉ (PDF)";
-        btnLoader.style.display = "none";
+        // Restauration du bouton en cas d'erreur réseau
+        if (btn) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        }
+        if (btnText) btnText.innerText = "ENVOYER MON PLAN DÉTAILLÉ (PDF)";
+        if (btnLoader) btnLoader.style.display = "none";
     }
 }
-
-window.onload = () => {
-    updateSim();
-    renderCatalogue();
-};
