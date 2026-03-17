@@ -190,16 +190,69 @@ function submitForm(event) {
     if (btnText) btnText.innerText = "TRAITEMENT EN COURS...";
     if (btnLoader) btnLoader.style.display = "inline-block";
     
-    // 2. Structuration précise des variables pour Make (JSON pur)
+    // Soumission du formulaire
+async function submitForm(event) {
+    event.preventDefault(); 
+    
+    const btn = document.getElementById('submit-btn');
+    const form = document.getElementById('lead-form');
+    const successMsg = document.getElementById('success-message');
+    
+    // On recalcule rapidement les chiffres exacts pour le PDF
+    const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
+    const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 8;
+    const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
+    const notaire = prix * (notairePct / 100);
+    const totalInvestissement = prix + notaire + travaux;
+    const assiette = Math.min(totalInvestissement, 300000);
+    
+    const durationObj = DURATIONS[currentDurationIndex];
+    const reduction = assiette * durationObj.rate;
+    const reductionAn = reduction / durationObj.years;
+    const ratioTravaux = totalInvestissement > 0 ? (travaux / totalInvestissement) * 100 : 0;
+
+    //2. Voici LE bloc magique qui envoie EXACTEMENT ce que ton Google Docs attend
     const leadData = {
-        prenom_nom: fullName,
+        date: new Date().toLocaleDateString('fr-FR'),
+        id_lead: "LEAD-" + Math.floor(Math.random() * 10000), // Créé un faux ID pro (ex: LEAD-4829)
+        prenom_nom: document.getElementById('lead-name').value,
         email: document.getElementById('lead-email').value,
         telephone: document.getElementById('lead-phone').value || "Non renseigné",
-        prix_achat: document.getElementById('res-resume-prix').innerText,
-        frais_notaire: document.getElementById('res-resume-notaire').innerText,
-        montant_travaux: document.getElementById('res-resume-travaux').innerText,
-        gain_fiscal_total: document.getElementById('res-resume-reduction').innerText,
-        duree_engagement: DURATIONS[currentDurationIndex].years + " ans"
+        prix_achat: formatEur(prix),
+        frais_notaire: formatEur(notaire),
+        montant_travaux: formatEur(travaux),
+        total_investissement: formatEur(totalInvestissement),
+        gain_fiscal_total: formatEur(reduction),
+        gain_fiscal_annuel: formatEur(reductionAn) + " / an",
+        duree_engagement: durationObj.years + " ans",
+        pourcentage_etat: (durationObj.rate * 100) + " %",
+        pourcentage_travaux: ratioTravaux.toFixed(1) + " %"
+    };
+
+    btn.disabled = true;
+    btn.innerText = "ENVOI EN COURS...";
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(leadData)
+        });
+
+        if (response.ok) {
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+        } else {
+            alert("Erreur lors de l'envoi. Veuillez réessayer.");
+            btn.disabled = false;
+            btn.innerText = "ENVOYER MON PLAN (PDF)";
+        }
+    } catch (error) {
+        console.error("Erreur Webhook :", error);
+        btn.disabled = false;
+        btn.innerText = "ENVOYER MON PLAN (PDF)";
+    }
+}
     };
     
     // 3. Envoi immédiat en arrière-plan
