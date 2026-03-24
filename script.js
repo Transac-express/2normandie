@@ -209,87 +209,83 @@ function loadPropertyInSim(prix, travaux, surface) {
 }
 
 // ==========================================
-// 3. LOGIQUE WEBHOOK (MAKE.COM) BLINDÉE (NO-CORS)
+// LOGIQUE WEBHOOK (MAKE) - STANDARD JSON
 // ==========================================
-const WEBHOOK_URL = "https://hook.eu1.make.com/6cr8nh6ioqwk2485qio3dg8ifed9ks3v"; 
 
-function openModal() { document.getElementById('lead-modal').classList.add('active'); }
-function closeModal(e) { if(e) e.preventDefault(); document.getElementById('lead-modal').classList.remove('active'); }
+// ⚠️ VÉRIFIE QUE CE LIEN EST BIEN LE TOUT DERNIER GÉNÉRÉ PAR MAKE
+const WEBHOOK_URL = "https://hook.eu1.make.com/TON_LIEN_ACTIF_ICI"; 
 
-function openMapChoice() { document.getElementById('map-modal').classList.add('active'); }
+function openModal() {
+    const modal = document.getElementById('lead-modal');
+    if (modal) modal.classList.add('active');
+}
 
-function confirmCall() { document.getElementById('call-modal').classList.add('active'); }
-function closeCallModal(e) { if(e) e.preventDefault(); document.getElementById('call-modal').classList.remove('active'); }
+function closeModal(event) {
+    if (event) event.preventDefault();
+    const modal = document.getElementById('lead-modal');
+    if (modal) modal.classList.remove('active');
+}
 
-// Soumission du formulaire (Sécurisée)
-function submitForm(event) {
+// Fonction d'envoi Standard (On enlève le blindage pour voir la vérité)
+async function sendToAutomation(data) {
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json' // Make va adorer ce format
+            },
+            body: JSON.stringify(data)
+        });
+        
+        // On veut voir la vraie réponse de Make
+        if (!response.ok) {
+            console.error("Make a refusé avec le code :", response.status);
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.error("Impossible de joindre Make :", error);
+        return false;
+    }
+}
+
+async function submitForm(event) {
     event.preventDefault(); 
     
     const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
     const form = document.getElementById('lead-form');
     const successMsg = document.getElementById('success-message');
+    const introText = document.getElementById('modal-intro');
+    const noteText = document.getElementById('modal-note');
     
-    // On recalcule rapidement les chiffres exacts pour le PDF Make.com
-    const prix = parseFloat(document.getElementById('sim-prix').value) || 0;
-    const notairePct = parseFloat(document.getElementById('sim-notaire-pct').value) || 8;
-    const travaux = parseFloat(document.getElementById('sim-travaux').value) || 0;
-    const notaire = prix * (notairePct / 100);
-    const totalInvestissement = prix + notaire + travaux;
-    const assiette = Math.min(totalInvestissement, 300000);
+    const fullName = document.getElementById('lead-name').value;
+    const firstName = fullName.split(' ')[0];
     
-    const durationObj = DURATIONS[currentDurationIndex];
-    const reduction = assiette * durationObj.rate;
-    const reductionAn = reduction / durationObj.years;
-    const ratioTravaux = totalInvestissement > 0 ? (travaux / totalInvestissement) * 100 : 0;
-
-    const phoneEl = document.getElementById('lead-phone');
-
+    if (btn) { btn.disabled = true; btn.style.opacity = "0.8"; }
+    if (btnText) btnText.innerText = "TRAITEMENT EN COURS...";
+    if (btnLoader) btnLoader.style.display = "inline-block";
+    
     const leadData = {
-        date: new Date().toLocaleDateString('fr-FR'),
-        id_lead: "LEAD-" + Math.floor(Math.random() * 10000),
-        prenom_nom: document.getElementById('lead-name').value,
+        prenom_nom: fullName,
         email: document.getElementById('lead-email').value,
-        telephone: phoneEl ? phoneEl.value : "Non renseigné",
-        prix_achat: formatEur(prix),
-        frais_notaire: formatEur(notaire),
-        montant_travaux: formatEur(travaux),
-        total_investissement: formatEur(totalInvestissement),
-        gain_fiscal_total: formatEur(reduction),
-        gain_fiscal_annuel: formatEur(reductionAn) + " / an",
-        duree_engagement: durationObj.years + " ans",
-        pourcentage_etat: (durationObj.rate * 100) + " %",
-        pourcentage_travaux: ratioTravaux.toFixed(1) + " %"
+        telephone: document.getElementById('lead-phone').value || "Non renseigné",
+        prix_achat: document.getElementById('res-resume-prix').innerText,
+        frais_notaire: document.getElementById('res-resume-notaire').innerText,
+        montant_travaux: document.getElementById('res-resume-travaux').innerText,
+        gain_fiscal_total: document.getElementById('res-resume-reduction').innerText,
+        duree_engagement: DURATIONS[currentDurationIndex].years + " ans"
     };
-
-    // UX : État Chargement
-    if(btn) {
-        btn.disabled = true;
-        btn.innerText = "ENVOI EN COURS...";
-    }
-
-    // Envoi Silencieux à Make (Fire & Forget)
-    fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors', // C'EST ÇA QUI EMPÊCHE LES ERREURS ROUGES !
-        headers: { 
-            'Content-Type': 'text/plain' // Et ça aussi !
-        },
-        body: JSON.stringify(leadData)
-    }).catch(err => console.log("Make alert ignorée :", err));
-
-    // Succès garanti pour le client après 1 seconde
-    setTimeout(() => {
-        if(form) form.style.display = 'none';
+    
+    const isSuccess = await sendToAutomation(leadData);
+    
+    if (isSuccess) {
+        if (form) form.style.display = 'none';
+        if (introText) introText.style.display = 'none';
+        if (noteText) noteText.style.display = 'none';
         
-        // Cacher les autres textes de la modale pour épurer
-        const modalIntro = document.getElementById('modal-intro');
-        const modalNote = document.getElementById('modal-note');
-        if(modalIntro) modalIntro.style.display = 'none';
-        if(modalNote) modalNote.style.display = 'none';
-
-        if(successMsg) {
-            // Afficher le message de succès personnalisé
-            const firstName = leadData.prenom_nom.split(' ')[0];
+        if (successMsg) {
             successMsg.innerHTML = `
                 <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">Merci ${firstName},</h3>
@@ -297,7 +293,13 @@ function submitForm(event) {
             `;
             successMsg.style.display = 'block';
         }
-    }, 1000);
+    } else {
+        // S'il y a une erreur, on remet le bouton à la normale pour que tu puisses voir ce qui cloche
+        if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
+        if (btnText) btnText.innerText = "RÉESSAYER";
+        if (btnLoader) btnLoader.style.display = "none";
+        alert("Make a bloqué la requête. Regarde la console (F12) !");
+    }
 }
 
 // ==========================================
