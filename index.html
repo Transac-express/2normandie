@@ -126,6 +126,7 @@
                                 <div class="input-group-pro"><label>Frais de notaire estimé (%)</label><div style="display:flex; align-items:center; gap: 10px;"><input type="number" id="sim-notaire-pct" value="8" step="0.1" style="width:80px;" oninput="updateSim()"><span id="val-notaire-montant" class="text-gray text-xs" style="font-weight:600;">= 12 000 €</span></div></div>
                                 <div class="input-group-pro"><label>Budget total travaux TTC (€)</label><input type="number" id="sim-travaux" value="50000" oninput="updateSim()"></div>
                                 <div class="input-group-pro"><label>Surface habitable (m²)</label><input type="number" id="sim-surface" value="60" oninput="updateSim()"></div>
+                                <div class="input-group-pro"><label>Loyer mensuel estimé (€)</label><input type="number" id="sim-loyer" value="650" oninput="updateSim()"></div>
                             </div>
                         </div>
 
@@ -174,8 +175,7 @@
                             <div class="jess-body">
                                 <div class="res-row"><span>Assiette fiscale retenue</span><strong id="res-assiette">212 000 €</strong></div>
                                 <div class="res-row"><span>Ratio travaux</span><strong id="res-ratio" class="text-red">23.6%</strong></div>
-                                <div class="res-row mt-15 pt-15" style="border-top: 1px solid var(--border-fine); align-items: flex-start;">
-                                    <div><span style="display:block; color:var(--primary); font-weight:600;">Loyer max. estimé (Zone B2)</span><span class="text-xs text-gray" id="res-loyer-detail">Calcul...</span></div>
+                                <div class="res-row mt-15 pt-15" style="border-top: 1px solid var(--border-fine); align-items: flex-start;"><div><span style="display:block; color:var(--primary); font-weight:600;">Loyer mensuel appliqué</span></div>
                                     <strong class="text-primary" style="font-size:1.1rem;" id="res-loyer">600 €/m</strong>
                                 </div>
                             </div>
