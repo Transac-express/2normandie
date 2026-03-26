@@ -80,6 +80,13 @@ function updateSim() {
         document.getElementById('res-loyer').innerText = loyerFinal + ' €/mois';
         document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. (${coeff.toFixed(2)})`;
 
+        // --- DEBUT DE LA ZONE LOYER ---
+        const loyerSaisi = parseFloat(document.getElementById('sim-loyer').value) || 0;
+        document.getElementById('res-loyer').innerText = loyerSaisi + ' €/mois';
+        
+        const loyerDetail = document.getElementById('res-loyer-detail');
+        if (loyerDetail) loyerDetail.innerText = '';
+        // --- FIN DE LA ZONE LOYER ---
         const capitalEmprunte = Math.max(0, totalProjet - apport);
         const tauxMensuel = (tauxPret / 100) / 12;
         let mensualite = 0;
