@@ -64,12 +64,14 @@ function updateSim() {
         const reduction = assiette * durationObj.rate;
         const reductionAn = reduction / durationObj.years;
 
-        const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
-        const isEligible = ratioTravaux >= 25;
-        const alertRatio = document.getElementById('alert-ratio');
-        if (alertRatio) alertRatio.style.display = isEligible ? 'none' : 'block';
-        document.getElementById('val-ratio-alert').innerText = ratioTravaux.toFixed(1) + '%';
-        document.getElementById('res-ratio').innerText = ratioTravaux.toFixed(1) + '%';
+        // On récupère le montant saisi par l'utilisateur (ou 0 par défaut)
+        const loyerFinal = parseFloat(document.getElementById('sim-loyer').value) || 0;
+        
+        // On met à jour l'affichage
+        document.getElementById('res-loyer').innerText = loyerFinal + ' €/mois';
+        // On retire le détail du calcul devenu inutile
+        const loyerDetail = document.getElementById('res-loyer-detail');
+        if (loyerDetail) loyerDetail.innerText = '';
         document.getElementById('res-ratio').className = isEligible ? 'text-primary bold' : 'text-red bold';
 
         const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
