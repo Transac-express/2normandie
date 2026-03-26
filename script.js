@@ -54,6 +54,9 @@ function updateSim() {
         const revenus = parseFloat(document.getElementById('sim-revenus').value) || 0;
         const tauxPret = parseFloat(document.getElementById('sim-taux').value) || 0;
         const nbMois = parseFloat(document.getElementById('sim-duree-mois').value) || 240;
+        
+        // --- NOUVEAU CHAMP LOYER ---
+        const loyerSaisi = parseFloat(document.getElementById('sim-loyer').value) || 0;
 
         const notaireMontant = prix * (notairePct / 100);
         document.getElementById('val-notaire-montant').innerText = `= ${formatEur(notaireMontant)}`;
@@ -64,29 +67,19 @@ function updateSim() {
         const reduction = assiette * durationObj.rate;
         const reductionAn = reduction / durationObj.years;
 
-        // On récupère le montant saisi par l'utilisateur (ou 0 par défaut)
-        const loyerFinal = parseFloat(document.getElementById('sim-loyer').value) || 0;
-        
-        // On met à jour l'affichage
-        document.getElementById('res-loyer').innerText = loyerFinal + ' €/mois';
-        // On retire le détail du calcul devenu inutile
-        const loyerDetail = document.getElementById('res-loyer-detail');
-        if (loyerDetail) loyerDetail.innerText = '';
+        const ratioTravaux = totalProjet > 0 ? (travaux / totalProjet) * 100 : 0;
+        const isEligible = ratioTravaux >= 25;
+        const alertRatio = document.getElementById('alert-ratio');
+        if (alertRatio) alertRatio.style.display = isEligible ? 'none' : 'block';
+        document.getElementById('val-ratio-alert').innerText = ratioTravaux.toFixed(1) + '%';
+        document.getElementById('res-ratio').innerText = ratioTravaux.toFixed(1) + '%';
         document.getElementById('res-ratio').className = isEligible ? 'text-primary bold' : 'text-red bold';
 
-        const coeff = surface > 0 ? Math.min(1.2, 0.7 + (19/surface)) : 0;
-        const loyerBase = 9.83; 
-        const loyerFinal = (loyerBase * surface * coeff).toFixed(0);
-        document.getElementById('res-loyer').innerText = loyerFinal + ' €/mois';
-        document.getElementById('res-loyer-detail').innerText = `Base : 9.83 €/m² × ${surface} m² × coeff. (${coeff.toFixed(2)})`;
-
-        // --- DEBUT DE LA ZONE LOYER ---
-        const loyerSaisi = parseFloat(document.getElementById('sim-loyer').value) || 0;
+        // --- AFFICHAGE DU LOYER SAISI (SANS CALCUL PLAFOND) ---
         document.getElementById('res-loyer').innerText = loyerSaisi + ' €/mois';
-        
         const loyerDetail = document.getElementById('res-loyer-detail');
         if (loyerDetail) loyerDetail.innerText = '';
-        // --- FIN DE LA ZONE LOYER ---
+
         const capitalEmprunte = Math.max(0, totalProjet - apport);
         const tauxMensuel = (tauxPret / 100) / 12;
         let mensualite = 0;
@@ -221,7 +214,6 @@ function loadPropertyInSim(prix, travaux, surface) {
 // LOGIQUE WEBHOOK (MAKE) - STANDARD JSON
 // ==========================================
 
-// ⚠️ VÉRIFIE QUE CE LIEN EST BIEN LE TOUT DERNIER GÉNÉRÉ PAR MAKE
 const WEBHOOK_URL = "https://hook.eu1.make.com/6cr8nh6ioqwk2485qio3dg8ifed9ks3v"; 
 
 function openModal() {
@@ -235,18 +227,16 @@ function closeModal(event) {
     if (modal) modal.classList.remove('active');
 }
 
-// Fonction d'envoi Standard (On enlève le blindage pour voir la vérité)
 async function sendToAutomation(data) {
     try {
         const response = await fetch(WEBHOOK_URL, {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json' // Make va adorer ce format
+                'Content-Type': 'application/json' 
             },
             body: JSON.stringify(data)
         });
         
-        // On veut voir la vraie réponse de Make
         if (!response.ok) {
             console.error("Make a refusé avec le code :", response.status);
             return false;
@@ -303,7 +293,6 @@ async function submitForm(event) {
             successMsg.style.display = 'block';
         }
     } else {
-        // S'il y a une erreur, on remet le bouton à la normale pour que tu puisses voir ce qui cloche
         if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
         if (btnText) btnText.innerText = "RÉESSAYER";
         if (btnLoader) btnLoader.style.display = "none";
