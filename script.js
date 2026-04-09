@@ -2,7 +2,9 @@
 // 1. NAVIGATION SPA (SÉCURISÉE)
 // ==========================================
 function navigate(targetId) {
-    if (window.event) window.event.preventDefault();
+    if (window.event && window.event.type === 'click') {
+        window.event.preventDefault();
+    }
 
     const targetPage = document.getElementById('page-' + targetId);
     
@@ -55,7 +57,6 @@ function updateSim() {
         const tauxPret = parseFloat(document.getElementById('sim-taux').value) || 0;
         const nbMois = parseFloat(document.getElementById('sim-duree-mois').value) || 240;
         
-        // --- NOUVEAU CHAMP LOYER ---
         const loyerSaisi = parseFloat(document.getElementById('sim-loyer').value) || 0;
 
         const notaireMontant = prix * (notairePct / 100);
@@ -75,7 +76,6 @@ function updateSim() {
         document.getElementById('res-ratio').innerText = ratioTravaux.toFixed(1) + '%';
         document.getElementById('res-ratio').className = isEligible ? 'text-primary bold' : 'text-red bold';
 
-        // --- AFFICHAGE DU LOYER SAISI (SANS CALCUL PLAFOND) ---
         document.getElementById('res-loyer').innerText = loyerSaisi + ' €/mois';
         const loyerDetail = document.getElementById('res-loyer-detail');
         if (loyerDetail) loyerDetail.innerText = '';
@@ -215,7 +215,6 @@ function loadPropertyInSim(prix, travaux, surface) {
 // ==========================================
 
 async function partagerSimulation() {
-    // 1. Récupération des valeurs saisies par l'utilisateur
     const prix = document.getElementById('sim-prix').value;
     const travaux = document.getElementById('sim-travaux').value;
     const surface = document.getElementById('sim-surface').value;
@@ -224,7 +223,6 @@ async function partagerSimulation() {
     const revenus = document.getElementById('sim-revenus').value;
     const duree = document.getElementById('sim-duree-mois').value;
 
-    // 2. Création de l'URL avec les paramètres inclus
     const baseUrl = window.location.href.split('?')[0];
     const urlAvecParametres = `${baseUrl}?prix=${prix}&travaux=${travaux}&surface=${surface}&loyer=${loyer}&apport=${apport}&revenus=${revenus}&duree=${duree}`;
 
@@ -234,7 +232,6 @@ async function partagerSimulation() {
         url: urlAvecParametres
     };
 
-    // 3. Lancement du partage
     if (navigator.share) {
         try {
             await navigator.share(shareData);
@@ -242,7 +239,6 @@ async function partagerSimulation() {
             console.log('Partage annulé par l\'utilisateur');
         }
     } else {
-        // Alternative pour les PC sans partage natif
         try {
             await navigator.clipboard.writeText(urlAvecParametres);
             alert('Le lien de votre simulation a été copié dans le presse-papier ! Vous pouvez le coller où vous le souhaitez.');
@@ -253,50 +249,58 @@ async function partagerSimulation() {
 }
 
 // ==========================================
-// DEMARRAGE DE L'APPLICATION (LE MOTEUR)
+// DEMARRAGE DE L'APPLICATION (LE MOTEUR BLINDÉ)
 // ==========================================
 
 function demarrerApplication() {
-    console.log("🚀 1. Lancement de l'application...");
+    console.log("🚀 Lancement du moteur...");
+    const params = new URLSearchParams(window.location.search);
     
-    // On analyse le lien web
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Si on trouve le mot "prix" dans le lien, c'est que c'est un lien partagé
-    if (urlParams.has('prix')) {
-        console.log("🔗 2. Lien de partage détecté ! Paramètres :", urlParams.toString());
+    if (params.has('prix')) {
+        console.log("🔗 Partage détecté : ", params.toString());
         
         try {
-            // Remplissage des cases
-            document.getElementById('sim-prix').value = urlParams.get('prix');
-            document.getElementById('sim-travaux').value = urlParams.get('travaux');
-            document.getElementById('sim-surface').value = urlParams.get('surface');
-            document.getElementById('sim-loyer').value = urlParams.get('loyer');
-            document.getElementById('sim-apport').value = urlParams.get('apport');
+            // 1. Remplissage
+            document.getElementById('sim-prix').value = params.get('prix');
+            document.getElementById('sim-travaux').value = params.get('travaux');
+            document.getElementById('sim-surface').value = params.get('surface');
+            document.getElementById('sim-loyer').value = params.get('loyer');
+            document.getElementById('sim-apport').value = params.get('apport');
             
-            if (urlParams.has('revenus')) document.getElementById('sim-revenus').value = urlParams.get('revenus');
-            if (urlParams.has('duree')) document.getElementById('sim-duree-mois').value = urlParams.get('duree');
+            if (params.has('revenus')) document.getElementById('sim-revenus').value = params.get('revenus');
+            if (params.has('duree')) document.getElementById('sim-duree-mois').value = params.get('duree');
 
-            console.log("✅ 3. Champs remplis avec succès. Basculement sur la page Simulateur...");
-            
-            // On utilise ta propre fonction de navigation pour faire propre
-            navigate('simulateur');
-            
+            // 2. Bascule forcée sur le simulateur (Méthode 100% manuelle, sans utiliser navigate)
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                p.style.display = 'none';
+            });
+            const simPage = document.getElementById('page-simulateur');
+            simPage.classList.add('active');
+            simPage.style.display = 'block';
+
+            // 3. Mise à jour visuelle du menu
+            document.querySelectorAll('.nav-item').forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('data-target') === 'simulateur') {
+                    link.classList.add('active');
+                }
+            });
+
+            console.log("✅ Simulateur affiché avec succès !");
         } catch (erreur) {
-            console.error("❌ Erreur lors du remplissage des champs :", erreur);
+            console.error("❌ Erreur au remplissage :", erreur);
         }
-    } else {
-        console.log("🏠 2. Visite classique (Pas de partage). On reste sur l'accueil.");
     }
 
-    // Dans tous les cas, on met à jour les calculs et on charge les biens
+    // Calcul final
     updateSim();
     renderCatalogue();
-    console.log("🏁 4. Initialisation terminée.");
 }
 
-// On lance le moteur une fois que le HTML de base est lu par le navigateur
-document.addEventListener('DOMContentLoaded', demarrerApplication);
+// On force le démarrage avec un tout petit délai pour être sûr que la page est "calmée"
+setTimeout(demarrerApplication, 100);
+
 // ==========================================
 // MODALES (Cartes et Appel)
 // ==========================================
