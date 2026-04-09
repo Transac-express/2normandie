@@ -255,12 +255,12 @@ async function partagerSimulation() {
 // ==========================================
 // LANCEMENT ET LECTURE DE L'URL
 // ==========================================
-window.onload = () => {
-    // On vérifie s'il y a des paramètres dans l'URL (ex: on a cliqué sur un lien partagé)
+document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     
+    // Si on détecte un partage (présence du paramètre prix)
     if (params.has('prix')) {
-        // On remplit les champs avec les valeurs partagées
+        // 1. On remplit les champs
         document.getElementById('sim-prix').value = params.get('prix');
         document.getElementById('sim-travaux').value = params.get('travaux');
         document.getElementById('sim-surface').value = params.get('surface');
@@ -270,14 +270,27 @@ window.onload = () => {
         if (params.has('revenus')) document.getElementById('sim-revenus').value = params.get('revenus');
         if (params.has('duree')) document.getElementById('sim-duree-mois').value = params.get('duree');
 
-        // On affiche directement la page simulateur
-        navigate('simulateur');
+        // 2. On force l'affichage de la page simulateur
+        document.querySelectorAll('.page').forEach(p => {
+            p.classList.remove('active');
+            p.style.display = 'none';
+        });
+        document.getElementById('page-simulateur').classList.add('active');
+        document.getElementById('page-simulateur').style.display = 'block';
+
+        // 3. On met à jour le menu visuellement
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.classList.remove('active');
+            if(link.getAttribute('data-target') === 'simulateur') {
+                link.classList.add('active');
+            }
+        });
     }
 
-    // On lance les calculs initiaux et l'affichage des biens
+    // On lance les calculs initiaux et le catalogue
     updateSim();
     renderCatalogue();
-};
+});
 
 // ==========================================
 // MODALES (Cartes et Appel)
