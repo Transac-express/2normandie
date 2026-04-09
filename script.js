@@ -253,45 +253,50 @@ async function partagerSimulation() {
 }
 
 // ==========================================
-// LANCEMENT ET LECTURE DE L'URL
+// DEMARRAGE DE L'APPLICATION (LE MOTEUR)
 // ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
+
+function demarrerApplication() {
+    console.log("🚀 1. Lancement de l'application...");
     
-    // Si on détecte un partage (présence du paramètre prix)
-    if (params.has('prix')) {
-        // 1. On remplit les champs
-        document.getElementById('sim-prix').value = params.get('prix');
-        document.getElementById('sim-travaux').value = params.get('travaux');
-        document.getElementById('sim-surface').value = params.get('surface');
-        document.getElementById('sim-loyer').value = params.get('loyer');
-        document.getElementById('sim-apport').value = params.get('apport');
+    // On analyse le lien web
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Si on trouve le mot "prix" dans le lien, c'est que c'est un lien partagé
+    if (urlParams.has('prix')) {
+        console.log("🔗 2. Lien de partage détecté ! Paramètres :", urlParams.toString());
         
-        if (params.has('revenus')) document.getElementById('sim-revenus').value = params.get('revenus');
-        if (params.has('duree')) document.getElementById('sim-duree-mois').value = params.get('duree');
+        try {
+            // Remplissage des cases
+            document.getElementById('sim-prix').value = urlParams.get('prix');
+            document.getElementById('sim-travaux').value = urlParams.get('travaux');
+            document.getElementById('sim-surface').value = urlParams.get('surface');
+            document.getElementById('sim-loyer').value = urlParams.get('loyer');
+            document.getElementById('sim-apport').value = urlParams.get('apport');
+            
+            if (urlParams.has('revenus')) document.getElementById('sim-revenus').value = urlParams.get('revenus');
+            if (urlParams.has('duree')) document.getElementById('sim-duree-mois').value = urlParams.get('duree');
 
-        // 2. On force l'affichage de la page simulateur
-        document.querySelectorAll('.page').forEach(p => {
-            p.classList.remove('active');
-            p.style.display = 'none';
-        });
-        document.getElementById('page-simulateur').classList.add('active');
-        document.getElementById('page-simulateur').style.display = 'block';
-
-        // 3. On met à jour le menu visuellement
-        document.querySelectorAll('.nav-item').forEach(link => {
-            link.classList.remove('active');
-            if(link.getAttribute('data-target') === 'simulateur') {
-                link.classList.add('active');
-            }
-        });
+            console.log("✅ 3. Champs remplis avec succès. Basculement sur la page Simulateur...");
+            
+            // On utilise ta propre fonction de navigation pour faire propre
+            navigate('simulateur');
+            
+        } catch (erreur) {
+            console.error("❌ Erreur lors du remplissage des champs :", erreur);
+        }
+    } else {
+        console.log("🏠 2. Visite classique (Pas de partage). On reste sur l'accueil.");
     }
 
-    // On lance les calculs initiaux et le catalogue
+    // Dans tous les cas, on met à jour les calculs et on charge les biens
     updateSim();
     renderCatalogue();
-});
+    console.log("🏁 4. Initialisation terminée.");
+}
 
+// On lance le moteur une fois que le HTML de base est lu par le navigateur
+document.addEventListener('DOMContentLoaded', demarrerApplication);
 // ==========================================
 // MODALES (Cartes et Appel)
 // ==========================================
