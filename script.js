@@ -211,99 +211,89 @@ function loadPropertyInSim(prix, travaux, surface) {
 }
 
 // ==========================================
-// LOGIQUE WEBHOOK (MAKE) - STANDARD JSON
+// LOGIQUE DE PARTAGE NATIVE
 // ==========================================
 
-const WEBHOOK_URL = "https://hook.eu1.make.com/6cr8nh6ioqwk2485qio3dg8ifed9ks3v"; 
+async function partagerSimulation() {
+    // 1. Récupération des valeurs saisies par l'utilisateur
+    const prix = document.getElementById('sim-prix').value;
+    const travaux = document.getElementById('sim-travaux').value;
+    const surface = document.getElementById('sim-surface').value;
+    const loyer = document.getElementById('sim-loyer').value;
+    const apport = document.getElementById('sim-apport').value;
+    const revenus = document.getElementById('sim-revenus').value;
+    const duree = document.getElementById('sim-duree-mois').value;
 
-function openModal() {
-    const modal = document.getElementById('lead-modal');
-    if (modal) modal.classList.add('active');
-}
+    // 2. Création de l'URL avec les paramètres inclus
+    const baseUrl = window.location.href.split('?')[0];
+    const urlAvecParametres = `${baseUrl}?prix=${prix}&travaux=${travaux}&surface=${surface}&loyer=${loyer}&apport=${apport}&revenus=${revenus}&duree=${duree}`;
 
-function closeModal(event) {
-    if (event) event.preventDefault();
-    const modal = document.getElementById('lead-modal');
-    if (modal) modal.classList.remove('active');
-}
-
-async function sendToAutomation(data) {
-    try {
-        const response = await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (!response.ok) {
-            console.error("Make a refusé avec le code :", response.status);
-            return false;
-        }
-        return true;
-    } catch (error) {
-        console.error("Impossible de joindre Make :", error);
-        return false;
-    }
-}
-
-async function submitForm(event) {
-    event.preventDefault(); 
-    
-    const btn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-    const btnLoader = document.getElementById('btn-loader');
-    const form = document.getElementById('lead-form');
-    const successMsg = document.getElementById('success-message');
-    const introText = document.getElementById('modal-intro');
-    const noteText = document.getElementById('modal-note');
-    
-    const fullName = document.getElementById('lead-name').value;
-    const firstName = fullName.split(' ')[0];
-    
-    if (btn) { btn.disabled = true; btn.style.opacity = "0.8"; }
-    if (btnText) btnText.innerText = "TRAITEMENT EN COURS...";
-    if (btnLoader) btnLoader.style.display = "inline-block";
-    
-    const leadData = {
-        prenom_nom: fullName,
-        email: document.getElementById('lead-email').value,
-        telephone: document.getElementById('lead-phone').value || "Non renseigné",
-        prix_achat: document.getElementById('res-resume-prix').innerText,
-        frais_notaire: document.getElementById('res-resume-notaire').innerText,
-        montant_travaux: document.getElementById('res-resume-travaux').innerText,
-        gain_fiscal_total: document.getElementById('res-resume-reduction').innerText,
-        duree_engagement: DURATIONS[currentDurationIndex].years + " ans"
+    const shareData = {
+        title: 'Ma simulation Denormandie',
+        text: 'Regarde cette simulation d\'investissement immobilier à Pauillac :',
+        url: urlAvecParametres
     };
-    
-    const isSuccess = await sendToAutomation(leadData);
-    
-    if (isSuccess) {
-        if (form) form.style.display = 'none';
-        if (introText) introText.style.display = 'none';
-        if (noteText) noteText.style.display = 'none';
-        
-        if (successMsg) {
-            successMsg.innerHTML = `
-                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 20px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                <h3 style="color: var(--primary); font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 15px;">Merci ${firstName},</h3>
-                <p style="color: var(--text-body); line-height: 1.6; font-size: 1rem;">Votre étude est en cours de génération ! Vérifiez vos emails d'ici quelques instants.</p>
-            `;
-            successMsg.style.display = 'block';
+
+    // 3. Lancement du partage
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (erreur) {
+            console.log('Partage annulé par l\'utilisateur');
         }
     } else {
-        if (btn) { btn.disabled = false; btn.style.opacity = "1"; }
-        if (btnText) btnText.innerText = "RÉESSAYER";
-        if (btnLoader) btnLoader.style.display = "none";
-        alert("Make a bloqué la requête. Regarde la console (F12) !");
+        // Alternative pour les PC sans partage natif
+        try {
+            await navigator.clipboard.writeText(urlAvecParametres);
+            alert('Le lien de votre simulation a été copié dans le presse-papier ! Vous pouvez le coller où vous le souhaitez.');
+        } catch (err) {
+            console.error('Erreur lors de la copie', err);
+        }
     }
 }
 
 // ==========================================
-// 4. LANCEMENT
+// LANCEMENT ET LECTURE DE L'URL
 // ==========================================
 window.onload = () => {
+    // On vérifie s'il y a des paramètres dans l'URL (ex: on a cliqué sur un lien partagé)
+    const params = new URLSearchParams(window.location.search);
+    
+    if (params.has('prix')) {
+        // On remplit les champs avec les valeurs partagées
+        document.getElementById('sim-prix').value = params.get('prix');
+        document.getElementById('sim-travaux').value = params.get('travaux');
+        document.getElementById('sim-surface').value = params.get('surface');
+        document.getElementById('sim-loyer').value = params.get('loyer');
+        document.getElementById('sim-apport').value = params.get('apport');
+        
+        if (params.has('revenus')) document.getElementById('sim-revenus').value = params.get('revenus');
+        if (params.has('duree')) document.getElementById('sim-duree-mois').value = params.get('duree');
+
+        // On affiche directement la page simulateur
+        navigate('simulateur');
+    }
+
+    // On lance les calculs initiaux et l'affichage des biens
     updateSim();
     renderCatalogue();
 };
+
+// ==========================================
+// MODALES (Cartes et Appel)
+// ==========================================
+function openMapChoice() {
+    const modal = document.getElementById('map-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function confirmCall() {
+    const modal = document.getElementById('call-modal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeCallModal(event) {
+    if (event) event.preventDefault();
+    const modal = document.getElementById('call-modal');
+    if (modal) modal.classList.remove('active');
+}
